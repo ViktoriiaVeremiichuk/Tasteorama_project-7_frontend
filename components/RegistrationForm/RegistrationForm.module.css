@@ -1,0 +1,106 @@
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordWrapper .input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggleBtn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: #888;
+}
+
+.toggleBtn:hover {
+  color: #333;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #fbfcf8;
+}
+
+.form {
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  /* min-height: 646px; */
+  background-color: #faf3e0;
+  border-radius: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 14px;
+  color: #333;
+}
+
+.input {
+  border-radius: 16px;
+  height: 41px;
+  border: 1px solid #d9d9d9;
+  outline: none;
+  padding: 0 8px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 356px;
+  min-height: 351px;
+  margin: 0 auto;
+}
+
+.title,
+.description {
+  text-align: center;
+  width: 100%;
+  max-width: 356px;
+  margin: 0 auto;
+}
+
+.title {
+  margin-top: 48px;
+}
+
+.button {
+  font-weight: 600;
+  background: #9b6c43;
+  border: solid 1px #d9d9d9;
+  outline: none;
+  border-radius: 16px;
+  height: 41px;
+  max-width: 356px;
+  margin-top: 11px;
+  color: #ffffff;
+}
+
+.text {
+  margin-bottom: 48px;
+}
