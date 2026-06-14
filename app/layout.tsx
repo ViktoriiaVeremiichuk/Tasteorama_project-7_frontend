@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, DM_Sans } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
 import "./globals.css";
+import Footer from "../components/Footer/Footer";
 
 const montserrat = Montserrat({
   variable: "--font-family",
@@ -27,7 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uk" className={`${montserrat.variable} ${dmSans.variable}`}>
-      <body>{children}</body>
+      <body>
+  <div className="pageWrapper">
+    <main>{children}</main>
+    <Footer />
+  </div>
+</body>
     </html>
   );
 }
