@@ -67,25 +67,21 @@ export default function SignUpForm() {
             <div className={css.formGroup}>
               <label className={css.label}>Enter your name</label>
               <Field id="name" name="name" className={css.input} />
-              {/* <ErrorMessage name="name" component="p" className={css.error} /> */}
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Enter your email address</label>
               <Field id="email" name="email" type="email" className={css.input} />
-              {/* <ErrorMessage name="email" component="p" className={css.error} /> */}
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Create a strong password</label>
               <PasswordField name="password" />
-              {/* <ErrorMessage name="password" component="p" className={css.error} /> */}
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Repeat your password</label>
               <PasswordField name="confirmPassword" />
-              {/* <ErrorMessage name="confirmPassword" component="p" className={css.error} /> */}
             </div>
           
             <button type="submit" className={css.button} disabled={isSubmitting}>
