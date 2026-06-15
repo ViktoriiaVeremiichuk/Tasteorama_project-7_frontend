@@ -3,42 +3,28 @@
 import { useState } from "react";
 import { Field } from "formik";
 import css from "./RegistrationForm.module.css";
-
-const EYE_ICONS = {
-  mob: "/eye-mob.svg",
-  tab: "/eye-tab.svg",
-  desktop: "/eye.svg",
-} as const;
-
-const EYE_CROSSED_ICONS = {
-  mob: "/eye-crossed-mob.svg",
-  tab: "/eye-crossed-tab.svg",
-  desktop: "/eye-crossed.svg",
-} as const;
+import EyeCrossedMob from "@/public/eye-crossed-mob.svg";
+import EyeCrossedTab from "@/public/eye-crossed-tab.svg";
+import EyeCrossedDesktop from "@/public/eye-crossed.svg";
+import EyeMob from "@/public/eye-mob.svg";
+import EyeTab from "@/public/eye-tab.svg";
+import EyeDesktop from "@/public/eye.svg";
 
 interface Props {
   name: string;
   placeholder?: string;
-  autoComplete?: "current-password" | "new-password";
 }
 
-export default function PasswordField({
-  name,
-  placeholder,
-  autoComplete = "current-password",
-}: Props) {
+export default function PasswordField({ name, placeholder }: Props) {
   const [show, setShow] = useState(false);
-  const icons = show ? EYE_ICONS : EYE_CROSSED_ICONS;
 
   return (
     <div className={css.passwordWrapper}>
       <Field
-        id={name}
         name={name}
         placeholder={placeholder}
         type={show ? "text" : "password"}
         className={css.input}
-        autoComplete={autoComplete}
       />
       <button
         type="button"
@@ -46,9 +32,20 @@ export default function PasswordField({
         onClick={() => setShow((prev) => !prev)}
         aria-label={show ? "Hide password" : "Show password"}
       >
-        <img src={icons.mob} className={css.iconMob} alt="" />
-        <img src={icons.tab} className={css.iconTab} alt="" />
-        <img src={icons.desktop} className={css.iconDesktop} alt="" />
+        {show ? (
+          <>
+            <img src={EyeMob.src} className={css.iconMob} alt="EyeMob" />
+            <img src={EyeTab.src} className={css.iconTab} alt="EyeTab" />
+            <img src={EyeDesktop.src} className={css.iconDesktop} alt="EyeDesktop" />
+
+          </>
+        ) : (
+          <>
+            <img src={EyeCrossedMob.src} className={css.iconMob} alt="EyeCrossedMob" />
+            <img src={EyeCrossedTab.src} className={css.iconTab} alt="EyeCrossedTab" />
+            <img src={EyeCrossedDesktop.src} className={css.iconDesktop} alt="EyeCrossedDesktop" />
+          </>
+        )}
       </button>
     </div>
   );

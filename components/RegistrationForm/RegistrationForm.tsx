@@ -76,12 +76,12 @@ export default function SignUpForm() {
 
             <div className={css.formGroup}>
               <label className={css.label}>Create a strong password</label>
-              <PasswordField name="password" autoComplete="new-password" />
+              <PasswordField name="password" />
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Repeat your password</label>
-              <PasswordField name="confirmPassword" autoComplete="new-password" />
+              <PasswordField name="confirmPassword" />
             </div>
           
             <button type="submit" className={css.button} disabled={isSubmitting}>

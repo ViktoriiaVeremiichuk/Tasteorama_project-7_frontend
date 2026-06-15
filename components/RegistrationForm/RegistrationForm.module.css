@@ -1,21 +1,11 @@
 .iconMob {
   display: none;
 }
-
 .iconTab {
   display: none;
 }
-
 .iconDesktop {
   display: block;
-}
-
-.input {
-  outline: none;
-  border: 1px solid #d9d9d9;
-  border-radius: 8px;
-  padding: 8px;
-  height: 41px;
 }
 
 .passwordWrapper {
@@ -61,6 +51,7 @@
   gap: 16px;
   width: 100%;
   max-width: 420px;
+  /* min-height: 646px; */
   background-color: #faf3e0;
   border-radius: 16px;
 }
@@ -73,10 +64,18 @@
 }
 
 .label {
-  font-family: Montserrat, sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
   font-size: 12px;
   color: #000;
+}
+
+.input {
+  outline: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 8px;
+  height: 41px;
 }
 
 .fields {
@@ -98,7 +97,7 @@
 }
 
 .description {
-  font-family: Montserrat, sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.55;
@@ -119,7 +118,7 @@
   height: 41px;
   max-width: 356px;
   margin-top: 11px;
-  color: #fff;
+  color: #ffffff;
 }
 
 .link {
@@ -129,7 +128,7 @@
 }
 
 .text {
-  font-family: Montserrat, sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin-bottom: 48px;
   font-weight: 400;
   font-size: 16px;
@@ -138,15 +137,13 @@
   color: #000;
 }
 
-@media (width >= 768px) and (width <= 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .iconMob {
     display: none;
   }
-
   .iconDesktop {
     display: none;
   }
-
   .iconTab {
     display: block;
   }
@@ -211,11 +208,10 @@
   }
 }
 
-@media (width <= 767px) {
+@media (max-width: 767px) {
   .iconDesktop {
     display: none;
   }
-
   .iconMob {
     display: block;
   }

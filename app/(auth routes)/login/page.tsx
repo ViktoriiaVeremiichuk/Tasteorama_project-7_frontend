@@ -1,7 +1,11 @@
-"use client";
+"use client"
 
-import SignInForm from "@/components/LoginForm/LoginForm";
+import SignInForm from "@/components/LoginForm/LoginForm"
 
 export default function SignInPage() {
-  return <SignInForm />;
+    return(
+        <main>
+            <SignInForm/>
+        </main>
+    );
 }
