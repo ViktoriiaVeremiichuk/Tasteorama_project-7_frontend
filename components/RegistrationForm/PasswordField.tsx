@@ -1,17 +1,21 @@
-// PasswordField.tsx
 "use client";
 
 import { useState } from "react";
 import { Field } from "formik";
-import { Eye, EyeOff } from "lucide-react";
 import css from "./RegistrationForm.module.css";
+import EyeCrossedMob from "@/public/eye-crossed-mob.svg";
+import EyeCrossedTab from "@/public/eye-crossed-tab.svg";
+import EyeCrossedDesktop from "@/public/eye-crossed.svg";
+import EyeMob from "@/public/eye-mob.svg";
+import EyeTab from "@/public/eye-tab.svg";
+import EyeDesktop from "@/public/eye.svg";
 
 interface Props {
   name: string;
-  placeholder?:string,
+  placeholder?: string;
 }
 
-export default function PasswordField({  name, placeholder }: Props) {
+export default function PasswordField({ name, placeholder }: Props) {
   const [show, setShow] = useState(false);
 
   return (
@@ -28,7 +32,20 @@ export default function PasswordField({  name, placeholder }: Props) {
         onClick={() => setShow((prev) => !prev)}
         aria-label={show ? "Hide password" : "Show password"}
       >
-        {show ? <EyeOff size={18} /> : <Eye size={18} />}
+        {show ? (
+          <>
+            <img src={EyeMob.src} className={css.iconMob} alt="EyeMob" />
+            <img src={EyeTab.src} className={css.iconTab} alt="EyeTab" />
+            <img src={EyeDesktop.src} className={css.iconDesktop} alt="EyeDesktop" />
+
+          </>
+        ) : (
+          <>
+            <img src={EyeCrossedMob.src} className={css.iconMob} alt="EyeCrossedMob" />
+            <img src={EyeCrossedTab.src} className={css.iconTab} alt="EyeCrossedTab" />
+            <img src={EyeCrossedDesktop.src} className={css.iconDesktop} alt="EyeCrossedDesktop" />
+          </>
+        )}
       </button>
     </div>
   );

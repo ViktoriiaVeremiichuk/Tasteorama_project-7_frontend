@@ -1,7 +1,8 @@
 "use client";
-
+import PasswordField from "../RegistrationForm/PasswordField";
 import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Link from "next/link";
 import * as Yup from "yup";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
@@ -47,6 +48,7 @@ export default function SignInForm () {
     }
 
       return (
+        <div className={css.wrapper}>
     <Formik
       initialValues={inicialValue}
       validationSchema={validationSchema}
@@ -54,25 +56,29 @@ export default function SignInForm () {
     >
       {({ isSubmitting }) => (
         <Form className={css.form}>
-          <h1 className={css.title}>Sign in</h1>
-
+          <h1 className={css.title}>Login</h1>
+        <div className={css.fields}>
           <div className={css.formGroup}>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email" className={css.label}>Enter your email address</label>
             <Field id="email" name="email" type="email" placeholder="email@gmail.com" className={css.input} />
-            <ErrorMessage name="email" component="p" className={css.error} />
+            {/* <ErrorMessage name="email" component="p" className={css.error} /> */}
           </div>
 
           <div className={css.formGroup}>
-            <label htmlFor="password">Password</label>
-            <Field id="password" name="password" type="password" className={css.input} />
-            <ErrorMessage name="password" component="p" className={css.error} />
+            <label htmlFor="password" className={css.label}>Create a strong password</label>
+            <PasswordField  name="password"/>
+            {/* <Field id="password" name="password" type="password" className={css.input} /> */}
+            {/* <ErrorMessage name="password" component="p" className={css.error} /> */}
           </div>
 
           <button type="submit" className={css.button} disabled={isSubmitting}>
             {isSubmitting ? "Loading..." : "Sign in"}
           </button>
+        </div>
+        <p className={`${css.description} ${css.text}`}>Don’t have an account? <Link href="/register"  className={css.link}>Register</Link></p>
         </Form>
       )}
     </Formik>
+    </div>
   );
 }

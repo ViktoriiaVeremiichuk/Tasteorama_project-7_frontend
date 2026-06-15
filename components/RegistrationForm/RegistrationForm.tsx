@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -53,12 +54,9 @@ export default function SignUpForm() {
   return (
     <div className={css.wrapper}>
     <Formik
-  initialValues={initialValues}
-  validationSchema={validationSchema}
-  onSubmit={handleSubmit}
-  validateOnMount={false}
-  validateOnBlur={true}
-  validateOnChange={false}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
         <Form className={css.form}>
@@ -94,7 +92,7 @@ export default function SignUpForm() {
               {isSubmitting ? "Loading..." : "Create account"}
             </button>
           </div>
-          <p className={`${css.description} ${css.link} ${css.text}`}>Already have an account? Log in</p>
+          <p className={`${css.description} ${css.text}`}>Already have an account? <Link href="/login" className={css.link}>Log in</Link></p>
         </Form>
       )}
     </Formik>

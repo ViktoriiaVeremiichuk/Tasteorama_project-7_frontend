@@ -1,3 +1,13 @@
+.iconMob {
+  display: none;
+}
+.iconTab {
+  display: none;
+}
+.iconDesktop {
+  display: block;
+}
+
 .passwordWrapper {
   position: relative;
   display: flex;
@@ -54,17 +64,18 @@
 }
 
 .label {
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  font-size: 14px;
-  color: #333;
+  font-size: 12px;
+  color: #000;
 }
 
 .input {
-  border-radius: 16px;
-  height: 41px;
-  border: 1px solid #d9d9d9;
   outline: none;
-  padding: 0 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 8px;
+  height: 41px;
 }
 
 .fields {
@@ -85,6 +96,15 @@
   margin: 0 auto;
 }
 
+.description {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: #000;
+}
+
 .title {
   margin-top: 48px;
 }
@@ -101,6 +121,170 @@
   color: #ffffff;
 }
 
+.link {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
 .text {
+  font-family: "Montserrat", sans-serif;
   margin-bottom: 48px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: #000;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .iconMob {
+    display: none;
+  }
+  .iconDesktop {
+    display: none;
+  }
+  .iconTab {
+    display: block;
+  }
+
+  .wrapper {
+    padding: 40px 32px;
+    align-items: flex-start;
+    padding-top: 80px;
+  }
+
+  .form {
+    max-width: 522px;
+    border-radius: 20px;
+    gap: 20px;
+  }
+
+  .fields {
+    max-width: 460px;
+    min-height: auto;
+    gap: 20px;
+  }
+
+  .title,
+  .description {
+    max-width: 460px;
+  }
+
+  .title {
+    margin-top: 56px;
+    font-size: 26px;
+  }
+
+  .label {
+    font-size: 15px;
+  }
+
+  .input {
+    height: 48px;
+    border-radius: 14px;
+    font-size: 15px;
+    padding: 0 14px;
+  }
+
+  .passwordWrapper .input {
+    padding-right: 48px;
+  }
+
+  .toggleBtn {
+    right: 14px;
+  }
+
+  .button {
+    height: 48px;
+    max-width: 460px;
+    font-size: 16px;
+    border-radius: 14px;
+    margin-top: 14px;
+  }
+
+  .text {
+    margin-bottom: 48px;
+  }
+}
+
+@media (max-width: 767px) {
+  .iconDesktop {
+    display: none;
+  }
+  .iconMob {
+    display: block;
+  }
+
+  .wrapper {
+    justify-content: center;
+    border-radius: 32px;
+  }
+
+  .form {
+    max-width: 100%;
+    border-radius: 0;
+    gap: 12px;
+    min-height: 100dvh;
+  }
+
+  .fields {
+    max-width: 100%;
+    min-height: auto;
+    gap: 14px;
+    padding: 0 16px;
+  }
+
+  .title,
+  .description {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+
+  .description {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.55;
+    text-align: center;
+    color: #000;
+  }
+
+  .title {
+    font-weight: 600;
+    font-size: 32px;
+    text-align: center;
+    color: #000;
+  }
+
+  .label {
+    font-weight: 400;
+    font-size: 12px;
+    color: #000;
+  }
+
+  .input {
+    border-radius: 8px;
+    font-size: 15px;
+    padding: 8px;
+  }
+
+  .passwordWrapper .input {
+    padding-right: 44px;
+  }
+
+  .toggleBtn {
+    right: 12px;
+  }
+
+  .button {
+    height: 44px;
+    max-width: 100%;
+    font-size: 15px;
+    border-radius: 12px;
+    margin-top: 6px;
+  }
+
+  .text {
+    margin-bottom: 48px;
+  }
 }

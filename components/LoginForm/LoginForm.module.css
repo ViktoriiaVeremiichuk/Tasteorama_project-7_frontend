@@ -1,0 +1,248 @@
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordWrapper .input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggleBtn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: #888;
+}
+
+.toggleBtn:hover {
+  color: #333;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 32px;
+  background-color: #fbfcf8;
+}
+
+.form {
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  background-color: #faf3e0;
+  border-radius: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.label {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #000;
+}
+
+.input {
+  line-height: 1.55;
+  outline: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 8px;
+  height: 41px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 356px;
+  margin: 0 auto;
+}
+
+.title,
+.description {
+  text-align: center;
+  width: 100%;
+  max-width: 356px;
+  margin: 0 auto;
+}
+
+.description {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: #000;
+}
+
+.title {
+  margin-top: 48px;
+}
+
+.button {
+  font-weight: 600;
+  background: #9b6c43;
+  border: solid 1px #d9d9d9;
+  outline: none;
+  border-radius: 16px;
+  height: 41px;
+  max-width: 356px;
+  margin-top: 11px;
+  color: #ffffff;
+}
+
+.link {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
+.text {
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 48px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: #000;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .wrapper {
+    padding: 48px 32px;
+    padding-top: 80px;
+  }
+
+  .form {
+    max-width: 498px;
+    border-radius: 20px;
+    gap: 20px;
+  }
+
+  .fields {
+    max-width: 458px;
+    min-height: auto;
+    gap: 20px;
+  }
+
+  .title,
+  .description {
+    max-width: 460px;
+  }
+
+  .title {
+    margin-top: 56px;
+    font-size: 26px;
+  }
+
+  .label {
+    font-size: 15px;
+  }
+
+  .input {
+    height: 48px;
+    border-radius: 14px;
+    font-size: 15px;
+    padding: 0 14px;
+  }
+
+  .passwordWrapper .input {
+    padding-right: 48px;
+  }
+
+  .toggleBtn {
+    right: 14px;
+  }
+
+  .button {
+    height: 48px;
+    max-width: 460px;
+    font-size: 16px;
+    border-radius: 14px;
+    margin-top: 14px;
+  }
+
+  .text {
+    margin-bottom: 48px;
+  }
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    padding: 48px 32px;
+    padding-top: 40px;
+  }
+
+  .form {
+    max-width: 362px;
+    border-radius: 12px;
+    gap: 12px;
+    padding: 24px 20px;
+  }
+
+  .fields {
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .title,
+  .description {
+    max-width: 100%;
+  }
+
+  .title {
+    margin-top: 24px;
+    font-size: 20px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .input {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  .passwordWrapper .input {
+    padding-right: 40px;
+  }
+
+  .toggleBtn {
+    right: 10px;
+  }
+
+  .button {
+    height: 40px;
+    max-width: 100%;
+    font-size: 14px;
+    border-radius: 10px;
+    margin-top: 8px;
+  }
+
+  .text {
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+}
