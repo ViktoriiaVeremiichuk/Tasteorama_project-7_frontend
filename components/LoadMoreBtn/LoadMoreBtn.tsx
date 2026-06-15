@@ -13,7 +13,7 @@ const LoadMoreBtn = ({ onClick, isLoading }: Props) => {
       onClick={onClick}
       disabled={isLoading}
     >
-      {isLoading ? 'Loading...' : 'Load more'}
+      {isLoading ? 'Loading...' : 'Load More'}
     </button>
   );
 };
