@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 import { Montserrat, DM_Sans } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
 import "./globals.css";
+import Footer from "@/components/Footer/Footer";
 
 const montserrat = Montserrat({
   variable: "--font-family",
@@ -17,7 +19,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Tasteorama",
-  description: "Додаток для обміну кулінарними рецептами",
+  description: "A recipe sharing app for home cooks",
 };
 
 export default function RootLayout({
@@ -26,8 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="uk" className={`${montserrat.variable} ${dmSans.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
+      <body>
+        <Toaster position="top-right" />
+        <div className="pageWrapper">
+          <main>{children}</main>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }

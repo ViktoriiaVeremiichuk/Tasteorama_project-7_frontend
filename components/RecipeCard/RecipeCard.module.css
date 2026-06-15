@@ -1,0 +1,137 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 16px;
+  background: #faf3e0;
+}
+
+.image-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e8ddd6;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.title-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.title {
+  flex: 1;
+  margin: 0;
+  overflow: hidden;
+  color: #000;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.time-badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px 2px 4px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.time-icon {
+  width: 24px;
+  height: 24px;
+  color: #000;
+}
+
+.time-value {
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.description {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.calories {
+  margin: 0;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.learn-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: auto;
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  background: transparent;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.learn-more:hover {
+  cursor: pointer;
+}
+
+@media (width >= 1440px) {
+  .card {
+    max-width: 288px;
+    min-height: 431px;
+    justify-content: space-between;
+  }
+
+  .image-wrap {
+    height: 178px;
+  }
+}

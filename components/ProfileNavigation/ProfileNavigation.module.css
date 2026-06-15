@@ -1,0 +1,47 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-flex;
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.link:hover {
+  cursor: pointer;
+}
+
+.link-active {
+  border-bottom-color: #000;
+}
+
+@media (width >= 768px) {
+  .list {
+    gap: 38px;
+  }
+
+  .link {
+    font-size: 1.125rem;
+  }
+
+  .nav {
+    margin-bottom: 32px;
+  }
+}
