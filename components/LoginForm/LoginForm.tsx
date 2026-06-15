@@ -1,7 +1,7 @@
 "use client";
 import PasswordField from "../RegistrationForm/PasswordField";
 import { useRouter } from "next/navigation";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import Link from "next/link";
 import * as Yup from "yup";
 import { isAxiosError } from "axios";
