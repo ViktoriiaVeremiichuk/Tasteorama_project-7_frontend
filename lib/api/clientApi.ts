@@ -10,7 +10,7 @@ export const register = async(data: {
     email:string,
     password:string,
 }) => {
-    const res = await api.post('/auth/register', data);
+    const res = await api.post('/api/auth/register', data);
     return res.data;
 }
 
@@ -18,6 +18,6 @@ export const login = async(data: {
     email:string,
     password:string,
 }) => {
-    const res = await api.post('/auth/login', data);
+    const res = await api.post('/api/auth/login', data);
     return res.data;
 }
