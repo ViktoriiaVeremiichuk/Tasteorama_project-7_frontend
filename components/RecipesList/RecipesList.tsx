@@ -7,7 +7,7 @@ import style from "./RecipesList.module.css";
 
 const RecipesList = (props: any) => {
 
-const recipes = props.recipes;
+  const recipes = props.recipes;
   const loading = props.loading;
   const error = props.error;
 
@@ -20,14 +20,12 @@ const recipes = props.recipes;
 
   const visibleRecipes = recipes ? recipes.slice(0, visibleCount) : [];
 
-        if (loading) return <p className={style.message}>Завантаження... ⏳</p>;
-  if (error) return <p className={style.message}>Помилка: {error} ❌</p>;
-
-  if (!recipes || recipes.length === 0) {
+    if (loading) return <p className={style.message}>Завантаження... ⏳</p>;
+    if (error) return <p className={style.message}>Помилка: {error} ❌</p>;
+    if (!recipes || recipes.length === 0) {
     return <p className={style.emptyText}>У вас поки немає улюблених рецептів 🥹</p>;
   }
 
-  
   return (
     <div className={style.wrapper}>
       {/* <ul className={style.container}>
