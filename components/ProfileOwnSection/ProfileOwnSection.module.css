@@ -1,0 +1,26 @@
+.section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.empty {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 32px;
+  border: 1px dashed #e8ddd6;
+  border-radius: 12px;
+  background: #fff;
+  color: #6b5348;
+  text-align: center;
+}
+
+.loader-wrap {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}

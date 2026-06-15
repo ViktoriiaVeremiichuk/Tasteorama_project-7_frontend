@@ -1,0 +1,43 @@
+.profile-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1224px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.profile-title {
+  margin: 0;
+  color: #000;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.placeholder {
+  margin: 0;
+  color: #3d2218;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+@media (width >= 768px) {
+  .profile-main {
+    padding: 48px 32px;
+  }
+}
+
+@media (width >= 1440px) {
+  .profile-main {
+    padding: 46px 108px 48px;
+  }
+}
