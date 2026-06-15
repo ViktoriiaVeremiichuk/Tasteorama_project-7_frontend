@@ -1,3 +1,8 @@
+export type RecipeIngredient = {
+  id: string | { _id: string; name: string };
+  measure: string;
+};
+
 export type Recipe = {
   _id: string;
   title: string;
@@ -5,10 +10,11 @@ export type Recipe = {
   owner: string;
   area?: string;
   description?: string;
-  instructions?: string;
+  instructions: string;
   thumb?: string;
   time: number;
   calories?: number;
+  ingredients?: RecipeIngredient[];
   createdAt?: string;
   updatedAt?: string;
 };
