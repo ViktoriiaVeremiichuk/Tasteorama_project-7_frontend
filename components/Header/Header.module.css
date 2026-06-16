@@ -1,0 +1,123 @@
+/*--------Mobile (393px)------*/
+
+.header {
+    height: 74px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #3d2218;
+    padding: 0 16px;
+    color: white;
+    position: relative;
+  }
+
+  .header a {
+    color:white;
+    text-decoration: none;
+  }
+  .button{
+    border: none;
+    background: none;
+    cursor: pointer;
+    font:inherit;
+    color:inherit;
+  }
+  .actions{
+    padding-right: 108px;
+  }
+  .logo{
+    display:flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 600;
+  }
+  .desktopNav{
+    display: none;
+  }
+  .actions{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .navLinks{
+    display:flex;
+    gap:24px
+  }
+  
+  .primary {
+    background: #c08a54;
+    border: none;
+    padding: 14px 16px;
+    border-radius: 8px;
+    color: white;
+  }
+  .burger {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .mobileMenu {
+    position: absolute;
+    flex-direction: column;
+    display: flex;
+    top: 74px;
+    right: 0;
+    width: 100%;
+    background: #3d2218;
+    padding: 16px;
+    gap: 32px;
+
+  }
+  .mobileLink{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+/*--------Tablet (768px)----------*/
+  @media screen and (min-width: 768px) {
+    .header{
+        padding: 0 32px;
+    }
+    .desktopNav{
+        display: flex;
+        align-items: center;
+        gap: 32px;
+    }
+    .actions{
+        padding: 0 32px;
+    }
+    .burger {
+        display: none;
+      }
+    .mobileMenu{
+        display: none;
+    }
+    .primary{
+        padding: 14px 32px;
+    }
+  }
+
+
+
+/*--------Desktop (1440px)---------*/
+  @media (min-width: 1440px) {
+    .header{
+        margin: 0 auto;
+        padding: 14px 108px;
+    }
+    .desktopNav{
+        gap: 40px;
+    }
+    .logo{
+        font-size: 20px;
+    }
+    .primary{
+       padding: 12px 16px; 
+    }
+  }  
