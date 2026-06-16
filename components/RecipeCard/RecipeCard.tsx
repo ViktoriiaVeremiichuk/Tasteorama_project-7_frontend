@@ -1,62 +1,20 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
-import { addFavorite, removeFavorite } from "@/lib/api/recipes";
-import { Recipe } from "@/types/recipe";
-import { useAuthStore } from "@/lib/store/authStore";
 import { Loader } from "lucide-react";
+import { Recipe } from "@/types/recipe";
 import styles from "./RecipeCard.module.css";
+import { useFavoriteRecipe } from "@/hooks/useFavoriteRecipe";
 
 type RecipeCardProps = {
   recipe: Recipe;
 };
 
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
-  const user = useAuthStore((s) => s.user);
-  const setUser = useAuthStore((s) => s.setUser);
-  const openAuthModal = useAuthStore((s) => s.openAuthModal);
-
-  const favorites = user?.favorites ?? [];
-
-  const isFavorite = favorites.includes(recipe._id);
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: () =>
-      isFavorite ? removeFavorite(recipe._id) : addFavorite(recipe._id),
-
-    onSuccess: () => {
-      const currentUser = useAuthStore.getState().user;
-
-      if (!currentUser) return;
-
-      const currentFavorites = currentUser.favorites ?? [];
-
-      const updatedFavorites = isFavorite
-        ? currentFavorites.filter((id) => id !== recipe._id)
-        : [...currentFavorites, recipe._id];
-
-      setUser({
-        ...currentUser,
-        favorites: updatedFavorites,
-      });
-    },
-
-    onError: () => {
-      toast.error("Error");
-    },
-  });
-
-  const handleFavorite = () => {
-    if (!user) {
-      openAuthModal();
-      return;
-    }
-
-    mutate();
-  };
+  const { isFavorite, toggleFavorite, isPending } = useFavoriteRecipe(
+    recipe._id,
+  );
 
   return (
     <div className={`${styles.card} ${styles.container}`}>
@@ -82,6 +40,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
           <span className={styles.time}>{recipe.time}</span>
         </div>
       </div>
+
       <div className={styles.descBlock}>
         <p className={styles.description}>{recipe.description}</p>
         <p className={styles.calories}>~{recipe.calories ?? "-"}</p>
@@ -91,8 +50,9 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
         <Link href={`/recipes/${recipe._id}`} className={styles.learnMoreBtn}>
           Learn more
         </Link>
+
         <button
-          onClick={handleFavorite}
+          onClick={toggleFavorite}
           disabled={isPending}
           className={`${styles.favBtn} ${
             isFavorite ? styles.activeFavBtn : ""
