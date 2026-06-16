@@ -1,24 +1,30 @@
-import styles from "./LoadMoreBtn.module.css";
+import css from "./LoadMoreBtn.module.css";
 
-type LoadMoreBtnProps = {
+type Props = {
   onClick: () => void;
   disabled?: boolean;
+  isLoading?: boolean;
 };
 
-export default function LoadMoreBtn({
+const LoadMoreBtn = ({
   onClick,
   disabled = false,
-}: LoadMoreBtnProps) {
+  isLoading = false,
+}: Props) => {
+  const isDisabled = disabled || isLoading;
+
   return (
-    <div className={styles.wrap}>
+    <div className={css.wrap}>
       <button
         type="button"
-        className={styles.button}
+        className={css.button}
         onClick={onClick}
-        disabled={disabled}
+        disabled={isDisabled}
       >
-        Load More
+        {isLoading ? "Loading..." : "Load More"}
       </button>
     </div>
   );
-}
+};
+
+export default LoadMoreBtn;
