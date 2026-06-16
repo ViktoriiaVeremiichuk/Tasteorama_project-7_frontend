@@ -1,0 +1,39 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #9b6c43;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.button:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .button {
+    max-width: 344px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1440px) {
+  .button {
+    max-width: 289px;
+  }
+}
