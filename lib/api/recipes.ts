@@ -8,3 +8,13 @@ export const getRecipes = async (
   const res = await api.get(`/api/recipes/search?page=${page}&limit=${limit}`);
   return res.data;
 };
+
+export const addFavorite = async (id: string) => {
+  const res = await api.post(`/api/recipes/favorites/${id}`);
+  return res.data;
+};
+
+export const removeFavorite = async (id: string) => {
+  const res = await api.delete(`/api/recipes/favorites/${id}`);
+  return res.data;
+};
