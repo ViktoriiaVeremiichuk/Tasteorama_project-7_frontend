@@ -1,3 +1,5 @@
+import Filters from "@/components/Filters/Filters";
+
 export default function Home() {
-  return 
+  return <Filters />;
 }
