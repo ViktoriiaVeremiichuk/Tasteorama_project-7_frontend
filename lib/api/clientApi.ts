@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "@/lib/api/api";
 import type {
   OwnRecipesResponse,
   Recipe,
@@ -12,28 +12,23 @@ import type {
   User,
 } from "@/lib/types/user";
 
-const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
-  withCredentials: true,
-});
-
 export const register = async (data: RegisterRequest): Promise<AuthUser> => {
-  const res = await api.post<AuthUser>("/auth/register", data);
+  const res = await api.post<AuthUser>("/api/auth/register", data);
   return res.data;
 };
 
 export const login = async (data: LoginRequest): Promise<AuthUser> => {
-  const res = await api.post<AuthUser>("/auth/login", data);
+  const res = await api.post<AuthUser>("/api/auth/login", data);
   return res.data;
 };
 
 export const getMe = async (): Promise<User> => {
-  const res = await api.get<User>("/users/current");
+  const res = await api.get<User>("/api/users/current");
   return res.data;
 };
 
 export const logout = async (): Promise<void> => {
-  await api.post("/auth/logout");
+  await api.post("/api/auth/logout");
 };
 
 type GetOwnRecipesArgs = {
@@ -45,26 +40,26 @@ export const getOwnRecipes = async ({
   page = 1,
   perPage = 12,
 }: GetOwnRecipesArgs = {}): Promise<OwnRecipesResponse> => {
-  const res = await api.get<OwnRecipesResponse>("/recipes/own", {
+  const res = await api.get<OwnRecipesResponse>("/api/recipes/own", {
     params: { page, perPage },
   });
   return res.data;
 };
 
 export const getFavoriteRecipes = async (): Promise<Recipe[]> => {
-  const res = await api.get<Recipe[]>("/recipes/favorite");
+  const res = await api.get<Recipe[]>("/api/recipes/favorite");
   return res.data;
 };
 
 export const getRecipeById = async (
   recipeId: string,
 ): Promise<RecipeByIdResponse["data"]> => {
-  const res = await api.get<RecipeByIdResponse>(`/recipes/${recipeId}`);
+  const res = await api.get<RecipeByIdResponse>(`/api/recipes/${recipeId}`);
   return res.data.data;
 };
 
 export const deleteOwnRecipe = async (recipeId: string): Promise<Recipe> => {
-  const res = await api.delete<Recipe>(`/recipes/${recipeId}`);
+  const res = await api.delete<Recipe>(`/api/recipes/${recipeId}`);
   return res.data;
 };
 
@@ -72,7 +67,7 @@ export const removeFavoriteRecipe = async (
   recipeId: string,
 ): Promise<FavoritesResponse> => {
   const res = await api.delete<FavoritesResponse>(
-    `/recipes/favorites/${recipeId}`,
+    `/api/recipes/favorites/${recipeId}`,
   );
   return res.data;
 };

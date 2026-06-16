@@ -1,25 +1,6 @@
-.list {
-  display: flex;
-  flex-wrap: wrap;
+.recipesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.item {
-  display: flex;
-  width: 100%;
-}
-
-@media (width >= 768px) {
-  .item {
-    width: calc((100% - 24px) / 2);
-  }
-}
-
-@media (width >= 1440px) {
-  .item {
-    width: calc((100% - 72px) / 4);
-  }
+  padding: 16px 0 48px;
 }

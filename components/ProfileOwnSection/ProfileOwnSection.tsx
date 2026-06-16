@@ -5,9 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
 import Loader from "@/components/Loader/Loader";
 import RecipeCardOwn from "@/components/RecipeCardOwn/RecipeCardOwn";
-import RecipesList, {
-  RecipesListItem,
-} from "@/components/RecipesList/RecipesList";
+import listStyles from "@/components/RecipesList/RecipesList.module.css";
 import { getOwnRecipes } from "@/lib/api/clientApi";
 import type { Recipe } from "@/lib/types/recipe";
 import styles from "./ProfileOwnSection.module.css";
@@ -68,13 +66,15 @@ export default function ProfileOwnSection() {
 
   return (
     <section className={styles.section}>
-      <RecipesList>
+      <div className={listStyles.recipesList}>
         {recipes.map((recipe) => (
-          <RecipesListItem key={recipe._id}>
-            <RecipeCardOwn recipe={recipe} onDeleted={handleDeleted} />
-          </RecipesListItem>
+          <RecipeCardOwn
+            key={recipe._id}
+            recipe={recipe}
+            onDeleted={handleDeleted}
+          />
         ))}
-      </RecipesList>
+      </div>
 
       {page < totalPages ? (
         <LoadMoreBtn onClick={handleLoadMore} disabled={isFetching} />
