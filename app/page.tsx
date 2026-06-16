@@ -5,43 +5,41 @@ import SearchBox from "../components/SearchBox/SearchBox";
 import Filters from "../components/Filters/Filters";
 import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
 import RecipesList from "@/components/RecipesList/RecipesList";
+import { getRecipes } from "@/lib/api/recipes";
 import type { Recipe } from "@/types/recipe";
-import type { BackendResponse } from "@/types/backendResponse";
 import styles from "./page.module.css";
 
-const limit = 12;
+const LIMIT = 12;
 
 export default function MainPage() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
     const loadRecipes = async () => {
       setLoading(true);
+      setError(null);
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(
-          `${baseUrl}/api/recipes?page=${page}&limit=${limit}`,
-        );
-
-        if (!response.ok) {
-          throw new Error("Не вдалося завантажити рецепти з сервера");
-        }
-
-        const result: BackendResponse = await response.json();
+        const result = await getRecipes (page, LIMIT);
+        
 
         setRecipes((prev) => {
-          const updateRecipesAmount = [...prev, ...result.data];
+          const updateRecipesAmount = page === 1 ? result.data : [...prev, ...result.data];
 
           if (updateRecipesAmount.length >= result.total) {
             setHasMore(false);
+          } else {
+            setHasMore(true);
           }
           return updateRecipesAmount;
         });
       } catch (err) {
         console.error(err);
+        setError("Не вдалося завантажити рецепти. Спробуйте пізніше.");
       } finally {
         setLoading(false);
       }
@@ -59,7 +57,11 @@ export default function MainPage() {
       <SearchBox />
       <Filters />
 
-      <RecipesList recipes={recipes} />
+      {error ? (
+        <p style={{ textAlign: "center", color: "red" }}>{error}</p>
+      ) : (
+        <RecipesList recipes={recipes} />
+      )}
 
       {loading && (
         <p style={{ textAlign: "center" }}>Завантаження рецептів...</p>
