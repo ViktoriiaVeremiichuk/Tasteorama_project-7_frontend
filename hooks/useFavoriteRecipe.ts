@@ -23,7 +23,9 @@ export const useFavoriteRecipe = (recipeId: string) => {
 
       const currentFavorites = currentUser.favorites ?? [];
 
-      const updatedFavorites = isFavorite
+      const isCurrentlyFavorite = currentFavorites.includes(recipeId);
+
+      const updatedFavorites = isCurrentlyFavorite
         ? currentFavorites.filter((id) => id !== recipeId)
         : [...currentFavorites, recipeId];
 

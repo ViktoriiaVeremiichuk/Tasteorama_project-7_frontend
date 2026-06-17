@@ -21,9 +21,9 @@ export const AuthModal = () => {
             <path
               d="M5.25 5.25L12 12M12 12L5.25 18.75M12 12L18.75 18.75M12 12L18.75 5.25"
               stroke="currentColor"
-              stroke-width="0.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="0.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </button>
