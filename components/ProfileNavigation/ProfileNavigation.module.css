@@ -2,22 +2,31 @@
   display: flex;
   align-items: center;
   gap: 38px;
-  border-bottom: 1px solid #EBE5DF;
-  margin-bottom: 32px;
-  width: 100%;
+  margin-bottom: 24px;
 }
 
-.title{
-    font-family: var(--font-family);
-font-weight: 600;
-font-size: 12px;
-color: var(--black);
+.list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 -1px 0;
+  gap: 32px;
 }
 
-.active{
-    border-bottom: 1px solid var(--black);
-padding-block: 0px 4px;
-padding-inline: 0px;
-width: 71px;
-height: 19px;
+.link {
+  display: inline-block;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--black);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+
+/* Клас для активного стану посилання */
+.active {
+ color: var(--black); 
+  border-color: var(--black);
+  font-weight: 600;
 }
