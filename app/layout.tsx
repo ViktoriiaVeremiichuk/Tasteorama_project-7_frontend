@@ -4,6 +4,7 @@ import { Montserrat, DM_Sans } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
 import "./globals.css";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import AuthModalProvider from "@/components/AuthModalProvider/AuthModalProvider";
 
 const montserrat = Montserrat({
   variable: "--font-family",
@@ -29,12 +30,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
-      <TanStackProvider>
-        <body>
+      <body>
+        <TanStackProvider>
           <Toaster position="top-right" />
           {children}
-        </body>
-      </TanStackProvider>
+          <AuthModalProvider />
+        </TanStackProvider>
+      </body>
     </html>
   );
 }

@@ -20,17 +20,16 @@ export default function MainPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-
   useEffect(() => {
     const loadRecipes = async () => {
       setLoading(true);
       setError(null);
       try {
-        const result = await getRecipes (page, LIMIT);
-        
+        const result = await getRecipes(page, LIMIT);
 
         setRecipes((prev) => {
-          const updateRecipesAmount = page === 1 ? result.data : [...prev, ...result.data];
+          const updateRecipesAmount =
+            page === 1 ? result.recipes : [...prev, ...result.recipes];
 
           if (updateRecipesAmount.length >= result.total) {
             setHasMore(false);
@@ -69,7 +68,9 @@ export default function MainPage() {
         <p style={{ textAlign: "center" }}>Завантаження рецептів...</p>
       )}
 
-      {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick} />}
+
+      {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick}  isLoading={loading} />}
+
     </div>
   );
 }

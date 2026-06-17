@@ -1,0 +1,156 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  position: relative;
+  border-radius: 32px;
+  padding: 16px 24px 32px 24px;
+  max-width: 362px;
+  width: 100%;
+  height: 341px;
+  background: #faf3e0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 28px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconClose {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  color: #000;
+  transition: 0.2s;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 32px;
+  text-align: center;
+  color: #000;
+  margin: 40px 0px 0px;
+}
+
+.text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: #000;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loginBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 314px;
+  width: 100%;
+  height: 54px;
+
+  font-weight: 600;
+  font-size: 18px;
+  color: #000;
+
+  color: currentColor;
+  text-decoration: none;
+}
+.registerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 314px;
+  width: 100%;
+  height: 54px;
+
+  font-weight: 600;
+  font-size: 18px;
+  color: #fff;
+
+  background: #9b6c43;
+  text-decoration: none;
+}
+
+.loginBtn,
+.registerBtn {
+  transition: all 0.2s ease;
+}
+
+.loginBtn:hover,
+.loginBtn:focus {
+  transform: scale(0.98);
+  opacity: 0.7;
+}
+
+.registerBtn:hover,
+.registerBtn:focus {
+  background: #6d554b;
+}
+
+/* tablet */
+@media (min-width: 768px) {
+  .modal {
+    padding: 16px 32px 56px;
+    max-width: 420;
+    width: 100%;
+    height: 277px;
+  }
+
+  .actions {
+    flex-direction: row;
+    gap: 27px;
+  }
+
+  .loginBtn {
+    padding: 8px;
+    width: 164px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .registerBtn {
+    padding: 8px;
+    width: 164px;
+    height: 36px;
+    font-size: 16px;
+  }
+}
