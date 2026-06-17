@@ -16,7 +16,7 @@ export default function Header(){
     
     
     
-    const isLoggedIn = true;   
+    const isLoggedIn = false;   
     return(
         <header className={`${styles.header} ${inter.className}`}>
         <div className={styles.logo}>
@@ -48,7 +48,8 @@ export default function Header(){
                             {user.name.charAt(0).toUpperCase()}
                         </div>
                     )}
-                    <button className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={32} height={32}/></button>
+                    {user.name}
+                    <button className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={24} height={28}/></button>
                    </div>
                 </>
             )}
@@ -79,6 +80,17 @@ export default function Header(){
             <>
                 <Link href="/recipes">Recipes</Link>
                 <Link href="/profile">My Profile</Link>
+                <div className={styles.user}>
+                    {user.avatar ?(
+                        <Image src={user.avatar} alt={user.name} className={styles.avatar}/>
+                    ):(
+                        <div className={styles.avatarFallback}>
+                            {user.name.charAt(0).toUpperCase()}
+                        </div>
+                    )}
+                    {user.name}
+                    <button className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={24} height={28}/></button>
+                   </div>
                 <button className={styles.primary}>Add Recipe</button>
             </>
           )}
