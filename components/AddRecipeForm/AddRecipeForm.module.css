@@ -140,8 +140,14 @@
 
     padding: 14px 16px;
 
-    border: 1px solid #ececec;
+    border-bottom: 1px solid #e5e5e5;
     border-radius: 12px;
+}
+
+.ingredientItem button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .ingredientInfo {

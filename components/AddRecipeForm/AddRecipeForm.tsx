@@ -14,6 +14,12 @@ const initialValues = {
   instructions: "",
 };
 
+type IngredientItem = {
+  id: string;
+  name: string;
+  measure: string;
+};
+
 export default function AddRecipeForm() {
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -26,6 +32,35 @@ export default function AddRecipeForm() {
 
     setPreview(URL.createObjectURL(file));
     };
+
+    const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
+
+    const [selectedIngredient, setSelectedIngredient] = useState("");
+
+    const [measure, setMeasure] = useState("");
+
+    const handleAddIngredient = () => {
+        if (!selectedIngredient || !measure) return;
+
+        const newIngredient = {
+            id: crypto.randomUUID(),
+            name: selectedIngredient,
+            measure,
+        };
+
+        setIngredients((prev) => [...prev, newIngredient]);
+
+        setSelectedIngredient("");
+        setMeasure("");
+    };
+    
+    const handleRemoveIngredient = (id: string) => {
+        setIngredients((prev) =>
+            prev.filter((item) => item.id !== id)
+        );
+        };
+
+    
   return (
     <Formik
       initialValues={initialValues}
@@ -198,7 +233,13 @@ export default function AddRecipeForm() {
                 Name
               </label>
 
-              <select id="ingredient">
+              <select
+                id="ingredient"
+                value={selectedIngredient}
+                onChange={(e) =>
+                    setSelectedIngredient(e.target.value)
+                }
+>
                 <option>
                   Broccoli
                 </option>
@@ -214,13 +255,18 @@ export default function AddRecipeForm() {
                 id="amount"
                 type="text"
                 placeholder="100g"
-              />
+                value={measure}
+                onChange={(e) =>
+                    setMeasure(e.target.value)
+                }
+                />
             </div>
 
             <button
-              type="button"
-              className={styles.addButton}
-            >
+                type="button"
+                onClick={handleAddIngredient}
+                className={styles.addButton}
+                >
               Add new ingredient
             </button>
           </div>
@@ -231,7 +277,25 @@ export default function AddRecipeForm() {
               <span>Amount:</span>
             </div>
 
-            {/* Ingredient items will go here */}
+            {ingredients.map((ingredient) => (
+                <div
+                    key={ingredient.id}
+                    className={styles.ingredientItem}
+                >
+                    <span>{ingredient.name}</span>
+
+                    <span>{ingredient.measure}</span>
+
+                    <button
+                    type="button"
+                    onClick={() =>
+                        handleRemoveIngredient(ingredient.id)
+                    }
+                    >
+                    ✕
+                    </button>
+                </div>
+                ))}
           </div>
         </section>
 
