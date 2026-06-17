@@ -1,11 +1,18 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import {
+    useState,
+    useEffect,
+    ChangeEvent
+} from "react";
 import { useRouter } from "next/navigation";
 import styles from "./AddRecipeForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { addRecipeSchema } from "./validation";
-import { createRecipe } from "@/lib/api/clientApi";
+import {
+    createRecipe,
+    getCategories,
+    getIngredients, } from "@/lib/api/clientApi";
 
 const initialValues = {
   title: "",
@@ -20,6 +27,21 @@ type IngredientItem = {
   id: string;
   name: string;
   measure: string;
+};
+
+type Category = {
+  _id: string;
+  name: string;
+};
+
+type Ingredient = {
+  _id: string;
+  name: string;
+};
+
+type IngredientOption = {
+  _id: string;
+  name: string;
 };
 
 export default function AddRecipeForm() {
@@ -44,6 +66,8 @@ export default function AddRecipeForm() {
 
     const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
 
+    const [ingredientOptions, setIngredientOptions] = useState<IngredientOption[]>([]);
+
     const [selectedIngredient, setSelectedIngredient] = useState("");
 
     const [measure, setMeasure] = useState("");
@@ -51,9 +75,15 @@ export default function AddRecipeForm() {
     const handleAddIngredient = () => {
         if (!selectedIngredient || !measure) return;
 
+        const ingredient = ingredientOptions.find(
+            (item) => item._id === selectedIngredient
+        );
+
+        if (!ingredient) return;
+
         const newIngredient = {
-            id: crypto.randomUUID(),  // TODO: replace with ingredient id from API
-            name: selectedIngredient,
+            id: ingredient._id,
+            name: ingredient.name,
             measure,
         };
 
@@ -67,7 +97,34 @@ export default function AddRecipeForm() {
         setIngredients((prev) =>
             prev.filter((item) => item.id !== id)
         );
-        };
+    };
+    
+    const [categories, setCategories] =
+        useState<Category[]>([]);
+
+    const [availableIngredients, setAvailableIngredients] =
+        useState<Ingredient[]>([]);
+    
+    useEffect(() => {
+    const loadData = async () => {
+        try {
+        const categoriesData =
+            await getCategories();
+
+        const ingredientsData =
+            await getIngredients();
+
+        setCategories(categoriesData);
+        setAvailableIngredients(
+            ingredientsData
+        );
+        } catch (error) {
+        console.error(error);
+        }
+    };
+
+    loadData();
+    }, []);
 
     
   return (
@@ -225,18 +282,14 @@ export default function AddRecipeForm() {
                     Select category
                   </option>
 
-                  {/* TODO: categories from API */}
-                  <option value="Soup">
-                    Soup
-                  </option>
-
-                  <option value="Dessert">
-                    Dessert
-                  </option>
-
-                  <option value="Pasta">
-                    Pasta
-                  </option>
+                  {categories.map((category) => (
+                    <option
+                        key={category._id}
+                        value={category.name}
+                    >
+                        {category.name}
+                    </option>
+                    ))}
                 </Field>
 
                 <ErrorMessage
@@ -300,9 +353,16 @@ export default function AddRecipeForm() {
                     Select ingredient
                 </option>
 
-                <option value="Broccoli">
-                    Broccoli
-                </option>
+                {availableIngredients.map(
+                    (ingredient) => (
+                        <option
+                        key={ingredient._id}
+                        value={ingredient._id}
+                        >
+                        {ingredient.name}
+                        </option>
+                    )
+                    )}
                 </select>
             </div>
 
