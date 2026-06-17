@@ -1,0 +1,17 @@
+.nav {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.link {
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  padding-bottom: 6px;
+  border-bottom: 1px solid transparent;
+}
+
+.active {
+  border-bottom-color: #000;
+}
