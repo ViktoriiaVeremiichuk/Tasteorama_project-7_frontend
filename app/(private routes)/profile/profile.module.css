@@ -3,7 +3,7 @@
   flex: 1;
   flex-direction: column;
   width: 100%;
-  max-width: 1224px;
+  max-width: 393px;
   margin: 0 auto;
   padding: 48px 16px;
 }
@@ -32,12 +32,22 @@
 
 @media (width >= 768px) {
   .profile-main {
+    max-width: 768px;
     padding: 48px 32px;
+  }
+
+  .profile-header {
+    margin-bottom: 32px;
   }
 }
 
 @media (width >= 1440px) {
   .profile-main {
+    max-width: 1440px;
     padding: 46px 108px 48px;
+  }
+
+  .profile-header {
+    margin-bottom: 46px;
   }
 }

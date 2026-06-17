@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
-import type { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
 import type { Recipe } from "@/lib/types/recipe";
 import styles from "./RecipeCard.module.css";
 
@@ -10,13 +12,37 @@ type RecipeCardProps = {
 };
 
 export default function RecipeCard({ recipe, footer }: RecipeCardProps) {
+  const router = useRouter();
+  const recipeHref = `/recipes/${recipe._id}`;
+
   const caloriesLabel =
     recipe.calories && recipe.calories > 0
       ? `~${recipe.calories} cals`
       : "—";
 
+  function handleCardClick() {
+    router.push(recipeHref);
+  }
+
+  function handleCardKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      router.push(recipeHref);
+    }
+  }
+
+  function handleFooterInteraction(event: MouseEvent | KeyboardEvent) {
+    event.stopPropagation();
+  }
+
   return (
-    <article className={styles.card}>
+    <article
+      className={styles.card}
+      onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
+      tabIndex={0}
+      aria-label={`View recipe ${recipe.title}`}
+    >
       <div className={styles["image-wrap"]}>
         {recipe.thumb ? (
           <Image
@@ -61,10 +87,16 @@ export default function RecipeCard({ recipe, footer }: RecipeCardProps) {
           <p className={styles.calories}>{caloriesLabel}</p>
         </div>
 
-        {footer ?? (
-          <Link href={`/recipes/${recipe._id}`} className={styles["learn-more"]}>
-            Learn more
-          </Link>
+        {footer ? (
+          <div
+            className={styles.footer}
+            onClick={handleFooterInteraction}
+            onKeyDown={handleFooterInteraction}
+          >
+            {footer}
+          </div>
+        ) : (
+          <span className={styles["learn-more"]}>Learn more</span>
         )}
       </div>
     </article>

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import RecipeEscapeClose from "@/components/RecipeView/RecipeEscapeClose";
 import RecipeView from "@/components/RecipeView/RecipeView";
 import { getRecipeByIdServer } from "@/lib/api/serverApi";
 
@@ -36,5 +37,9 @@ export default async function RecipeDetailsPage({
     notFound();
   }
 
-  return <RecipeView recipe={recipe} />;
+  return (
+    <RecipeEscapeClose>
+      <RecipeView recipe={recipe} />
+    </RecipeEscapeClose>
+  );
 }

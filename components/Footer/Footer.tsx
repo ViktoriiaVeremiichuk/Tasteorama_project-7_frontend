@@ -5,9 +5,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        <div className={styles.logo}>
-          Tasteorama
-        </div>
+        <div className={styles.logo}>Tasteorama</div>
 
         <p className={styles.copyright}>
           © 2025 Tasteorama. All rights reserved.

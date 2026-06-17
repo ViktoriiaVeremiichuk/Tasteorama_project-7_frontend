@@ -1,63 +1,68 @@
-.actions {
+.buttons {
   display: flex;
   gap: 8px;
   width: 100%;
   margin-top: auto;
 }
 
-.learn-more {
-  display: flex;
+.learnMoreBtn {
+  display: inline-flex;
   flex: 1;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 289px;
   height: 40px;
   padding: 8px;
   border: 1px solid #000;
   border-radius: 8px;
-  background: transparent;
   color: #000;
   font-family: var(--font-family), "Montserrat", sans-serif;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1;
-  text-align: center;
   text-decoration: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.learn-more:hover,
-.learn-more:focus-visible {
-  transform: scale(0.98);
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-.delete {
+.favBtn {
   display: flex;
-  flex: 1;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  width: 40px;
   height: 40px;
   padding: 8px;
   border: 1px solid #000;
   border-radius: 8px;
-  background: transparent;
-  color: #000;
-  font-family: var(--font-family), "Montserrat", sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1;
+  background: #faf3e0;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.delete:disabled {
+.removeFavBtn {
+  border: none;
+  background: #9b6c43;
+}
+
+.removeFavBtn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.delete:hover:not(:disabled),
-.delete:focus-visible:not(:disabled) {
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  color: #fff;
+  transition: color 0.2s ease;
+}
+
+.learnMoreBtn:hover,
+.learnMoreBtn:focus-visible,
+.favBtn:hover:not(:disabled),
+.favBtn:focus-visible:not(:disabled) {
   transform: scale(0.98);
   opacity: 0.7;
 }
@@ -72,14 +77,13 @@
 }
 
 @media (width >= 768px) {
-  .learn-more,
-  .delete {
-    font-size: 1rem;
+  .learnMoreBtn {
+    max-width: 267px;
   }
 }
 
 @media (width >= 1440px) {
-  .actions {
-    gap: 8px;
+  .learnMoreBtn {
+    max-width: 216px;
   }
 }

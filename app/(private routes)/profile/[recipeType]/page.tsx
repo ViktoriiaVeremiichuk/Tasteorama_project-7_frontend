@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import ProfileFavoritesSection from "@/components/ProfileFavoritesSection/ProfileFavoritesSection";
 import ProfileNavigation from "@/components/ProfileNavigation/ProfileNavigation";
 import ProfileOwnSection from "@/components/ProfileOwnSection/ProfileOwnSection";
 import type { RecipeType } from "@/lib/types/recipe";
@@ -29,7 +30,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       {recipeType === "own" ? (
         <ProfileOwnSection />
       ) : (
-        <p className={styles.placeholder}>No saved recipes yet.</p>
+        <ProfileFavoritesSection />
       )}
     </section>
   );

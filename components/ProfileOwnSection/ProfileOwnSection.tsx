@@ -1,52 +1,97 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueryClient,
+  type InfiniteData,
+} from "@tanstack/react-query";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
 import Loader from "@/components/Loader/Loader";
 import RecipeCardOwn from "@/components/RecipeCardOwn/RecipeCardOwn";
-import listStyles from "@/components/RecipesList/RecipesList.module.css";
 import { getOwnRecipes } from "@/lib/api/clientApi";
-import type { Recipe } from "@/lib/types/recipe";
+import type { OwnRecipesResponse, Recipe } from "@/lib/types/recipe";
 import styles from "./ProfileOwnSection.module.css";
 
-function mergeRecipes(prev: Recipe[], incoming: Recipe[]): Recipe[] {
-  const seen = new Set(prev.map((recipe) => recipe._id));
-  const uniqueIncoming = incoming.filter((recipe) => !seen.has(recipe._id));
-  return [...prev, ...uniqueIncoming];
+const PER_PAGE = 12;
+
+function uniqueRecipes(pages: OwnRecipesResponse[]): Recipe[] {
+  const seen = new Set<string>();
+  const result: Recipe[] = [];
+
+  for (const page of pages) {
+    for (const recipe of page.recipes) {
+      if (!seen.has(recipe._id)) {
+        seen.add(recipe._id);
+        result.push(recipe);
+      }
+    }
+  }
+
+  return result;
 }
 
 export default function ProfileOwnSection() {
-  const [page, setPage] = useState(1);
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
+  const queryClient = useQueryClient();
 
-  const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["own-recipes", page],
-    queryFn: () => getOwnRecipes({ page, perPage: 12 }),
-    placeholderData: (prev) => prev,
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    refetch,
+    isRefetching,
+  } = useInfiniteQuery({
+    queryKey: ["own-recipes"],
+    queryFn: ({ pageParam }) =>
+      getOwnRecipes({ page: pageParam, perPage: PER_PAGE }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.totalPages) {
+        return lastPage.page + 1;
+      }
+
+      return undefined;
+    },
   });
 
-  useEffect(() => {
-    if (!data || data.page !== page) {
-      return;
-    }
-
-    setTotalPages(data.totalPages);
-    setRecipes((prev) =>
-      page === 1 ? data.recipes : mergeRecipes(prev, data.recipes),
-    );
-  }, [data, page]);
-
-  function handleLoadMore() {
-    setPage((prev) => prev + 1);
-  }
+  const recipes = data ? uniqueRecipes(data.pages) : [];
 
   function handleDeleted(recipeId: string) {
-    setRecipes((prev) => prev.filter((recipe) => recipe._id !== recipeId));
+    queryClient.setQueryData<InfiniteData<OwnRecipesResponse>>(
+      ["own-recipes"],
+      (old) => {
+        if (!old) {
+          return old;
+        }
+
+        const nextTotalItems = Math.max(
+          0,
+          (old.pages[0]?.totalItems ?? 0) - 1,
+        );
+        const nextTotalPages = Math.ceil(nextTotalItems / PER_PAGE);
+
+        return {
+          pageParams: old.pageParams,
+          pages: old.pages.map((page) => ({
+            ...page,
+            recipes: page.recipes.filter((recipe) => recipe._id !== recipeId),
+            totalItems: nextTotalItems,
+            totalPages: nextTotalPages,
+          })),
+        };
+      },
+    );
+
+    void refetch();
   }
 
-  if (isLoading && recipes.length === 0) {
+  function handleLoadMore() {
+    void fetchNextPage();
+  }
+
+  if (isLoading) {
     return (
       <section className={styles.section}>
         <div className={styles["loader-wrap"]}>
@@ -56,7 +101,25 @@ export default function ProfileOwnSection() {
     );
   }
 
+  if (isError) {
+    return (
+      <section className={styles.section}>
+        <p className={styles.empty}>Failed to load recipes.</p>
+      </section>
+    );
+  }
+
   if (recipes.length === 0) {
+    if (isFetchingNextPage || isRefetching) {
+      return (
+        <section className={styles.section}>
+          <div className={styles["loader-wrap"]}>
+            <Loader />
+          </div>
+        </section>
+      );
+    }
+
     return (
       <section className={styles.section}>
         <p className={styles.empty}>No recipes yet.</p>
@@ -66,7 +129,7 @@ export default function ProfileOwnSection() {
 
   return (
     <section className={styles.section}>
-      <div className={listStyles.recipesList}>
+      <div className={styles["own-list"]}>
         {recipes.map((recipe) => (
           <RecipeCardOwn
             key={recipe._id}
@@ -76,8 +139,14 @@ export default function ProfileOwnSection() {
         ))}
       </div>
 
-      {page < totalPages ? (
-        <LoadMoreBtn onClick={handleLoadMore} disabled={isFetching} />
+      {hasNextPage ? (
+        <div className={styles["load-more-wrap"]}>
+          <LoadMoreBtn
+            onClick={handleLoadMore}
+            disabled={isFetchingNextPage || isRefetching}
+            isLoading={isFetchingNextPage}
+          />
+        </div>
       ) : null}
     </section>
   );
