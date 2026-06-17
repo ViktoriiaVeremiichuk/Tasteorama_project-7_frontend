@@ -10,7 +10,13 @@ const inter = Inter({subsets: ["latin"]});
 
 export default function Header(){
     const [menuOpen, setMenuOpen] = useState(false);
-    const isLoggedIn = false;   
+    
+    const user = { name: "Jhon", avatar:null}; //тимчасова змінна для відображення аватара клієнта
+    
+    
+    
+    
+    const isLoggedIn = true;   
     return(
         <header className={`${styles.header} ${inter.className}`}>
         <div className={styles.logo}>
@@ -34,7 +40,16 @@ export default function Header(){
             ):(
                 <>
                    <button className={styles.primary}>Add Recips</button>
-                   <div className={styles.user}>userName</div>
+                   <div className={styles.user}>
+                    {user.avatar ?(
+                        <Image src={user.avatar} alt={user.name} className={styles.avatar}/>
+                    ):(
+                        <div className={styles.avatarFallback}>
+                            {user.name.charAt(0).toUpperCase()}
+                        </div>
+                    )}
+                    <button className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={32} height={32}/></button>
+                   </div>
                 </>
             )}
             </div>

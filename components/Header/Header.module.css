@@ -94,6 +94,36 @@
     gap: 32px;
   }
 
+  /*------user button and avatar------*/
+  .user{
+    display: flex;
+    align-items: center;
+    gap:32px;
+  }
+  .avatar, .avatarFallback{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .avatar {
+    object-fit: cover;
+  }
+  .avatarFallback{
+    background: #9B6C43;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .logoutBtn{
+    background: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 /*--------Tablet (768px)----------*/
   @media screen and (min-width: 768px) {
     .header{
