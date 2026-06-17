@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "./AddRecipeForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { addRecipeSchema } from "./validation";

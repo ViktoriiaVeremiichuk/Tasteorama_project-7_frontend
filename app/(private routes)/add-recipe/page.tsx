@@ -6,7 +6,7 @@ export default function AddRecipePage() {
       <h1>Add Recipe</h1>
 
       <p>
-        Share your favorite recipe with the Tasteorama community.
+       General Information
       </p>
 
       <AddRecipeForm />
