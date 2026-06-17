@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Toaster } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
 import { Montserrat, DM_Sans } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
 import "./globals.css";
@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <TanStackProvider>
         <body>
-          <Toaster position="top-right" />
+          {/* <Toaster position="top-right" /> */}
           {children}
         </body>
       </TanStackProvider>
