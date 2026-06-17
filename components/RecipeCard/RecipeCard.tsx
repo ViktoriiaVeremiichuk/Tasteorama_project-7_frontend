@@ -20,7 +20,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
     <div className={`${styles.card} ${styles.container}`}>
       <Image
         className={styles.image}
-        src={recipe.thumb || "/vercel.svg"}
+        src={recipe.thumb}
         alt={recipe.title}
         width={337}
         height={230}
