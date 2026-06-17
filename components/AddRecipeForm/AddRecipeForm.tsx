@@ -112,7 +112,10 @@ export default function AddRecipeForm() {
             await getCategories();
 
         const ingredientsData =
-            await getIngredients();
+                await getIngredients();
+            
+            console.log("categoriesData", categoriesData);
+console.log("ingredientsData", ingredientsData);
 
         setCategories(categoriesData);
         setAvailableIngredients(
@@ -126,8 +129,8 @@ export default function AddRecipeForm() {
     loadData();
     }, []);
 
-    
-  return (
+    console.log("categories", categories);
+  return ( 
     <Formik
       initialValues={initialValues}
       validationSchema={addRecipeSchema}
@@ -139,13 +142,16 @@ export default function AddRecipeForm() {
     formData.append("description", values.description);
     formData.append("category", values.category);
     formData.append("instructions", values.instructions);
-    formData.append("time", values.time);
+    formData.append(
+        "time",
+        String(values.time)
+        );
 
     if (values.calories) {
-      formData.append(
-        "calories",
-        values.calories
-      );
+        formData.append(
+            "calories",
+            String(values.calories)
+        );
     }
 
     formData.append(

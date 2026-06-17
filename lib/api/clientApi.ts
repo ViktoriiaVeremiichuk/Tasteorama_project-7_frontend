@@ -34,11 +34,11 @@ export const createRecipe = async (
 export const getCategories = async () => {
   const res = await api.get("/api/categories");
 
-  return res.data;
+  return res.data.data;
 };
 
 export const getIngredients = async () => {
   const res = await api.get("/api/ingredients");
 
-  return res.data;
+  return res.data.data;
 };
