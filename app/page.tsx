@@ -66,9 +66,9 @@ export default function MainPage() {
         <p style={{ textAlign: "center" }}>Завантаження рецептів...</p>
       )}
 
-      {hasMore && !loading && (
-        <LoadMoreBtn onClick={handleLoadMoreClick} isLoading={false} />
-      )}
+
+      {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick}  isLoading={loading} />}
+
     </div>
   );
 }
