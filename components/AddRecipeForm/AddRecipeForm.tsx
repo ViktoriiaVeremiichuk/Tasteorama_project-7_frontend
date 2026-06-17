@@ -30,7 +30,9 @@ export default function AddRecipeForm() {
 
     if (!file) return;
 
-    setPreview(URL.createObjectURL(file));
+    const imageUrl = URL.createObjectURL(file);
+
+        setPreview(imageUrl);
     };
 
     const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
