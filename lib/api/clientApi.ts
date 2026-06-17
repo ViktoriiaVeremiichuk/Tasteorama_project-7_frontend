@@ -30,3 +30,15 @@ export const createRecipe = async (
 
   return res.data;
 };
+
+export const getCategories = async () => {
+  const res = await api.get("/api/categories");
+
+  return res.data;
+};
+
+export const getIngredients = async () => {
+  const res = await api.get("/api/ingredients");
+
+  return res.data;
+};
