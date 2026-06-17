@@ -41,8 +41,12 @@ export default function Header(){
         </nav>
 
         {/* Mobile burger */}
-        <button className={styles.burger} onClick={() => setMenuOpen(!menuOpen)}>
-        ☰
+        <button className={`${styles.burger} ${menuOpen ? styles.closeButton: ""}`} onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? (
+            <Image src="/close.svg" alt="Close menu" width={32} height={32}/>
+        ):(
+            <Image src="/burger.svg" alt="Open menu" width={32} height={32}/>
+        )}
         </button>
 
         {/* Mobile drawer */}

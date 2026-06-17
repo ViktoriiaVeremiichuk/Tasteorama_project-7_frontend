@@ -53,12 +53,27 @@
     color: white;
   }
   .burger {
+    width: 32px;
+    height: 32px;
+
     display: block;
+    align-items: center;
+    justify-content: center;
+
     background: none;
     border: none;
     color: white;
     font-size: 24px;
     cursor: pointer;
+    z-index: 1000;
+  }
+  .closeButton{
+    width: 32px;
+    height: 32px;
+
+    display: block;
+    align-items: center;
+    justify-content: center;
   }
   .mobileMenu {
     position: absolute;
