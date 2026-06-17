@@ -75,7 +75,7 @@ export default function AddRecipeForm() {
     const handleAddIngredient = () => {
         if (!selectedIngredient || !measure) return;
 
-        const ingredient = ingredientOptions.find(
+        const ingredient = availableIngredients.find(
             (item) => item._id === selectedIngredient
         );
 
@@ -114,8 +114,6 @@ export default function AddRecipeForm() {
         const ingredientsData =
                 await getIngredients();
             
-            console.log("categoriesData", categoriesData);
-console.log("ingredientsData", ingredientsData);
 
         setCategories(categoriesData);
         setAvailableIngredients(
@@ -129,13 +127,17 @@ console.log("ingredientsData", ingredientsData);
     loadData();
     }, []);
 
-    console.log("categories", categories);
   return ( 
     <Formik
       initialValues={initialValues}
       validationSchema={addRecipeSchema}
       onSubmit={async (values, { setSubmitting }) => {
-  try {
+          try {
+      
+              if (ingredients.length === 0) {
+            alert("Please add at least one ingredient");
+            return;
+          }
     const formData = new FormData();
 
     formData.append("title", values.title);
@@ -187,10 +189,10 @@ console.log("ingredientsData", ingredientsData);
     setSubmitting(false);
   }
 }}
-    >
+      >
+           {({ isSubmitting }) => (
       <Form className={styles.form}>
         <div className={styles.topSection}>
-          {/* Left Column */}
           <div className={styles.leftColumn}>
             <h2 className={styles.sectionTitle}>
               General Information
@@ -449,10 +451,14 @@ console.log("ingredientsData", ingredientsData);
         <button
           type="submit"
           className={styles.submitButton}
-        >
-          Publish Recipe
+          disabled={isSubmitting}
+    >
+        {isSubmitting
+            ? "Publishing..."
+            : "Publish Recipe"}
         </button>
-      </Form>
+     </Form>
+    )}
     </Formik>
   );
 }
