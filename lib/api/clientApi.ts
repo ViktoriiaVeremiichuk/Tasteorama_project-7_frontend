@@ -13,3 +13,20 @@ export const login = async (data: { email: string; password: string }) => {
   const res = await api.post("/api/auth/login", data);
   return res.data;
 };
+
+export const createRecipe = async (
+  formData: FormData
+) => {
+  const res = await api.post(
+    "/api/recipes",
+    formData,
+    {
+      headers: {
+        "Content-Type":
+          "multipart/form-data",
+      },
+    }
+  );
+
+  return res.data;
+};
