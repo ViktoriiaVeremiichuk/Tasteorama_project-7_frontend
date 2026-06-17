@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./AddRecipeForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { addRecipeSchema } from "./validation";
+import { createRecipe } from "@/lib/api/clientApi";
 
 const initialValues = {
   title: "",
@@ -22,13 +24,18 @@ type IngredientItem = {
 
 export default function AddRecipeForm() {
     const [preview, setPreview] = useState<string | null>(null);
+    const [imageFile, setImageFile] =  useState<File | null>(null);
+
+    const router = useRouter();
 
     const handleImageChange = (
     event: ChangeEvent<HTMLInputElement>
     ) => {
     const file = event.target.files?.[0];
 
-    if (!file) return;
+        if (!file) return;
+        
+        setImageFile(file);
 
     const imageUrl = URL.createObjectURL(file);
 
@@ -45,7 +52,7 @@ export default function AddRecipeForm() {
         if (!selectedIngredient || !measure) return;
 
         const newIngredient = {
-            id: crypto.randomUUID(),
+            id: crypto.randomUUID(),  // TODO: replace with ingredient id from API
             name: selectedIngredient,
             measure,
         };
@@ -67,9 +74,56 @@ export default function AddRecipeForm() {
     <Formik
       initialValues={initialValues}
       validationSchema={addRecipeSchema}
-      onSubmit={(values) => {
-        console.log(values);
-      }}
+      onSubmit={async (values, { setSubmitting }) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("category", values.category);
+    formData.append("instructions", values.instructions);
+    formData.append("time", values.time);
+
+    if (values.calories) {
+      formData.append(
+        "calories",
+        values.calories
+      );
+    }
+
+    formData.append(
+      "ingredients",
+      JSON.stringify(
+        ingredients.map((ingredient) => ({
+          id: ingredient.id,
+          measure: ingredient.measure,
+        }))
+      )
+    );
+
+    if (imageFile) {
+      formData.append(
+        "thumb",
+        imageFile
+      );
+    }
+
+    const recipe =
+      await createRecipe(formData);
+
+    console.log(recipe);
+
+    router.push(`/recipe/${recipe._id}`);
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Failed to create recipe"
+    );
+  } finally {
+    setSubmitting(false);
+  }
+}}
     >
       <Form className={styles.form}>
         <div className={styles.topSection}>
@@ -241,11 +295,15 @@ export default function AddRecipeForm() {
                 onChange={(e) =>
                     setSelectedIngredient(e.target.value)
                 }
->
-                <option>
-                  Broccoli
+                >
+                <option value="">
+                    Select ingredient
                 </option>
-              </select>
+
+                <option value="Broccoli">
+                    Broccoli
+                </option>
+                </select>
             </div>
 
             <div className={styles.fieldGroup}>
