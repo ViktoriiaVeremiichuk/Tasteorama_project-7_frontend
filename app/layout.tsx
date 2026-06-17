@@ -5,6 +5,7 @@ import "modern-normalize/modern-normalize.css";
 import "./globals.css";
 import Footer from "@/components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import AuthModalProvider from "@/components/AuthModalProvider/AuthModalProvider";
 
 const montserrat = Montserrat({
   variable: "--font-family",
@@ -20,7 +21,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Tasteorama",
-  description: "A recipe sharing app for home cooks",
+  description: "Додаток для обміну кулінарними рецептами",
 };
 
 export default function RootLayout({
@@ -30,12 +31,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
-      <TanStackProvider>
-        <body>
+      <body>
+        <TanStackProvider>
           <Toaster position="top-right" />
           {children}
-        </body>
-      </TanStackProvider>
+          <Footer />
+          <AuthModalProvider />
+        </TanStackProvider>
+      </body>
     </html>
   );
 }

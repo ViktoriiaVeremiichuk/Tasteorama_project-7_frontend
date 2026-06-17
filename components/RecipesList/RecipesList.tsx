@@ -1,4 +1,4 @@
-import RecipeCard from "../RecipeCard/RecipeCard";
+import RecipeCardHome from "../RecipeCardHome/RecipeCardHome";
 import styles from "./RecipesList.module.css";
 import type { Recipe } from "@/lib/types/recipe";
 
@@ -14,7 +14,7 @@ export default function RecipeList({ recipes }: RecipesListProps) {
   return (
     <div className={styles.recipesList}>
       {recipes.map((recipe: Recipe) => (
-        <RecipeCard key={recipe._id} recipe={recipe} />
+        <RecipeCardHome key={recipe._id} recipe={recipe} />
       ))}
     </div>
   );

@@ -1,20 +1,22 @@
-import {create} from "zustand"
-
-type User = {
-    _id:string,
-    name:string,
-    email:string,
-    avatar?:string
-};
+import { create } from "zustand";
+import { User } from "@/types/user";
 
 type AuthStore = {
-    user:User | null;
-    setUser: (user:User) => void;
-    clearUser:() => void; 
+  user: User | null;
+  setUser: (user: User) => void;
+  clearUser: () => void;
+
+  isAuthModalOpen: boolean;
+  openAuthModal: () => void;
+  closeAuthModal: () => void;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
-    user:null,
-    setUser: (user) => set({user}),
-    clearUser: () =>   set({user:null}),
+  user: null,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: null }),
+
+  isAuthModalOpen: false,
+  openAuthModal: () => set({ isAuthModalOpen: true }),
+  closeAuthModal: () => set({ isAuthModalOpen: false }),
 }));

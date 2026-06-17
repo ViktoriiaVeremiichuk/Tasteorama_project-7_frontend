@@ -27,7 +27,7 @@ export default function MainPage() {
 
         setRecipes((prev) => {
           const updateRecipesAmount =
-            page === 1 ? result.data : [...prev, ...result.data];
+            page === 1 ? result.recipes : [...prev, ...result.recipes];
 
           if (updateRecipesAmount.length >= result.total) {
             setHasMore(false);
@@ -66,7 +66,9 @@ export default function MainPage() {
         <p style={{ textAlign: "center" }}>Завантаження рецептів...</p>
       )}
 
-      {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick} />}
+
+      {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick}  isLoading={loading} />}
+
     </div>
   );
 }
