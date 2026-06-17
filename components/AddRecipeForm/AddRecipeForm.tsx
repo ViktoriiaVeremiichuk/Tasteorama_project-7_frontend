@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, ChangeEvent } from "react";
 import styles from "./AddRecipeForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { addRecipeSchema } from "./validation";
@@ -14,6 +15,17 @@ const initialValues = {
 };
 
 export default function AddRecipeForm() {
+    const [preview, setPreview] = useState<string | null>(null);
+
+    const handleImageChange = (
+    event: ChangeEvent<HTMLInputElement>
+    ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setPreview(URL.createObjectURL(file));
+    };
   return (
     <Formik
       initialValues={initialValues}
@@ -151,16 +163,25 @@ export default function AddRecipeForm() {
               Upload Photo
             </h2>
 
-            <label className={styles.uploadBox}>
-              <input
+           <label className={styles.uploadBox}>
+            <input
                 type="file"
                 accept="image/*"
                 className={styles.hiddenInput}
-              />
+                onChange={handleImageChange}
+            />
 
-              <div className={styles.cameraIcon}>
+            {preview ? (
+                <img
+                src={preview}
+                alt="Recipe preview"
+                className={styles.previewImage}
+                />
+            ) : (
+                <div className={styles.cameraIcon}>
                 📷
-              </div>
+                </div>
+            )}
             </label>
           </div>
         </div>

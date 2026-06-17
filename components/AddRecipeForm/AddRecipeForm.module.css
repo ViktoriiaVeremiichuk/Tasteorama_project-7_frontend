@@ -85,6 +85,13 @@
     object-fit: cover;
 }
 
+.previewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
 .photoPlaceholder {
     color: #777777;
     font-size: 14px;

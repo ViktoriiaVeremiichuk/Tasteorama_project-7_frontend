@@ -1,0 +1,27 @@
+.mainContainer {
+  width: 100%;
+  min-width: 320px;
+  max-width: 393px;
+  margin: 0 auto;
+  padding: 16px 16px 48px 16px;
+}
+
+/* @media screen and (min-width: 393px) {
+  .mainContainer {
+    padding: 16px 16px 48px 16px;
+  }
+} */
+
+@media screen and (min-width: 768px) {
+  .mainContainer {
+    max-width: 768px;
+    padding: 16px 32px 48px 32px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .mainContainer {
+    max-width: 1440px;
+    padding: 16px 108px 48px 108px;
+  }
+}
