@@ -3,21 +3,32 @@
 import { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Formik, Form, Field, FormikHelpers } from "formik";
+import * as Yup from "yup";
 import { useId } from "react";
 import css from './Filters.module.css';
-
+import { getCategories, getIngredients } from '@/lib/api/api';
+  
 interface OrderFormValues {
-  category: string;
-  ingredients: string;
+  category: string[];
+  ingredients: string[];
 }
 
 const initialValues: OrderFormValues = {
-  category: "",
-  ingredients: "",
+  category: [],
+  ingredients: [],
 };
+
+const validationSchema = Yup.object().shape({
+  category: Yup.array().of(Yup.string()),
+  ingredients: Yup.array().of(Yup.string()),
+});
 
 export default function Filters() {
   const fieldId = useId();
+
+  const categories = getCategories();
+  const ingredients = getIngredients();
+
   // const [recipes, setRecipes] = useState('hello');
   const [isOpenCategory, setIsOpenCategory] = useState(false);
   const [isOpenIngredients, setIsOpenIngredients] = useState(false);
@@ -71,23 +82,28 @@ export default function Filters() {
             Reset filters
           </button>
           <Formik
+            validationSchema={validationSchema}
             initialValues={initialValues}
             onSubmit={handleSubmit}
           >
             <Form className={css.form}>
               <Field className={css.field} as="select" name="category" id={fieldId}>
-                <option value="">Category</option>
-                {optionsCategory.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
+                <option className={css.option} value="">
+                  Category
+                </option>
+                {categories.map((category) => (
+                  <option className={css.option} key={category} value={category}>
+                    {category}
                   </option>
                 ))}
               </Field>
               <Field className={css.field} as="select" name="ingredient" id={fieldId}>
-                <option value="">Ingredients</option>
-                {optionsIngredients.map((option) => (
-                  <option className={css.option} key={option} value={option}>
-                    {option}
+                <option className={css.option} value="">
+                  Ingredients
+                </option>
+                {ingredients.map((ingredient) => (
+                  <option className={css.option} key={ingredient} value={ingredient}>
+                    {ingredient}
                   </option>
                 ))}
               </Field>
