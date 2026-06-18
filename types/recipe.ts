@@ -18,3 +18,13 @@ export interface Recipe {
 export interface RecipesListProps {
   recipes: Recipe[];
 }
+
+export type RecipeType = "own" | "favorites";
+
+export interface OwnRecipesResponse {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  recipes: Recipe[];
+}
