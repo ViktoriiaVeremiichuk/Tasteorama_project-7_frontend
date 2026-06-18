@@ -28,3 +28,11 @@ export interface OwnRecipesResponse {
   totalPages: number;
   recipes: Recipe[];
 }
+
+export interface FavoriteRecipesResponse {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+  recipes: Recipe[];
+}
