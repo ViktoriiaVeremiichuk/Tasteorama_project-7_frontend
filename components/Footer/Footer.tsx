@@ -1,13 +1,39 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
+import logo from "@/app/icon.png";
 import styles from "./Footer.module.css";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function Footer() {
+  const user = useAuthStore((state) => state.user);
+
+  const openAuthModal = useAuthStore(
+    (state) => state.openAuthModal
+  );
+
+  const handleAccountClick = (
+    e: React.MouseEvent<HTMLAnchorElement>
+  ) => {
+    if (!user) {
+      e.preventDefault();
+      openAuthModal();
+    }
+  };
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        <div className={styles.logo}>
-          Tasteorama
-        </div>
+        <Link href="/" className={styles.logo}>
+          <Image
+            src={logo}
+            alt="Tasteorama logo"
+            width={32}
+            height={32}
+          />
+          <span>Tasteorama</span>
+        </Link>
 
         <p className={styles.copyright}>
           © 2025 Tasteorama. All rights reserved.
@@ -18,7 +44,11 @@ export default function Footer() {
             Recipes
           </Link>
 
-          <Link href="/profile" className={styles.link}>
+          <Link
+            href="/profile"
+            className={styles.link}
+            onClick={handleAccountClick}
+          >
             Account
           </Link>
         </nav>

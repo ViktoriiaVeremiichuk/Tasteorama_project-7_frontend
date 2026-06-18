@@ -32,6 +32,19 @@
   height: auto;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo img {
+  filter: brightness(0) invert(1);
+}
+
 .link {
   color: #fff;
   height: 24px;
