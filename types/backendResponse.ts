@@ -1,6 +1,6 @@
-import type { Recipe } from './recipe';
+import type { Recipe } from "./recipe";
 
 export interface BackendResponse {
-  data: Recipe[]; 
-  total: number;   
+  recipes: Recipe[];
+  total: number;
 }
