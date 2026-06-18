@@ -17,14 +17,28 @@
   display: inline-block;
   font-family: var(--font-family);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 18px;
   color: var(--black);
   text-decoration: none;
   border-bottom: 2px solid transparent;
+  padding-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .link {
+    font-size: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .link {
+    font-size: 12px;
+    padding-bottom: 16px;
+  }
 }
 
 
-/* Клас для активного стану посилання */
 .active {
  color: var(--black); 
   border-color: var(--black);
