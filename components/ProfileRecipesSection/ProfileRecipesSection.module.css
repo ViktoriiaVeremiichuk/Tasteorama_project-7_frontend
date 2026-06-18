@@ -2,6 +2,55 @@
   width: 100%;
 }
 
+.count {
+  margin: 0 0 16px;
+  color: #000;
+  font-family: var(--font-family), sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+@media screen and (min-width: 1440px) {
+  .count {
+    margin-bottom: 24px;
+  }
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.item > * {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .item {
+    flex-basis: calc((100% - 24px) / 2);
+    max-width: calc((100% - 24px) / 2);
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .item {
+    flex-basis: calc((100% - 72px) / 4);
+    max-width: calc((100% - 72px) / 4);
+  }
+}
+
 .status,
 .empty,
 .error {

@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .profileTitle {
@@ -27,27 +27,11 @@
     max-width: 768px;
     padding: 48px 32px;
   }
-
-  .profileHeader {
-    margin-bottom: 32px;
-  }
-
-  .profileTitle {
-    font-size: 48px;
-  }
 }
 
 @media screen and (min-width: 1440px) {
   .profileMain {
     max-width: 1440px;
     padding: 46px 108px 48px;
-  }
-
-  .profileHeader {
-    margin-bottom: 46px;
-  }
-
-  .profileTitle {
-    font-size: 56px;
   }
 }

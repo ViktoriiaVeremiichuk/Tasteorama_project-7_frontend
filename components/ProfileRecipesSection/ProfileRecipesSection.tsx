@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
-import RecipesList from "@/components/RecipesList/RecipesList";
+import RecipeCard from "@/components/RecipeCard/RecipeCard";
 import { getFavoriteRecipes, getOwnRecipes } from "@/lib/api/recipes";
 import type { Recipe, RecipeType } from "@/types/recipe";
 import styles from "./ProfileRecipesSection.module.css";
@@ -21,23 +21,23 @@ type ProfileRecipesSectionProps = {
 export default function ProfileRecipesSection({
   recipeType,
 }: ProfileRecipesSectionProps) {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [favoritesCache, setFavoritesCache] = useState<Recipe[]>([]);
+  const isOwn = recipeType === "own";
+  const [ownRecipes, setOwnRecipes] = useState<Recipe[]>([]);
+  const [ownTotal, setOwnTotal] = useState<number>(0);
+  const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [hasMoreOwn, setHasMoreOwn] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setPage(1);
-    setRecipes([]);
-    setFavoritesCache([]);
-    setHasMore(true);
-    setError(null);
-  }, [recipeType]);
+  const displayedRecipes = isOwn
+    ? ownRecipes
+    : favoriteRecipes.slice(0, page * LIMIT);
+  const hasMore = isOwn ? hasMoreOwn : page * LIMIT < favoriteRecipes.length;
+  const totalCount = isOwn ? ownTotal : favoriteRecipes.length;
 
   useEffect(() => {
-    if (recipeType !== "own") {
+    if (!isOwn) {
       return;
     }
 
@@ -48,11 +48,12 @@ export default function ProfileRecipesSection({
       try {
         const result = await getOwnRecipes(page, LIMIT);
 
-        setRecipes((prev) => {
+        setOwnTotal(result.totalItems);
+        setOwnRecipes((prev) => {
           const nextRecipes =
             page === 1 ? result.recipes : [...prev, ...result.recipes];
 
-          setHasMore(page < result.totalPages);
+          setHasMoreOwn(page < result.totalPages);
           return nextRecipes;
         });
       } catch (err) {
@@ -64,10 +65,10 @@ export default function ProfileRecipesSection({
     };
 
     void loadOwnRecipes();
-  }, [page, recipeType]);
+  }, [isOwn, page]);
 
   useEffect(() => {
-    if (recipeType !== "favorites") {
+    if (isOwn) {
       return;
     }
 
@@ -77,34 +78,24 @@ export default function ProfileRecipesSection({
 
       try {
         const data = await getFavoriteRecipes();
-        setFavoritesCache(data);
+        setFavoriteRecipes(data);
       } catch (err) {
         console.error(err);
         setError("Failed to load recipes.");
-        setFavoritesCache([]);
+        setFavoriteRecipes([]);
       } finally {
         setLoading(false);
       }
     };
 
     void loadFavoriteRecipes();
-  }, [recipeType]);
-
-  useEffect(() => {
-    if (recipeType !== "favorites") {
-      return;
-    }
-
-    const visibleRecipes = favoritesCache.slice(0, page * LIMIT);
-    setRecipes(visibleRecipes);
-    setHasMore(visibleRecipes.length < favoritesCache.length);
-  }, [page, favoritesCache, recipeType]);
+  }, [isOwn]);
 
   const handleLoadMoreClick = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  if (loading && recipes.length === 0) {
+  if (loading && displayedRecipes.length === 0) {
     return (
       <section className={styles.section}>
         <p className={styles.status}>Loading...</p>
@@ -120,7 +111,7 @@ export default function ProfileRecipesSection({
     );
   }
 
-  if (recipes.length === 0) {
+  if (displayedRecipes.length === 0) {
     return (
       <section className={styles.section}>
         <p className={styles.empty}>{EMPTY_MESSAGES[recipeType]}</p>
@@ -130,7 +121,17 @@ export default function ProfileRecipesSection({
 
   return (
     <section className={styles.section}>
-      <RecipesList recipes={recipes} />
+      <p className={styles.count}>
+        {totalCount} {totalCount === 1 ? "recipe" : "recipes"}
+      </p>
+
+      <ul className={styles.list}>
+        {displayedRecipes.map((recipe) => (
+          <li key={recipe._id} className={styles.item}>
+            <RecipeCard recipe={recipe} showFavorite={!isOwn} />
+          </li>
+        ))}
+      </ul>
 
       {loading ? <p className={styles.status}>Loading...</p> : null}
 

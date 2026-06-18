@@ -26,7 +26,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         <ProfileNavigation activeType={recipeType} />
       </header>
 
-      <ProfileRecipesSection recipeType={recipeType} />
+      <ProfileRecipesSection key={recipeType} recipeType={recipeType} />
     </section>
   );
 }

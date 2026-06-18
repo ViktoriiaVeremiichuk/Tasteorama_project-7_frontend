@@ -104,6 +104,26 @@
   text-decoration: none;
 }
 
+.learnMoreFull {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+}
+
+.cardOwn {
+  justify-content: space-between;
+}
+
+.cardOwn .buttons {
+  width: 100%;
+}
+
+.cardOwn .learnMoreBtn {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+}
+
 .favBtn {
   cursor: pointer;
   border: 1px solid #000;
@@ -177,6 +197,11 @@
   .learnMoreBtn {
     max-width: 267px;
   }
+
+  .cardOwn .learnMoreBtn,
+  .learnMoreBtn.learnMoreFull {
+    max-width: none;
+  }
 }
 
 /* desktop */
@@ -188,5 +213,14 @@
 
   .learnMoreBtn {
     max-width: 216px;
+  }
+
+  .cardOwn .learnMoreBtn,
+  .learnMoreBtn.learnMoreFull {
+    max-width: none;
+  }
+
+  .cardOwn {
+    min-height: 431px;
   }
 }
