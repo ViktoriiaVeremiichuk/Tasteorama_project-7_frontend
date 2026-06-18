@@ -1,0 +1,42 @@
+.nav {
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-block;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+  color: #000;
+  font-family: var(--font-family), sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.linkActive {
+  border-bottom-color: #000;
+}
+
+@media screen and (min-width: 768px) {
+  .link {
+    font-size: 20px;
+    padding-bottom: 12px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .link {
+    font-size: 24px;
+    padding-bottom: 16px;
+  }
+}
