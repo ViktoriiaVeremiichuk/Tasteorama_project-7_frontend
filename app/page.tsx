@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import SearchBox from "../components/SearchBox/SearchBox";
-import Filters from "../components/Filters/Filters";
+// import SearchBox from "../components/SearchBox/SearchBox";
+// import Filters from "../components/Filters/Filters";
 import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
 import RecipesList from "@/components/RecipesList/RecipesList";
 import { getRecipes } from "@/lib/api/recipes";
@@ -53,8 +53,8 @@ export default function MainPage() {
 
   return (
     <div className={styles.mainContainer}>
-      <SearchBox />
-      <Filters />
+      {/* <SearchBox />
+      <Filters /> */}
 
       {error ? (
         <p style={{ textAlign: "center", color: "red" }}>{error}</p>
