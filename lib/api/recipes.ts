@@ -21,7 +21,12 @@ export const getOwnRecipes = async (
 };
 
 export const getFavoriteRecipes = async (): Promise<Recipe[]> => {
-  const res = await api.get<Recipe[]>("/api/recipes/favorite");
+  const res = await api.get<Recipe[]>("/api/recipes/favorites");
+  return res.data;
+};
+
+export const deleteOwnRecipe = async (id: string) => {
+  const res = await api.delete(`/api/recipes/${id}`);
   return res.data;
 };
 

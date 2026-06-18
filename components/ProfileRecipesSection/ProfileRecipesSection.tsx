@@ -95,6 +95,11 @@ export default function ProfileRecipesSection({
     setPage((prevPage) => prevPage + 1);
   };
 
+  const handleRecipeDeleted = (id: string) => {
+    setOwnRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
+    setOwnTotal((prev) => Math.max(0, prev - 1));
+  };
+
   if (loading && displayedRecipes.length === 0) {
     return (
       <section className={styles.section}>
@@ -128,7 +133,12 @@ export default function ProfileRecipesSection({
       <ul className={styles.list}>
         {displayedRecipes.map((recipe) => (
           <li key={recipe._id} className={styles.item}>
-            <RecipeCard recipe={recipe} showFavorite={!isOwn} />
+            <RecipeCard
+              recipe={recipe}
+              showFavorite={!isOwn}
+              showDelete={isOwn}
+              onDeleted={isOwn ? handleRecipeDeleted : undefined}
+            />
           </li>
         ))}
       </ul>

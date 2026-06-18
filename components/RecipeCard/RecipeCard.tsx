@@ -2,20 +2,34 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Loader } from "lucide-react";
+import { Loader, Trash2 } from "lucide-react";
 import { Recipe } from "@/types/recipe";
 import styles from "./RecipeCard.module.css";
 import { useFavoriteRecipe } from "@/hooks/useFavoriteRecipe";
+import { useDeleteOwnRecipe } from "@/hooks/useDeleteOwnRecipe";
 
 type RecipeCardProps = {
   recipe: Recipe;
   showFavorite?: boolean;
+  showDelete?: boolean;
+  onDeleted?: (id: string) => void;
 };
 
-const RecipeCard = ({ recipe, showFavorite = true }: RecipeCardProps) => {
+const RecipeCard = ({
+  recipe,
+  showFavorite = true,
+  showDelete = false,
+  onDeleted,
+}: RecipeCardProps) => {
   const { isFavorite, toggleFavorite, isPending } = useFavoriteRecipe(
     recipe._id,
   );
+  const { deleteRecipe, isPending: isDeletePending } = useDeleteOwnRecipe(
+    recipe._id,
+    onDeleted,
+  );
+
+  const hasSecondaryAction = showFavorite || showDelete;
 
   return (
     <div
@@ -55,7 +69,7 @@ const RecipeCard = ({ recipe, showFavorite = true }: RecipeCardProps) => {
         <Link
           href={`/recipes/${recipe._id}`}
           className={`${styles.learnMoreBtn} ${
-            showFavorite ? "" : styles.learnMoreFull
+            hasSecondaryAction ? "" : styles.learnMoreFull
           }`}
         >
           Learn more
@@ -63,6 +77,7 @@ const RecipeCard = ({ recipe, showFavorite = true }: RecipeCardProps) => {
 
         {showFavorite ? (
           <button
+            type="button"
             onClick={toggleFavorite}
             disabled={isPending}
             className={`${styles.favBtn} ${
@@ -79,6 +94,22 @@ const RecipeCard = ({ recipe, showFavorite = true }: RecipeCardProps) => {
                   strokeWidth="0.5"
                 />
               </svg>
+            )}
+          </button>
+        ) : null}
+
+        {showDelete ? (
+          <button
+            type="button"
+            onClick={deleteRecipe}
+            disabled={isDeletePending}
+            aria-label="Delete recipe"
+            className={styles.deleteBtn}
+          >
+            {isDeletePending ? (
+              <Loader className={styles.deleteLoaderIcon} />
+            ) : (
+              <Trash2 className={styles.deleteIcon} />
             )}
           </button>
         ) : null}
