@@ -25,16 +25,16 @@ export default function ProfileRecipesSection({
   const [ownRecipes, setOwnRecipes] = useState<Recipe[]>([]);
   const [ownTotal, setOwnTotal] = useState<number>(0);
   const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
+  const [favoriteTotal, setFavoriteTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [hasMoreOwn, setHasMoreOwn] = useState<boolean>(true);
+  const [hasMoreFavorites, setHasMoreFavorites] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const displayedRecipes = isOwn
-    ? ownRecipes
-    : favoriteRecipes.slice(0, page * LIMIT);
-  const hasMore = isOwn ? hasMoreOwn : page * LIMIT < favoriteRecipes.length;
-  const totalCount = isOwn ? ownTotal : favoriteRecipes.length;
+  const displayedRecipes = isOwn ? ownRecipes : favoriteRecipes;
+  const hasMore = isOwn ? hasMoreOwn : hasMoreFavorites;
+  const totalCount = isOwn ? ownTotal : favoriteTotal;
 
   useEffect(() => {
     if (!isOwn) {
@@ -77,19 +77,28 @@ export default function ProfileRecipesSection({
       setError(null);
 
       try {
-        const data = await getFavoriteRecipes();
-        setFavoriteRecipes(data);
+        const result = await getFavoriteRecipes(page, LIMIT);
+
+        setFavoriteTotal(result.totalItems);
+        setFavoriteRecipes((prev) => {
+          const nextRecipes =
+            page === 1 ? result.recipes : [...prev, ...result.recipes];
+
+          setHasMoreFavorites(page < result.totalPages);
+          return nextRecipes;
+        });
       } catch (err) {
         console.error(err);
         setError("Failed to load recipes.");
         setFavoriteRecipes([]);
+        setFavoriteTotal(0);
       } finally {
         setLoading(false);
       }
     };
 
     void loadFavoriteRecipes();
-  }, [isOwn]);
+  }, [isOwn, page]);
 
   const handleLoadMoreClick = () => {
     setPage((prevPage) => prevPage + 1);
