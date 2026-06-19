@@ -1,16 +1,15 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 38px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .list {
   display: flex;
   list-style: none;
   padding: 0;
-  margin: 0 0 -1px 0;
-  gap: 32px;
+  margin: 0;
+  gap: 38px;
 }
 
 .link {
@@ -20,24 +19,15 @@
   font-size: 18px;
   color: var(--black);
   text-decoration: none;
-  border-bottom: 2px solid transparent;
-  padding-bottom: 8px;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 4px;
 }
 
 @media (min-width: 768px) {
   .link {
     font-size: 12px;
-    padding-bottom: 12px;
   }
 }
-
-@media (min-width: 1440px) {
-  .link {
-    font-size: 12px;
-    padding-bottom: 16px;
-  }
-}
-
 
 .active {
  color: var(--black); 
