@@ -10,13 +10,25 @@ export const getRecipes = async (
 };
 
 export const getOwnRecipes = async (page: number, limit: number) => {
-  const res = await api.get(`/api/recipes/own?page=${page}&perPage=${limit}`);
+  const res = await api.get("/api/recipes/own", {
+    params: { page, perPage: limit },
+  });
   return res.data;
 };
 
 export const getFavoriteRecipes = async (page: number, limit: number) => {
-  const res = await api.get(
-    `/api/recipes/favorite?page=${page}&perPage=${limit}`,
-  );
+  const res = await api.get("/api/recipes/favorites", {
+    params: { page, limit },
+  });
+  return res.data;
+};
+
+export const addFavorite = async (id: string) => {
+  const res = await api.post(`/api/recipes/favorites/${id}`);
+  return res.data;
+};
+
+export const removeFavorite = async (id: string) => {
+  const res = await api.delete(`/api/recipes/favorites/${id}`);
   return res.data;
 };

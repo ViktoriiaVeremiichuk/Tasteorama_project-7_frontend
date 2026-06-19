@@ -1,23 +1,26 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
-import ProfileNavigation from "@/components/ProfileNavigation/ProfileNavigation";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import RecipesList from "@/components/RecipesList/RecipesList";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
-import { getOwnRecipes, getFavoriteRecipes } from "@/lib/api/recipes";
+import { getFavoriteRecipes, getOwnRecipes } from "@/lib/api/recipes";
 import type { Recipe } from "@/types/recipe";
+import mainCss from "../../../page.module.css";
 import css from "./ProfilePage.module.css";
 
 const LIMIT = 12;
 
-type Props = {
-  params: Promise<{
-    recipeType: string;
-  }>;
+type RecipesResponse = {
+  recipes?: Recipe[];
+  total?: number;
+  totalItems?: number;
+  totalPages?: number;
 };
 
-export default function ProfilePage({ params }: Props) {
-  const { recipeType } = use(params);
+export default function ProfilePage() {
+  const pathname = usePathname();
+  const recipeType = pathname.includes("favorites") ? "favorites" : "own";
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState(1);
@@ -32,11 +35,12 @@ export default function ProfilePage({ params }: Props) {
         setIsLoading(true);
         setError("");
 
-        const result =
+        const result: RecipesResponse | Recipe[] =
           recipeType === "favorites"
             ? await getFavoriteRecipes(page, LIMIT)
             : await getOwnRecipes(page, LIMIT);
 
+        const response = Array.isArray(result) ? null : result;
         const newRecipes = Array.isArray(result)
           ? result
           : (result.recipes ?? []);
@@ -44,11 +48,8 @@ export default function ProfilePage({ params }: Props) {
         setRecipes((prev) =>
           page === 1 ? newRecipes : [...prev, ...newRecipes],
         );
-
-        setTotal(
-          Array.isArray(result) ? newRecipes.length : (result.totalItems ?? 0),
-        );
-        setHasMore(Array.isArray(result) ? false : page < result.totalPages);
+        setTotal(response?.total ?? response?.totalItems ?? newRecipes.length);
+        setHasMore(response ? page < (response.totalPages ?? 1) : false);
       } catch {
         setError("Something went wrong. Please try again.");
       } finally {
@@ -60,26 +61,32 @@ export default function ProfilePage({ params }: Props) {
   }, [recipeType, page]);
 
   return (
-    <main className={css.wrapper}>
+    <main className={`${mainCss.mainContainer} ${css.wrapper}`}>
       <h1 className={css.title}>My profile</h1>
-
-      <ProfileNavigation activeType={recipeType} />
 
       <p className={css.count}>{total} recipes</p>
 
       {error && <p className={css.error}>{error}</p>}
-      {!error && recipes.length > 0 && <RecipesList recipes={recipes} />}
+
+      {!error && isLoading && recipes.length === 0 && (
+        <p className={css.loading}>Loading...</p>
+      )}
+
       {!error && !isLoading && recipes.length === 0 && (
         <p className={css.empty}>Recipes not found</p>
       )}
 
-      {isLoading && <p className={css.loading}>Loading...</p>}
+      {!error && recipes.length > 0 && <RecipesList recipes={recipes} />}
 
       {hasMore && !isLoading && (
         <LoadMoreBtn
           onClick={() => setPage((prev) => prev + 1)}
           isLoading={isLoading}
         />
+      )}
+
+      {!error && isLoading && recipes.length > 0 && (
+        <p className={css.loading}>Loading...</p>
       )}
     </main>
   );
