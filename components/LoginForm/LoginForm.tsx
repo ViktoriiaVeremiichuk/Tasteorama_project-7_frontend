@@ -1,7 +1,7 @@
 "use client";
 import PasswordField from "../RegistrationForm/PasswordField";
 import { useRouter } from "next/navigation";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import Link from "next/link";
 import * as Yup from "yup";
 import { isAxiosError } from "axios";
@@ -54,24 +54,34 @@ export default function SignInForm () {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, errors, touched, submitCount }) => (
         <Form className={css.form}>
           <h1 className={css.title}>Login</h1>
         <div className={css.fields}>
-          <div className={css.formGroup}>
+          <div
+            className={`${css.formGroup} ${(touched.email || submitCount > 0) && errors.email ? css.formGroupError : ""}`}
+          >
             <label htmlFor="email" className={css.label}>Enter your email address</label>
-            <Field id="email" name="email" type="email" placeholder="email@gmail.com" className={css.input} />
-            
+            <Field name="email">
+              {({ field, meta }: FieldProps) => (
+                <input
+                  {...field}
+                  id="email"
+                  type="email"
+                  placeholder="email@gmail.com"
+                  className={`${css.input} ${meta.error && (meta.touched || submitCount > 0) ? css.inputError : ""}`}
+                />
+              )}
+            </Field>
               <ErrorMessage name="email" component="p" className={css.error} />
-            
           </div>
 
-          <div className={css.formGroup}>
-            <label htmlFor="password" className={css.label}>Create a strong password</label>
-            <PasswordField name="password" />
-            
+          <div
+            className={`${css.formGroup} ${(touched.password || submitCount > 0) && errors.password ? css.formGroupError : ""}`}
+          >
+            <label htmlFor="password" className={css.label}>Enter your password</label>
+            <PasswordField name="password" id="password" />
               <ErrorMessage name="password" component="p" className={css.error} />
-           
           </div>
 
           <button type="submit" className={css.button} disabled={isSubmitting}>
