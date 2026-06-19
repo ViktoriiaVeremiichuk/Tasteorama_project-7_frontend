@@ -61,17 +61,17 @@ export default function SignInForm () {
           <div className={css.formGroup}>
             <label htmlFor="email" className={css.label}>Enter your email address</label>
             <Field id="email" name="email" type="email" placeholder="email@gmail.com" className={css.input} />
-            <span className={css.errorSlot}>
+            
               <ErrorMessage name="email" component="p" className={css.error} />
-            </span>
+            
           </div>
 
           <div className={css.formGroup}>
             <label htmlFor="password" className={css.label}>Create a strong password</label>
             <PasswordField name="password" />
-            <span className={css.errorSlot}>
+            
               <ErrorMessage name="password" component="p" className={css.error} />
-            </span>
+           
           </div>
 
           <button type="submit" className={css.button} disabled={isSubmitting}>
