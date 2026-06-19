@@ -27,7 +27,7 @@ const validationSchema = Yup.object({
     .matches(/^\S+$/, "Password must not contain spaces")
     .required("Password is required"),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")])
+    .oneOf([Yup.ref("password")],"Passwords must match")
     .required(),
 });
 
