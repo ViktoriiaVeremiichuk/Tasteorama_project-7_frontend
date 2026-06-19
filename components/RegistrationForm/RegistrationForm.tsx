@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import * as Yup from "yup";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
@@ -69,39 +69,58 @@ export default function SignUpForm() {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, errors, touched, submitCount }) => (
         <Form className={css.form}>
           <h1 className={css.title}>Register</h1>
           <p className={css.description}>Join our community of culinary enthusiasts, save your favorite recipes, and share your cooking creations</p>
 
           <div className={css.fields}>
-            <div className={css.formGroup}>
-              <label className={css.label}>Enter your name</label>
-              <Field id="name" name="name" className={css.input} />
-              
+            <div
+              className={`${css.formGroup} ${(touched.name || submitCount > 0) && errors.name ? css.formGroupError : ""}`}
+            >
+              <label htmlFor="name" className={css.label}>Enter your name</label>
+              <Field name="name">
+                {({ field, meta }: FieldProps) => (
+                  <input
+                    {...field}
+                    id="name"
+                    className={`${css.input} ${meta.error && (meta.touched || submitCount > 0) ? css.inputError : ""}`}
+                  />
+                )}
+              </Field>
                 <ErrorMessage name="name" component="p" className={css.error} />
-              
             </div>
 
-            <div className={css.formGroup}>
-              <label className={css.label}>Enter your email address</label>
-              <Field id="email" name="email" type="email" className={css.input} />
-             
+            <div
+              className={`${css.formGroup} ${(touched.email || submitCount > 0) && errors.email ? css.formGroupError : ""}`}
+            >
+              <label htmlFor="email" className={css.label}>Enter your email address</label>
+              <Field name="email">
+                {({ field, meta }: FieldProps) => (
+                  <input
+                    {...field}
+                    id="email"
+                    type="email"
+                    className={`${css.input} ${meta.error && (meta.touched || submitCount > 0) ? css.inputError : ""}`}
+                  />
+                )}
+              </Field>
                 <ErrorMessage name="email" component="p" className={css.error} />
-              
             </div>
 
-            <div className={css.formGroup}>
-              <label className={css.label}>Create a strong password</label>
-              <PasswordField name="password" />
-   
+            <div
+              className={`${css.formGroup} ${(touched.password || submitCount > 0) && errors.password ? css.formGroupError : ""}`}
+            >
+              <label htmlFor="password" className={css.label}>Create a strong password</label>
+              <PasswordField name="password" id="password" />
                 <ErrorMessage name="password" component="p" className={css.error} />
-   
             </div>
 
-            <div className={css.formGroup}>
-              <label className={css.label}>Repeat your password</label>
-              <PasswordField name="confirmPassword" />
+            <div
+              className={`${css.formGroup} ${(touched.confirmPassword || submitCount > 0) && errors.confirmPassword ? css.formGroupError : ""}`}
+            >
+              <label htmlFor="confirmPassword" className={css.label}>Repeat your password</label>
+              <PasswordField name="confirmPassword" id="confirmPassword" />
                 <ErrorMessage name="confirmPassword" component="p" className={css.error} />
             </div>
           
