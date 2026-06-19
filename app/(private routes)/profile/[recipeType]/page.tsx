@@ -6,8 +6,7 @@ import RecipesList from "@/components/RecipesList/RecipesList";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
 import { getFavoriteRecipes, getOwnRecipes } from "@/lib/api/recipes";
 import type { Recipe } from "@/types/recipe";
-import mainCss from "../../../page.module.css";
-import css from "./ProfilePage.module.css";
+import css from "../../../page.module.css";
 
 const LIMIT = 12;
 
@@ -40,7 +39,7 @@ export default function ProfilePage() {
             ? await getFavoriteRecipes(page, LIMIT)
             : await getOwnRecipes(page, LIMIT);
 
-        const response = Array.isArray(result) ? null : result;
+        const resultMeta: RecipesResponse = Array.isArray(result) ? {} : result;
         const newRecipes = Array.isArray(result)
           ? result
           : (result.recipes ?? []);
@@ -48,8 +47,8 @@ export default function ProfilePage() {
         setRecipes((prev) =>
           page === 1 ? newRecipes : [...prev, ...newRecipes],
         );
-        setTotal(response?.total ?? response?.totalItems ?? newRecipes.length);
-        setHasMore(response ? page < (response.totalPages ?? 1) : false);
+        setTotal(resultMeta.total ?? resultMeta.totalItems ?? newRecipes.length);
+        setHasMore(page < (resultMeta.totalPages ?? 1));
       } catch {
         setError("Something went wrong. Please try again.");
       } finally {
@@ -61,19 +60,19 @@ export default function ProfilePage() {
   }, [recipeType, page]);
 
   return (
-    <main className={`${mainCss.mainContainer} ${css.wrapper}`}>
-      <h1 className={css.title}>My profile</h1>
+    <main className={`${css.mainContainer} ${css.profileWrapper}`}>
+      <h1 className={css.profileTitle}>My profile</h1>
 
-      <p className={css.count}>{total} recipes</p>
+      <p className={css.profileCount}>{total} recipes</p>
 
-      {error && <p className={css.error}>{error}</p>}
+      {error && <p className={css.profileError}>{error}</p>}
 
       {!error && isLoading && recipes.length === 0 && (
-        <p className={css.loading}>Loading...</p>
+        <p className={css.profileLoading}>Loading...</p>
       )}
 
       {!error && !isLoading && recipes.length === 0 && (
-        <p className={css.empty}>Recipes not found</p>
+        <p className={css.profileEmpty}>Recipes not found</p>
       )}
 
       {!error && recipes.length > 0 && <RecipesList recipes={recipes} />}
@@ -86,7 +85,7 @@ export default function ProfilePage() {
       )}
 
       {!error && isLoading && recipes.length > 0 && (
-        <p className={css.loading}>Loading...</p>
+        <p className={css.profileLoading}>Loading...</p>
       )}
     </main>
   );

@@ -25,3 +25,32 @@
     padding: 16px 108px 48px 108px;
   }
 }
+
+.profileWrapper {
+  padding-top: 48px;
+  padding-bottom: 80px;
+}
+
+.profileTitle {
+  margin: 0 0 24px;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.profileCount {
+  margin: 24px 0 32px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.profileEmpty,
+.profileLoading,
+.profileError {
+  margin-top: 32px;
+  font-size: 18px;
+}
+
+.profileError {
+  color: #d93025;
+}
