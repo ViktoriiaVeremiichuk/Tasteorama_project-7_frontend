@@ -42,6 +42,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 0.2s;
+  gap: 16px;
+}
+
+.active {
+  transition: all 0.2s ease;
+}
+
+.link:hover,
+.link:focus {
+  transform: scale(0.98);
+  opacity: 0.7;
 }
 
 @media (min-width: 768px) {

@@ -1,0 +1,99 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+.modal {
+  background-color: #faf3e0;
+  border-radius: 32px;
+  padding: 56px 24px 32px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: fit-content;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 32px;
+  text-align: center;
+}
+
+.text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.logoutButton,
+.cancelButton {
+  font-weight: 600;
+  font-size: 18px;
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 314px;
+}
+
+.logoutButton {
+  background-color: #c80000;
+  color: #ffffff;
+  border: none;
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    padding: 56px 32px 32px;
+    position: relative;
+  }
+
+  .closeButton {
+    right: 32px;
+  }
+
+  .actions {
+    flex-direction: row-reverse;
+    gap: 27px;
+  }
+
+  .logoutButton,
+  .cancelButton {
+    font-size: 16px;
+    padding: 12px;
+    width: 164px;
+  }
+}

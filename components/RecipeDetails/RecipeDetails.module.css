@@ -58,21 +58,6 @@
   font-weight: 600;
 }
 
-.saveButton {
-  width: 100%;
-  padding: 16px;
-  background-color: #9b6c43;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .recipeWrapper {
   display: flex;
   flex-direction: column;
@@ -101,15 +86,10 @@
 }
 
 .ingredient::before {
-  content: " ";
+  content: ".";
   position: absolute;
-  background-color: #000;
-  display: inline-block;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
   left: 5px;
-  top: 10px;
+  top: -4px;
 }
 
 .instructionsTitle {
@@ -162,12 +142,6 @@
     flex: 1;
   }
 
-  .saveButton {
-    width: 249px;
-    height: 56px;
-    flex-shrink: 0;
-  }
-
   .ingredientsList {
     gap: 8px;
   }
@@ -211,15 +185,6 @@
     width: 393px;
     flex-shrink: 0;
     align-self: flex-start;
-  }
-
-  .saveButton {
-    width: 100%;
-    display: flex;
-  }
-
-  .ingredient::before {
-    left: 3px;
   }
 
   .instructions {

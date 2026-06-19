@@ -16,12 +16,12 @@ export default function RecipeDetails({ recipe }: Props) {
         {recipe.thumb ? (
           <div className={styles.imageContainer}>
             <Image
-              key={recipe.thumb}
               src={recipe.thumb}
               alt={recipe.title}
               width={704}
               height={704}
               className={styles.image}
+              priority
               unoptimized
             />
           </div>
@@ -47,10 +47,7 @@ export default function RecipeDetails({ recipe }: Props) {
                 {recipe.calories || "-"}
               </p>
             </div>
-            <SaveRecipeButton
-              className={styles.saveButton}
-              recipeId={recipe._id}
-            />
+            <SaveRecipeButton recipeId={recipe._id} />
           </div>
           <div className={styles.recipeWrapper}>
             <div className={styles.aboutRecipeBlock}>

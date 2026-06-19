@@ -16,6 +16,13 @@ export default function NotFoundRecipe() {
         <h1 className={styles.title}>404</h1>
         <p className={styles.p}>Recipe not found</p>
         <Link href="/" className={styles.link}>
+          <Image
+            src="/arrow.svg"
+            className={styles.icon}
+            alt="arrow"
+            width={24}
+            height={24}
+          />
           Back to Home
         </Link>
       </div>
