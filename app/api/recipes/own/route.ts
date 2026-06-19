@@ -9,9 +9,10 @@ export async function GET(request: NextRequest) {
     const cookieStore = await cookies();
 
     const page = request.nextUrl.searchParams.get("page") ?? "1";
+    const perPage = request.nextUrl.searchParams.get("perPage") ?? "12";
 
     const res = await api("/api/recipes/own", {
-      params: { page },
+      params: { page, perPage },
       headers: {
         Cookie: cookieStore.toString(),
       },

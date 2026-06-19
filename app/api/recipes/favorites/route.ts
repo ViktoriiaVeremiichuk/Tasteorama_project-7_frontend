@@ -1,18 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { api } from "../../api";
 import { cookies } from "next/headers";
 import { isAxiosError } from "axios";
 import { logErrorResponse } from "../../_utils/utils";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies();
 
-    const page = Number(request.nextUrl.searchParams.get("page") ?? 1);
-    const limit = Number(request.nextUrl.searchParams.get("limit") ?? 12);
-
-    const res = await api("/api/recipes/favorite", {
-      params: { page, limit },
+    const res = await api("/api/recipes/favorites", {
       headers: {
         Cookie: cookieStore.toString(),
       },
