@@ -1,34 +1,14 @@
-li,
-p {
-  margin: 0;
-  padding: 0;
-}
-
-ul,
-ol {
-  list-style: none;
-  padding-left: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
+html,
 body {
-  font-family: var(--font-family), sans-serif;
+  height: 100%;
 }
 
-p {
-  line-height: 1.55;
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.pageWrapper main {
+  flex: 1;
 }
