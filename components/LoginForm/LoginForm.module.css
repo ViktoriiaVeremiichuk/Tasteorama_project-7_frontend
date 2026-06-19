@@ -59,6 +59,15 @@
   color: #000;
 }
 
+.error {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #c00;
+}
+
 .input {
   line-height: 1.55;
   outline: none;
@@ -156,6 +165,10 @@
 
   .label {
     font-size: 15px;
+  }
+
+  .error {
+    font-size: 13px;
   }
 
   .input {
