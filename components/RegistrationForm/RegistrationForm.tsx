@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
@@ -12,19 +12,12 @@ import css from './RegistrationForm.module.css'
 import PasswordField from "./PasswordField";
 
 const validationSchema = Yup.object({
-  name: Yup.string()
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must be at most 50 characters")
-    .required("Name is required"),
-  email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Minimum 8 characters")
-    .required("Password is required"),
+  name: Yup.string().min(2).max(50).required(),
+  email: Yup.string().email().required(),
+  password: Yup.string().min(8).required(),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Password confirmation is required"),
+    .oneOf([Yup.ref("password")])
+    .required(),
 });
 
 const initialValues = {
@@ -72,27 +65,23 @@ export default function SignUpForm() {
 
           <div className={css.fields}>
             <div className={css.formGroup}>
-              <label htmlFor="name" className={css.label}>Enter your name</label>
+              <label className={css.label}>Enter your name</label>
               <Field id="name" name="name" className={css.input} />
-              <ErrorMessage name="name" component="p" className={css.error} />
             </div>
 
             <div className={css.formGroup}>
-              <label htmlFor="email" className={css.label}>Enter your email address</label>
+              <label className={css.label}>Enter your email address</label>
               <Field id="email" name="email" type="email" className={css.input} />
-              <ErrorMessage name="email" component="p" className={css.error} />
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Create a strong password</label>
               <PasswordField name="password" />
-              <ErrorMessage name="password" component="p" className={css.error} />
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Repeat your password</label>
               <PasswordField name="confirmPassword" />
-              <ErrorMessage name="confirmPassword" component="p" className={css.error} />
             </div>
           
             <button type="submit" className={css.button} disabled={isSubmitting}>
