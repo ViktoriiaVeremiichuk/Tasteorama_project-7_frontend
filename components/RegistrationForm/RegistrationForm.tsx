@@ -26,9 +26,6 @@ const validationSchema = Yup.object({
     .max(128, "Password must be at most 128 characters")
     .matches(/^\S+$/, "Password must not contain spaces")
     .required("Password is required"),
-  name: Yup.string().min(2).max(50).required(),
-  email: Yup.string().email().required(),
-  password: Yup.string().min(8).required(),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")])
     .required(),
