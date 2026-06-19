@@ -13,14 +13,18 @@ import PasswordField from "./PasswordField";
 
 const validationSchema = Yup.object({
   name: Yup.string()
+    .trim()
     .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must be at most 50 characters")
+    .max(16, "Name must be at most 16 characters")
     .required("Name is required"),
   email: Yup.string()
+    .trim()
     .email("Invalid email format")
     .required("Email is required"),
   password: Yup.string()
     .min(8, "Minimum 8 characters")
+    .max(128, "Password must be at most 128 characters")
+    .matches(/^\S+$/, "Password must not contain spaces")
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords do not match")
