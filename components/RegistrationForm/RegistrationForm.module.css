@@ -51,7 +51,6 @@
   gap: 16px;
   width: 100%;
   max-width: 420px;
-  /* min-height: 646px; */
   background-color: #faf3e0;
   border-radius: 16px;
 }
@@ -61,10 +60,11 @@
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  position: relative;
+  position:relative;
   padding-bottom: 16px;
   margin-bottom: -16px;
 }
+
 
 .label {
   font-family: "Montserrat", sans-serif;
@@ -72,6 +72,12 @@
   font-size: 12px;
   color: #000;
 }
+
+.errorSlot {
+  display: block;
+  min-height: calc(12px * 1.4);
+}
+
 
 .input {
   outline: none;
@@ -94,13 +100,21 @@
   width: 100%;
 }
 
+.input {
+  line-height: 1.55;
+  outline: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 8px;
+  height: 41px;
+}
+
 .fields {
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 100%;
   max-width: 356px;
-  min-height: 351px;
   margin: 0 auto;
 }
 
@@ -194,6 +208,14 @@
 
   .label {
     font-size: 15px;
+  }
+
+  .errorSlot {
+    min-height: calc(13px * 1.4);
+  }
+
+  .error {
+    font-size: 13px;
   }
 
   .input {

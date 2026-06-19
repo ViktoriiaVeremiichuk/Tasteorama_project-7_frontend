@@ -1,7 +1,7 @@
 "use client";
 import PasswordField from "../RegistrationForm/PasswordField";
 import { useRouter } from "next/navigation";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import Link from "next/link";
 import * as Yup from "yup";
 import { isAxiosError } from "axios";
@@ -11,12 +11,12 @@ import { useAuthStore } from "@/lib/store/authStore";
 import css from "./LoginForm.module.css"
 
 const validationSchema = Yup.object({
-    email: Yup.string()
-    .email('invalid email format')
-    .required('Email is required'),
-    password: Yup.string()
-    .min(8, "Minimum 8 character")
-    .required('Password is required')
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(8, "Minimum 8 characters")
+    .required("Password is required"),
 });
 
 const inicialValue = {
@@ -61,11 +61,17 @@ export default function SignInForm () {
           <div className={css.formGroup}>
             <label htmlFor="email" className={css.label}>Enter your email address</label>
             <Field id="email" name="email" type="email" placeholder="email@gmail.com" className={css.input} />
+            <span className={css.errorSlot}>
+              <ErrorMessage name="email" component="p" className={css.error} />
+            </span>
           </div>
 
           <div className={css.formGroup}>
             <label htmlFor="password" className={css.label}>Create a strong password</label>
-            <PasswordField  name="password"/>
+            <PasswordField name="password" />
+            <span className={css.errorSlot}>
+              <ErrorMessage name="password" component="p" className={css.error} />
+            </span>
           </div>
 
           <button type="submit" className={css.button} disabled={isSubmitting}>

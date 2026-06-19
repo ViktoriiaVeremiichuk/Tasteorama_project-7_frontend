@@ -50,6 +50,9 @@
   flex-direction: column;
   gap: 4px;
   width: 100%;
+  position:relative;
+  padding-bottom: 16px;
+  margin-bottom: -16px;
 }
 
 .label {
@@ -57,6 +60,24 @@
   font-weight: 400;
   font-size: 12px;
   color: #000;
+}
+
+.errorSlot {
+  display: block;
+  min-height: calc(12px * 1.4);
+}
+
+.error {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #c00;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .input {
@@ -156,6 +177,14 @@
 
   .label {
     font-size: 15px;
+  }
+
+  .errorSlot {
+    min-height: calc(13px * 1.4);
+  }
+
+  .error {
+    font-size: 13px;
   }
 
   .input {

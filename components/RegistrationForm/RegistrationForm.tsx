@@ -12,6 +12,20 @@ import css from './RegistrationForm.module.css'
 import PasswordField from "./PasswordField";
 
 const validationSchema = Yup.object({
+  name: Yup.string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(16, "Name must be at most 16 characters")
+    .required("Name is required"),
+  email: Yup.string()
+    .trim()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(8, "Minimum 8 characters")
+    .max(128, "Password must be at most 128 characters")
+    .matches(/^\S+$/, "Password must not contain spaces")
+    .required("Password is required"),
   name: Yup.string().min(2).max(50).required(),
   email: Yup.string().email().required(),
   password: Yup.string().min(8).required(),
@@ -67,21 +81,33 @@ export default function SignUpForm() {
             <div className={css.formGroup}>
               <label className={css.label}>Enter your name</label>
               <Field id="name" name="name" className={css.input} />
+              <span className={css.errorSlot}>
+                <ErrorMessage name="name" component="p" className={css.error} />
+              </span>
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Enter your email address</label>
               <Field id="email" name="email" type="email" className={css.input} />
+              <span className={css.errorSlot}>
+                <ErrorMessage name="email" component="p" className={css.error} />
+              </span>
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Create a strong password</label>
               <PasswordField name="password" />
+              <span className={css.errorSlot}>
+                <ErrorMessage name="password" component="p" className={css.error} />
+              </span>
             </div>
 
             <div className={css.formGroup}>
               <label className={css.label}>Repeat your password</label>
               <PasswordField name="confirmPassword" />
+              <span className={css.errorSlot}>
+                <ErrorMessage name="confirmPassword" component="p" className={css.error} />
+              </span>
             </div>
           
             <button type="submit" className={css.button} disabled={isSubmitting}>
