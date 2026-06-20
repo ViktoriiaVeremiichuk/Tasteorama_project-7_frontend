@@ -182,6 +182,33 @@ export default function AddRecipeForm() {
             {({ isSubmitting }) => (
                 <Form className={styles.form}>
                     <div className={styles.topSection}>
+                         {/* Right Column */}
+                        <div className={styles.rightColumn}>
+                            <h2 className={styles.sectionTitle}>
+                                Upload Photo
+                            </h2>
+
+                            <label className={styles.uploadBox}>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className={styles.hiddenInput}
+                                    onChange={handleImageChange}
+                                />
+
+                                {preview ? (
+                                    <img
+                                        src={preview}
+                                        alt="Recipe preview"
+                                        className={styles.previewImage}
+                                    />
+                                ) : (
+                                    <div className={styles.cameraIcon}>
+                            <img src="/photo.svg" alt="Camera Icon" />
+                                    </div>
+                                )}
+                            </label>
+                        </div>
                         <div className={styles.leftColumn}>
                             <h2 className={styles.sectionTitle}>
                                 General Information
@@ -297,34 +324,6 @@ export default function AddRecipeForm() {
                                 </div>
                             </div>
                         </div>
-
-                        {/* Right Column */}
-                        <div className={styles.rightColumn}>
-                            <h2 className={styles.sectionTitle}>
-                                Upload Photo
-                            </h2>
-
-                            <label className={styles.uploadBox}>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className={styles.hiddenInput}
-                                    onChange={handleImageChange}
-                                />
-
-                                {preview ? (
-                                    <img
-                                        src={preview}
-                                        alt="Recipe preview"
-                                        className={styles.previewImage}
-                                    />
-                                ) : (
-                                    <div className={styles.cameraIcon}>
-                                        📷
-                                    </div>
-                                )}
-                            </label>
-                        </div>
                     </div>
 
                     {/* Ingredients */}
@@ -412,7 +411,7 @@ export default function AddRecipeForm() {
                                             handleRemoveIngredient(ingredient.id)
                                         }
                                     >
-                                        ✕
+                                       <img src="/delete.svg" alt="✕" />
                                     </button>
                                 </div>
                             ))}
@@ -443,7 +442,7 @@ export default function AddRecipeForm() {
                     <button
                         type="submit"
                         className={styles.submitButton}
-                        disabled={setSubmitting}
+                        disabled={isSubmitting}
                     >
                         {isSubmitting
                             ? "Publishing..."

@@ -1,188 +1,179 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 48px;
-    margin-top: 40px;
+    gap: 40px;
+    margin: 0 16px;
 }
 
 .topSection {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr;
     gap: 32px;
     align-items: start;
 }
 
-.generalInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.photoSection {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
+/* .leftColumn,
+.rightColumn {
+    /* width: 100%;
+} */ 
 
 .sectionTitle {
-    font-size: 20px;
+    margin-bottom: 16px;
+
     font-weight: 600;
-    color: #050505;
+    font-size: 24px;
+    color: #000;
 }
 
 .fieldGroup {
     display: flex;
+    font-size: 18px;
     flex-direction: column;
     gap: 8px;
+    width: 100%;
 }
 
-.label {
+.fieldGroup label {
     font-size: 14px;
-    font-weight: 500;
-    color: #050505;
+    color: #000;
 }
 
-.input,
-.select,
-.textarea {
-    width: 100%;
-    border: 1px solid #d9d9d9;
-    border-radius: 12px;
-    padding: 14px 16px;
+.fieldGroup input,
+.fieldGroup textarea,
+.fieldGroup select,
+.instructionsTextarea {
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    padding: 12px;
+
     font-size: 16px;
-    background-color: #ffffff;
-    outline: none;
-}
+    font-family: inherit;
 
-.input:focus,
-.select:focus,
-.textarea:focus {
-    border-color: #9b6c43;
-}
-
-.textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.photoBox {
     width: 100%;
-    aspect-ratio: 1;
-    border: 2px dashed #d9d9d9;
-    border-radius: 16px;
+}
 
+.fieldGroup textarea,
+.instructionsTextarea {
+    resize: vertical;
+}
+
+.row {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.error {
+    color: #c80000;
+    font-size: 12px;
+}
+
+/* PHOTO */
+
+.uploadBox {
+    display: flex;
     justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 383px;
+
+    background-color: #9f9f9f;
+    border-radius: 16px;
 
     overflow: hidden;
     cursor: pointer;
-}
-
-.photoPreview {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.previewImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
 }
 
 .hiddenInput {
     display: none;
 }
 
-.photoPlaceholder {
-    color: #777777;
-    font-size: 14px;
+.cameraIcon {
+    font-size: 52px;
 }
 
-.uploadBox {
+.previewImage {
     width: 100%;
-    height: 320px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 2px dashed #d9d9d9;
-    border-radius: 16px;
-
-    cursor: pointer;
-    overflow: hidden;
+    height: 100%;
+    object-fit: cover;
 }
+
+/* INGREDIENTS */
 
 .ingredientsSection {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-}
-
-.ingredientControls {
-    display: grid;
-    grid-template-columns: 2fr 1fr auto;
     gap: 16px;
 }
 
-.addIngredientBtn {
-    border: none;
-    border-radius: 12px;
-    padding: 14px 20px;
+.ingredientsControls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
-    background-color: #9b6c43;
-    color: white;
+.addButton {
+    border: none;
+    border-radius: 8px;
+
+    height: 40px;
+
+    background: #9b6c43;
+    color: #fff;
 
     font-weight: 600;
     cursor: pointer;
-
-    transition: opacity 0.2s;
 }
 
-.addIngredientBtn:hover {
-    opacity: 0.9;
+.addButton:hover
+.addButton:focus {
+    background: #6d554b;
+}
+
+.addButton:active {
+    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+    background: #9b6c43;
+}
+
+.addButton:disabled {
+    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+    background: #9b6c43;
+    opacity: 0.3;
 }
 
 .ingredientsList {
     display: flex;
     flex-direction: column;
+    gap: 8px;
+}
+
+.ingredientsHeader,
+.ingredientItem {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
     gap: 12px;
+    align-items: center;
+}
+
+.ingredientsHeader {
+    font-weight: 600;
 }
 
 .ingredientItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 14px 16px;
-
+    padding-bottom: 8px;
     border-bottom: 1px solid #e5e5e5;
-    border-radius: 12px;
 }
 
 .ingredientItem button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.ingredientInfo {
-    display: flex;
-    gap: 16px;
-}
-
-.removeBtn {
     border: none;
     background: transparent;
-
-    color: #d33;
-    font-weight: 600;
-
     cursor: pointer;
+    font-size: 24px;
 }
+
+/* INSTRUCTIONS */
 
 .instructionsSection {
     display: flex;
@@ -190,61 +181,102 @@
     gap: 16px;
 }
 
-.submitWrapper {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.submitBtn {
+.submitButton {
     border: none;
-    border-radius: 14px;
+    border-radius: 8px;
+    margin-bottom: 48px;
 
-    padding: 16px 32px;
+    height: 48px;
 
-    background-color: #9b6c43;
-    color: white;
+    background: #9b6c43;
+    color: #fff;
 
     font-size: 16px;
     font-weight: 600;
 
     cursor: pointer;
 
-    transition: opacity 0.2s;
+    transition: 0.2s;
 }
 
-.submitBtn:hover {
-    opacity: 0.9;
+.submitButton:hover .submitButton:focus {
+    background: #6d554b;
 }
 
-.submitBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.submitButton:active {
+    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+    background: #9b6c43;
 }
 
-@media (max-width: 1024px) {
-    .topSection {
-        grid-template-columns: 1fr;
+.submitButton:disabled {
+    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+    background: #9b6c43;
+    opacity: 0.3;
+}
+
+
+@media (min-width: 768px) {
+    .row {
+        flex-direction: row;
     }
 
-    .photoSection {
-        max-width: 400px;
+    .row .fieldGroup {
+        flex: 1;
     }
+
+    .ingredientsControls {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+    }
+
+    .addButton {
+        grid-column: 2;
+    }
+
+    .ingredientsHeader,
+    .ingredientItem {
+        display: grid;
+        grid-template-columns: 160px 120px 40px;
+        align-items: center;
+        gap: 16px;
+    }
+
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1440px) {
     .form {
-        gap: 32px;
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        column-gap: 32px;
+        row-gap: 40px;
     }
 
-    .ingredientControls {
-        grid-template-columns: 1fr;
+    .topSection {
+        display: contents;
     }
 
-    .submitWrapper {
-        justify-content: stretch;
+    .leftColumn {
+        grid-column: 1;
+        grid-row: 1;
     }
 
-    .submitBtn {
-        width: 100%;
+    .rightColumn {
+        grid-column: 2;
+        grid-row: 1 / 4;
+    }
+
+    .ingredientsSection {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .instructionsSection {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .submitButton {
+        grid-column: 1 / 2;
     }
 }
