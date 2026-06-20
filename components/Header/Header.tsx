@@ -45,7 +45,7 @@ export default function Header(){
                 </>
             ):(
                 <>
-                   <Link href="/addRecipe" className={styles.primary}>Add Recips</Link>
+                   <Link href="/addRecipe" className={styles.primary}>Add Recipe</Link>
                    <div className={styles.userSection}>
                     <div className={styles.user}>
                     
@@ -102,7 +102,7 @@ export default function Header(){
                     </div>
                     <Link href="/logout" className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={24} height={28}/></Link>
                    </div>
-                   <Link href="/addRecipe" className={styles.primary}>Add Recips</Link>
+                   <Link href="/addRecipe" className={styles.primary}>Add Recipe</Link>
             </>
           )}
         </div>
