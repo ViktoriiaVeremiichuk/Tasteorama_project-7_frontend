@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Filters from "@/components/Filters/Filters";
 import RecipesList from "@/components/RecipesList/RecipesList";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
 import { getFavoriteRecipes, getOwnRecipes } from "@/lib/api/recipes";
@@ -38,12 +39,17 @@ export default function ProfilePageContent({
             : await getOwnRecipes(page, LIMIT);
 
         const newRecipes = result.recipes;
+        const totalCount = result.total ?? result.totalItems ?? newRecipes.length;
 
-        setRecipes((prev) =>
-          page === 1 ? newRecipes : [...prev, ...newRecipes],
-        );
-        setTotal(result.total ?? result.totalItems ?? newRecipes.length);
-        setHasMore(page < (result.totalPages ?? 1));
+        setRecipes((prev) => {
+          const updatedRecipes =
+            page === 1 ? newRecipes : [...prev, ...newRecipes];
+
+          setTotal(totalCount);
+          setHasMore(updatedRecipes.length < totalCount);
+
+          return updatedRecipes;
+        });
       } catch {
         setError("Failed to load recipes.");
       } finally {
@@ -62,6 +68,10 @@ export default function ProfilePageContent({
     <>
       <p className={css.count}>{total} recipes</p>
 
+      <div className={css.filters}>
+        <Filters />
+      </div>
+
       {error && <p className={css.error}>{error}</p>}
 
       {!error && isLoading && recipes.length === 0 && (
@@ -75,7 +85,9 @@ export default function ProfilePageContent({
       {!error && recipes.length > 0 && <RecipesList recipes={recipes} />}
 
       {hasMore && !isLoading && (
-        <LoadMoreBtn onClick={handleLoadMoreClick} isLoading={isLoading} />
+        <div className={css.loadMore}>
+          <LoadMoreBtn onClick={handleLoadMoreClick} isLoading={isLoading} />
+        </div>
       )}
 
       {!error && isLoading && recipes.length > 0 && (

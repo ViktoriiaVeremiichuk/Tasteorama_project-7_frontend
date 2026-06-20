@@ -20,10 +20,19 @@
 .error {
   margin-top: 32px;
   font-size: 18px;
+  font-weight: 600;
 }
 
 .error {
   color: #d93025;
+}
+
+.filters {
+  margin-bottom: 32px;
+}
+
+.loadMore {
+  margin-top: 32px;
 }
 
 @media screen and (min-width: 768px) {
