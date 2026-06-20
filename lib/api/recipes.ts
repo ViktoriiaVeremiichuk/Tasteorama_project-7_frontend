@@ -9,6 +9,15 @@ export const getRecipes = async (
   const res = await api.get("/api/recipes", {
     params: { page, limit },
   });
+
+  if (!Array.isArray(res.data?.recipes)) {
+    throw new Error(
+      typeof res.data?.error === "string" && res.data.error
+        ? res.data.error
+        : "Failed to load recipes",
+    );
+  }
+
   return res.data;
 };
 
