@@ -64,6 +64,13 @@ export default function ProfilePageContent({
     setPage((prevPage) => prevPage + 1);
   };
 
+  const handleFavoriteRemoved = (recipeId: string) => {
+    setRecipes((prev) => prev.filter((recipe) => recipe._id !== recipeId));
+    setTotal((prev) => Math.max(0, prev - 1));
+  };
+
+  const showFavorite = recipeType === "favorites";
+
   return (
     <>
       <p className={css.count}>{total} recipes</p>
@@ -82,7 +89,15 @@ export default function ProfilePageContent({
         <p className={css.empty}>{emptyMessage}</p>
       )}
 
-      {!error && recipes.length > 0 && <RecipesList recipes={recipes} />}
+      {!error && recipes.length > 0 && (
+        <RecipesList
+          recipes={recipes}
+          showFavorite={showFavorite}
+          onFavoriteRemoved={
+            showFavorite ? handleFavoriteRemoved : undefined
+          }
+        />
+      )}
 
       {hasMore && !isLoading && (
         <div className={css.loadMore}>

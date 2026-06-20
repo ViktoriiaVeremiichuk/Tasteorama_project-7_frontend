@@ -19,4 +19,6 @@ export type RecipeType = "own" | "favorites";
 
 export interface RecipesListProps {
   recipes: Recipe[];
+  showFavorite?: boolean;
+  onFavoriteRemoved?: (recipeId: string) => void;
 }
