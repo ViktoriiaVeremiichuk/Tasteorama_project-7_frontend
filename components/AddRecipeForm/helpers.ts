@@ -1,10 +1,14 @@
 import type { AddRecipeFormValues } from "@/lib/types";
 import { IngredientItem } from "./AddRecipeForm";
 
-type RecipeFormFields = Pick<
-  AddRecipeFormValues,
-  "title" | "description" | "time" | "calories" | "category" | "instructions"
->;
+type RecipeFormFields = {
+  title: string;
+  description: string;
+  time: string | number;
+  calories: string | number;
+  category: string;
+  instructions: string;
+};
 
 export const buildRecipeFormData = (
   values: RecipeFormFields,
