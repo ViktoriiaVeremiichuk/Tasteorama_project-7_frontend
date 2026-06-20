@@ -45,7 +45,7 @@ export default function Footer() {
           </Link>
 
           <Link
-            href="/profile"
+            href="/profile/own"
             className={styles.link}
             onClick={handleAccountClick}
           >
