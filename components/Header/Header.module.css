@@ -50,6 +50,20 @@
     color: white;
   }
 
+.navLink:hover,
+.navLink:focus {
+  opacity: 0.5;
+  outline: none;
+}
+
+.navLink:active {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+
   .activeLink::after{
     content: "";
     position: absolute;
@@ -222,7 +236,7 @@
 /*--------Desktop (1440px)---------*/
   @media (min-width: 1440px) {
     .header{
-        margin: 0 auto;
+        box-sizing: border-box;
         padding: 14px 108px;
     }
     .desktopNav{
