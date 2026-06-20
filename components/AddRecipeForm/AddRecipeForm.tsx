@@ -167,16 +167,17 @@ export default function AddRecipeForm() {
 
                     setTimeout(() => {
                         router.push(
-                            `/recipe/${recipe._id}`
+                            `/recipes/${recipe._id}`
                         );
                     }, 1500);
 
                 } catch (error) {
                     
-
-                    toast.error(
-                        "Failed to create recipe"
-                    );
+if (axios.isAxiosError(error) && error.response?.data?.message) {
+            toast.error(error.response.data.message);
+        } else {
+            toast.error("Failed to create recipe");
+        }
                 } finally {
                     setSubmitting(false);
                 }
