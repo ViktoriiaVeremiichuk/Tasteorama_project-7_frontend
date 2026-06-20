@@ -1,5 +1,4 @@
-import type { AddRecipeFormValues } from "@/lib/types";
-import { IngredientItem } from "./AddRecipeForm";
+import type { AddRecipeFormValues, IngredientItem } from "@/lib/types";
 
 type RecipeFormFields = {
   title: string;
