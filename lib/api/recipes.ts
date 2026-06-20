@@ -1,12 +1,33 @@
 import { api } from "./api";
 import type { BackendResponse } from "@/types/backendResponse";
 import { Recipe } from "@/types/recipe";
+import type { ProfileRecipesResponse } from "@/types/profileRecipesResponse";
 
 export const getRecipes = async (
   page: number,
   limit: number,
 ): Promise<BackendResponse> => {
   const res = await api.get(`/api/recipes/search?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getOwnRecipes = async (
+  page: number,
+  limit: number,
+): Promise<ProfileRecipesResponse> => {
+  const res = await api.get("/api/recipes/own", {
+    params: { page, perPage: limit },
+  });
+  return res.data;
+};
+
+export const getFavoriteRecipes = async (
+  page: number,
+  limit: number,
+): Promise<ProfileRecipesResponse> => {
+  const res = await api.get("/api/recipes/favorites", {
+    params: { page, limit },
+  });
   return res.data;
 };
 
