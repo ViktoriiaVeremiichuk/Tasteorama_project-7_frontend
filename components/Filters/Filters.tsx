@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Formik, Form, Field, FormikHelpers } from "formik";

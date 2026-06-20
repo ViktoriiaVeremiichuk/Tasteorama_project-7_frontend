@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import { Montserrat, DM_Sans } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
 import "./globals.css";
+import Footer from "../components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import AuthModalProvider from "@/components/AuthModalProvider/AuthModalProvider";
 
 const montserrat = Montserrat({
   variable: "--font-family",
@@ -28,13 +30,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
+  <html
+    lang="uk"
+    className={`${montserrat.variable} ${dmSans.variable}`}
+  >
+    <body>
       <TanStackProvider>
+<<<<<<< HEAD
         <body>
           {/* <Toaster position="top-right" /> */}
           {children}
         </body>
+=======
+        <Toaster position="top-right" />
+
+        <div className="pageWrapper">
+          <main>{children}</main>
+          <Footer />
+        </div>
+
+        <AuthModalProvider />
+>>>>>>> main
       </TanStackProvider>
-    </html>
-  );
+    </body>
+  </html>
+);
 }
