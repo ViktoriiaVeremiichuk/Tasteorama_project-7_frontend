@@ -5,7 +5,7 @@ import { useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import LogoutModal from "../Logout/LogoutModal/LogoutModal"
+//import LogoutModal from "../Logout/LogoutModal/LogoutModal"
 
 import {Inter} from "next/font/google";
 const inter = Inter({subsets: ["latin"]});
