@@ -2,30 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Loader } from "lucide-react";
+import { Loader, Trash2 } from "lucide-react";
 import { Recipe } from "@/types/recipe";
 import styles from "./RecipeCard.module.css";
 import { useFavoriteRecipe } from "@/hooks/useFavoriteRecipe";
+import { useDeleteOwnRecipe } from "@/hooks/useDeleteOwnRecipe";
 
 type RecipeCardProps = {
   recipe: Recipe;
   showFavorite?: boolean;
   onFavoriteRemoved?: () => void;
+  showDelete?: boolean;
+  onDeleted?: (id: string) => void;
 };
 
 const RecipeCard = ({
   recipe,
   showFavorite = true,
   onFavoriteRemoved,
+  showDelete = false,
+  onDeleted,
 }: RecipeCardProps) => {
   const { isFavorite, toggleFavorite, isPending } = useFavoriteRecipe(
     recipe._id,
     onFavoriteRemoved,
   );
+  const { deleteRecipe, isPending: isDeletePending } = useDeleteOwnRecipe(
+    recipe._id,
+    onDeleted,
+  );
   const displayCalories =
     recipe.calories === 0 || recipe.calories == null
       ? "-"
       : `~${recipe.calories}`;
+
+  const hasSecondaryAction = showFavorite || showDelete;
 
   return (
     <div
@@ -67,7 +78,7 @@ const RecipeCard = ({
         <Link
           href={`/recipes/${recipe._id}`}
           className={`${styles.learnMoreBtn} ${
-            showFavorite ? "" : styles.learnMoreFull
+            hasSecondaryAction ? "" : styles.learnMoreFull
           }`}
         >
           Learn more
@@ -75,6 +86,7 @@ const RecipeCard = ({
 
         {showFavorite ? (
           <button
+            type="button"
             onClick={toggleFavorite}
             disabled={isPending}
             className={`${styles.favBtn} ${
@@ -91,6 +103,22 @@ const RecipeCard = ({
                   strokeWidth="0.5"
                 />
               </svg>
+            )}
+          </button>
+        ) : null}
+
+        {showDelete ? (
+          <button
+            type="button"
+            onClick={deleteRecipe}
+            disabled={isDeletePending}
+            aria-label="Delete recipe"
+            className={styles.deleteBtn}
+          >
+            {isDeletePending ? (
+              <Loader className={styles.deleteLoaderIcon} />
+            ) : (
+              <Trash2 className={styles.deleteIcon} />
             )}
           </button>
         ) : null}
