@@ -1,11 +1,13 @@
-export type IngredientItem = {
-  id: string;
-  name: string;
-  measure: string;
-};
+import type { AddRecipeFormValues } from "@/lib/types";
+import { IngredientItem } from "./AddRecipeForm";
+
+type RecipeFormFields = Pick<
+  AddRecipeFormValues,
+  "title" | "description" | "time" | "calories" | "category" | "instructions"
+>;
 
 export const buildRecipeFormData = (
-  values: any,
+  values: RecipeFormFields,
   ingredients: IngredientItem[],
   file: File | null
 ) => {
@@ -13,12 +15,12 @@ export const buildRecipeFormData = (
 
   formData.append("title", values.title);
   formData.append("description", values.description);
-  formData.append("time", values.time);
+  formData.append("time", String(values.time));
   formData.append("category", values.category);
   formData.append("instructions", values.instructions);
 
   if (values.calories) {
-    formData.append("calories", values.calories);
+    formData.append("calories", String(values.calories));
   }
 
   formData.append(
