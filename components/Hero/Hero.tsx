@@ -2,7 +2,7 @@
 
 import { useSearchStore } from "@/app/store/searchStore";
 import SearchBox from "@/components/SearchBox/SearchBox";
-import {Filters} from "@/components/Filters/Filters";
+import Filters from "@/components/Filters/Filters";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
