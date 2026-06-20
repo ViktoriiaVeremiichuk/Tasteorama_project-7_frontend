@@ -441,7 +441,7 @@ export default function AddRecipeForm() {
                         />
                     </section>
 
-                    <button"
+                    <button
                         type="submit"
                         className={styles.submitButton}
                         disabled={isSubmitting}
