@@ -41,6 +41,11 @@ export const removeFavorite = async (id: string) => {
   return res.data;
 };
 
+export const deleteOwnRecipe = async (id: string) => {
+  const res = await api.delete(`/api/recipes/${id}`);
+  return res.data;
+};
+
 export const getRecipeById = async (recipeId: string): Promise<Recipe> => {
   const res = await api.get<{ data: Recipe }>(`/api/recipes/${recipeId}`);
   return res.data.data;
