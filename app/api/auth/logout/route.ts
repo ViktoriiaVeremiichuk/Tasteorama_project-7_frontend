@@ -3,6 +3,7 @@ import { api } from "../../api";
 import { cookies } from "next/headers";
 import { isAxiosError } from "axios";
 import { logErrorResponse } from "../../_utils/utils";
+import { clearSessionCookies } from "../../_utils/sessionCookies";
 
 export async function POST() {
   try {
@@ -14,9 +15,7 @@ export async function POST() {
       },
     });
 
-    cookieStore.delete("sessionId");
-    cookieStore.delete("accessToken");
-    cookieStore.delete("refreshToken");
+    clearSessionCookies(cookieStore);
 
     return NextResponse.json({ message: "Logged out" }, { status: 200 });
   } catch (error) {

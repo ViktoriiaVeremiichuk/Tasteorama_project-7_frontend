@@ -24,17 +24,14 @@ export default function MainPage() {
       setError(null);
       try {
         const result = await getRecipes(page, LIMIT);
+        const newRecipes = result.recipes;
+        const total = result.total;
 
         setRecipes((prev) => {
-          const updateRecipesAmount =
-            page === 1 ? result.recipes : [...prev, ...result.recipes];
-
-          if (updateRecipesAmount.length >= result.total) {
-            setHasMore(false);
-          } else {
-            setHasMore(true);
-          }
-          return updateRecipesAmount;
+          const updated =
+            page === 1 ? newRecipes : [...prev, ...newRecipes];
+          setHasMore(updated.length < total);
+          return updated;
         });
       } catch (err) {
         console.error(err);
