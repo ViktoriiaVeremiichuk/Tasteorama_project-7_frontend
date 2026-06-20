@@ -132,7 +132,9 @@ export default function AddRecipeForm() {
             ingredientsData
         );
         } catch (error) {
-        console.error(error);
+        toast.error(
+        "Failed to load categories and ingredients"
+    );
         }
     };
 
@@ -157,7 +159,7 @@ export default function AddRecipeForm() {
 
                     const recipe = await createRecipe(formData);
 
-                    console.log(recipe);
+                    
 
                     toast.success(
                         "Recipe created successfully!"
@@ -170,7 +172,7 @@ export default function AddRecipeForm() {
                     }, 1500);
 
                 } catch (error) {
-                    console.error(error);
+                    
 
                     toast.error(
                         "Failed to create recipe"
@@ -439,7 +441,7 @@ export default function AddRecipeForm() {
                         />
                     </section>
 
-                    <button
+                    <button"
                         type="submit"
                         className={styles.submitButton}
                         disabled={isSubmitting}

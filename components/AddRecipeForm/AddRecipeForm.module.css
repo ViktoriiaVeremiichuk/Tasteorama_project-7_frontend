@@ -12,11 +12,6 @@
     align-items: start;
 }
 
-/* .leftColumn,
-.rightColumn {
-    /* width: 100%;
-} */ 
-
 .sectionTitle {
     margin-bottom: 16px;
 
@@ -127,7 +122,7 @@
     cursor: pointer;
 }
 
-.addButton:hover
+.addButton:hover,
 .addButton:focus {
     background: #6d554b;
 }
@@ -199,7 +194,7 @@
     transition: 0.2s;
 }
 
-.submitButton:hover .submitButton:focus {
+.submitButton:hover, .submitButton:focus {
     background: #6d554b;
 }
 
