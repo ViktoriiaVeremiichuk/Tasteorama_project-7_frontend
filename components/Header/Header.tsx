@@ -107,7 +107,9 @@ export default function Header(){
           )}
         </div>
       )}
-        {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
+      
         </header>
     );
 }
+
+// {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
