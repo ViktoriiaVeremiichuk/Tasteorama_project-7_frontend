@@ -7,6 +7,7 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import AuthModalProvider from "@/components/AuthModalProvider/AuthModalProvider";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
 const montserrat = Montserrat({
   variable: "--font-family",
@@ -31,22 +32,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-  <html
-    lang="uk"
-    className={`${montserrat.variable} ${dmSans.variable}`}
-  >
-    <body>
-      <TanStackProvider>
-        <Toaster position="top-right" />
-        <Header />
-        <div className="pageWrapper">
-          <main>{children}</main>
-          <Footer />
-        </div>
+    <html lang="uk" className={`${montserrat.variable} ${dmSans.variable}`}>
+      <body>
+        <TanStackProvider>
+          <AuthProvider>
+            <Toaster position="top-right" />
+            <Header />
+            <div className="pageWrapper">
+              <main>{children}</main>
+              <Footer />
+            </div>
 
-        <AuthModalProvider />
-      </TanStackProvider>
-    </body>
-  </html>
-);
+            <AuthModalProvider />
+          </AuthProvider>
+        </TanStackProvider>
+      </body>
+    </html>
+  );
 }

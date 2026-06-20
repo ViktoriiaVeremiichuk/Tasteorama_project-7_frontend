@@ -5,111 +5,164 @@ import { useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import Image from "next/image";
-//import LogoutModal from "../Logout/LogoutModal/LogoutModal"
+import LogoutButton from "../Logout/LogoutButton/LogoutButton";
 
-import {Inter} from "next/font/google";
-const inter = Inter({subsets: ["latin"]});
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Header(){
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [logoutOpen, setLogoutOpen] = useState(false);
-    const user = {name: "Jhon", email: "jhon@gmail.com", avatar: null,};
-    const displayName = user.name?.trim()|| user.email.split("@")[0];
-    const avatarLetter = displayName.charAt(0).toUpperCase(); //тимчасова змінна для відображення аватара клієнта
-    
-    const pathname = usePathname();
-    const isRecipesActive = pathname === "/" || pathname.startsWith("/recipes");
-    const isLoginActive = pathname.startsWith("/login");
-    const isProfileActive = pathname.startsWith("/profile");
-    
-    const isLoggedIn = true;   
-    return(
-        <header className={`${styles.header} ${inter.className}`}>
-        <Link href="/" className={styles.logo}>
-            <Image src="/logo.svg" alt="Tasteorama logo" width={24} height={24}/>
-            <span>Tasteorama</span>
-        </Link>
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const user = { name: "Jhon", email: "jhon@gmail.com", avatar: null };
+  const displayName = user.name?.trim() || user.email.split("@")[0];
+  const avatarLetter = displayName.charAt(0).toUpperCase(); //тимчасова змінна для відображення аватара клієнта
 
-        {/*Desktop*/}
-        <nav className={styles.desktopNav}>
-            <div className={styles.navLinks}>
-                <Link href="/recipes" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
-                {isLoggedIn && <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>}
-            </div>
+  const pathname = usePathname();
+  const isRecipesActive = pathname === "/" || pathname.startsWith("/recipes");
+  const isLoginActive = pathname.startsWith("/login");
+  const isProfileActive = pathname.startsWith("/profile");
 
-            <div className={styles.actions}>
-            {!isLoggedIn ? (
-                <>
-                   <Link href="/login" className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : "" }`}>Log in</Link>
-                   <Link href="/register" className={styles.primary}>Register</Link>
-                </>
-            ):(
-                <>
-                   <Link href="/addRecipe" className={styles.primary}>Add Recipe</Link>
-                   <div className={styles.userSection}>
-                    <div className={styles.user}>
-                    
-                    {user.avatar ?(
-                        <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar}/>
-                    ):(
-                        <div className={styles.avatarFallback}>
-                            {avatarLetter}
-                        </div>
-                    )}
-                    <span>{displayName}</span>
-                    </div>
-                    <button className={styles.logoutBtn} onClick={()=>setLogoutOpen(true)}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>
-                   </div>
-                </>
-            )}
-            </div>
-        </nav>
+  const isLoggedIn = true;
+  return (
+    <header className={`${styles.header} ${inter.className}`}>
+      <Link href="/" className={styles.logo}>
+        <Image src="/logo.svg" alt="Tasteorama logo" width={24} height={24} />
+        <span>Tasteorama</span>
+      </Link>
 
-        {/* Mobile burger */}
-        <button className={`${styles.burger} ${menuOpen ? styles.closeButton: ""}`} onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? (
-            <Image src="/close.svg" alt="Close menu" width={32} height={32}/>
-        ):(
-            <Image src="/burger.svg" alt="Open menu" width={32} height={32}/>
-        )}
-        </button>
+      {/*Desktop*/}
+      <nav className={styles.desktopNav}>
+        <div className={styles.navLinks}>
+          <Link
+            href="/recipes"
+            className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
+          >
+            Recipes
+          </Link>
+          {isLoggedIn && (
+            <Link
+              href="/profile"
+              className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}
+            >
+              My Profile
+            </Link>
+          )}
+        </div>
 
-        {/* Mobile drawer */}
-        {menuOpen && (
-            <div className={styles.mobileMenu}>
-                {!isLoggedIn ? (
+        <div className={styles.actions}>
+          {!isLoggedIn ? (
             <>
-              <div className={styles.mobileLink}>
-                <Link href="/recipes"className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
-                <Link href="/login" className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : "" }`}>Log in</Link>
-              </div> 
-              <Link href="/register" className={styles.primary}>Register</Link>
+              <Link
+                href="/login"
+                className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : ""}`}
+              >
+                Log in
+              </Link>
+              <Link href="/register" className={styles.primary}>
+                Register
+              </Link>
             </>
           ) : (
             <>
-                <Link href="/recipes" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
-                <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>
-                <div className={styles.userSection}>
+              <Link href="/addRecipe" className={styles.primary}>
+                Add Recipe
+              </Link>
+              <div className={styles.userSection}>
                 <div className={styles.user}>
-                    {user.avatar ?(
-                        <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar}/>
-                    ):(
-                        <div className={styles.avatarFallback}>
-                            {avatarLetter}
-                        </div>
-                    )}
-                    {displayName}
-                    </div>
-                    <Link href="/logout" className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={24} height={28}/></Link>
-                   </div>
-                   <Link href="/addRecipe" className={styles.primary}>Add Recipe</Link>
+                  {user.avatar ? (
+                    <Image
+                      src={user.avatar}
+                      alt={displayName}
+                      width={32}
+                      height={32}
+                      className={styles.avatar}
+                    />
+                  ) : (
+                    <div className={styles.avatarFallback}>{avatarLetter}</div>
+                  )}
+                  <span>{displayName}</span>
+                </div>
+                <LogoutButton />
+              </div>
+            </>
+          )}
+        </div>
+      </nav>
+
+      {/* Mobile burger */}
+      <button
+        className={`${styles.burger} ${menuOpen ? styles.closeButton : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        {menuOpen ? (
+          <Image src="/close.svg" alt="Close menu" width={32} height={32} />
+        ) : (
+          <Image src="/burger.svg" alt="Open menu" width={32} height={32} />
+        )}
+      </button>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          {!isLoggedIn ? (
+            <>
+              <div className={styles.mobileLink}>
+                <Link
+                  href="/recipes"
+                  className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
+                >
+                  Recipes
+                </Link>
+                <Link
+                  href="/login"
+                  className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : ""}`}
+                >
+                  Log in
+                </Link>
+              </div>
+              <Link href="/register" className={styles.primary}>
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/recipes"
+                className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
+              >
+                Recipes
+              </Link>
+              <Link
+                href="/profile"
+                className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}
+              >
+                My Profile
+              </Link>
+              <div className={styles.userSection}>
+                <div className={styles.user}>
+                  {user.avatar ? (
+                    <Image
+                      src={user.avatar}
+                      alt={displayName}
+                      width={32}
+                      height={32}
+                      className={styles.avatar}
+                    />
+                  ) : (
+                    <div className={styles.avatarFallback}>{avatarLetter}</div>
+                  )}
+                  {displayName}
+                </div>
+                <LogoutButton />
+              </div>
+              <Link href="/addRecipe" className={styles.primary}>
+                Add Recipe
+              </Link>
             </>
           )}
         </div>
       )}
-      
-        </header>
-    );
+    </header>
+  );
 }
 
 // {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
