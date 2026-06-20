@@ -13,3 +13,9 @@ export interface AddRecipeFormValues {
   ingredients: RecipeIngredient[];
   thumb: File | null;
 }
+
+export type IngredientItem = {
+  id: string;
+  name: string;
+  measure: string;
+}
