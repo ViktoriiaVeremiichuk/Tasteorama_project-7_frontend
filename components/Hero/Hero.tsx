@@ -13,9 +13,14 @@ export default function Hero() {
       <section className={styles.hero}>
         <div className={styles.inner}>
           <div className={styles.content}>
-            <h1 className={styles.title}>Plan, Cook, and Share Your Flavors</h1>
+            <h1 className={styles.title}>
+              Plan, Cook, and Share Your Flavors
+            </h1>
+
             <div className={styles.searchWrap}>
-              <SearchBox onSearch={(value) => setSearch(value)}/>
+              <SearchBox
+                onSearch={(value) => setSearch(value)}
+              />
             </div>
           </div>
         </div>
@@ -24,7 +29,6 @@ export default function Hero() {
       <section className={styles.filtersSection}>
         <Filters />
       </section>
-
     </>
   );
 }
