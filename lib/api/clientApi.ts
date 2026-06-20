@@ -13,3 +13,26 @@ export const login = async (data: { email: string; password: string }) => {
   const res = await api.post("/api/auth/login", data);
   return res.data;
 };
+
+export const createRecipe = async (
+  formData: FormData
+) => {
+  const res = await api.post(
+    "/api/recipes",
+    formData,
+  );
+
+  return res.data;
+};
+
+export const getCategories = async () => {
+  const res = await api.get("/api/categories");
+
+  return res.data.data;
+};
+
+export const getIngredients = async () => {
+  const res = await api.get("/api/ingredients");
+
+  return res.data.data;
+};
