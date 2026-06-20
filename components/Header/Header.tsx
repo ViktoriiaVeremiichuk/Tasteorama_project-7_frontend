@@ -33,7 +33,7 @@ export default function Header(){
         {/*Desktop*/}
         <nav className={styles.desktopNav}>
             <div className={styles.navLinks}>
-                <Link href="/recipes" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
+                <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
                 {isLoggedIn && <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>}
             </div>
 
@@ -45,7 +45,7 @@ export default function Header(){
                 </>
             ):(
                 <>
-                   <Link href="/addRecipe" className={styles.primary}>Add Recipe</Link>
+                   <Link href="/add-recipe" className={styles.primary}>Add Recipe</Link>
                    <div className={styles.userSection}>
                     <div className={styles.user}>
                     
@@ -80,14 +80,14 @@ export default function Header(){
                 {!isLoggedIn ? (
             <>
               <div className={styles.mobileLink}>
-                <Link href="/recipes"className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
+                <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
                 <Link href="/login" className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : "" }`}>Log in</Link>
               </div> 
               <Link href="/register" className={styles.primary}>Register</Link>
             </>
           ) : (
             <>
-                <Link href="/recipes" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
+                <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
                 <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>
                 <div className={styles.userSection}>
                 <div className={styles.user}>
@@ -102,7 +102,7 @@ export default function Header(){
                     </div>
                     <Link href="/logout" className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={24} height={28}/></Link>
                    </div>
-                   <Link href="/addRecipe" className={styles.primary}>Add Recipe</Link>
+                   <Link href="/add-recipe" className={styles.primary}>Add Recipe</Link>
             </>
           )}
         </div>

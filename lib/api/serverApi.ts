@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import type { User } from "@/types/user";
+import type { Recipe } from "@/types/recipe";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -28,6 +29,27 @@ export async function getCurrentUser(): Promise<User | null> {
     }
 
     return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getRecipeById(recipeId: string): Promise<Recipe | null> {
+  if (!API_URL) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/api/recipes/${recipeId}`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const json = (await response.json()) as { data?: Recipe };
+    return json.data ?? null;
   } catch {
     return null;
   }
