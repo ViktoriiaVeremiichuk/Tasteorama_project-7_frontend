@@ -8,32 +8,26 @@ import Image from "next/image";
 //import LogoutModal from "../Logout/LogoutModal/LogoutModal"
 
 import {Inter} from "next/font/google";
+
+import { useAuthStore } from "@/lib/store/authStore";
 const inter = Inter({subsets: ["latin"]});
 
 export default function Header(){
     const [menuOpen, setMenuOpen] = useState(false);
     const [logoutOpen, setLogoutOpen] = useState(false);
 
-    const [user, setUser] = useState<{
-        name?: string;
-        email: string;
-        avatar: string | null;
-    }| null>(null);
+    const user = useAuthStore((state) => state.user);
+    const setUser = useAuthStore((state) => state.setUser);
 
     useEffect(()=> {
-        async function getCurrentUser() {
-            try{
-                const res = await fetch("api/users/current");
-                if (!res.ok) return;
-
-                const data = await res.json();
-                setUser(data);
-            } catch (error) {
-                console.error("Failed to fetch user", error);
-            }     
+        if (user) return; 
+        async function loadUser() {
+            const res = await fetch("/app/users/current");
+            if(!res.ok) return;
+            setUser(await res.json())
         }
-        getCurrentUser();
-    }, []);
+        loadUser();
+    }, [user, setUser]);
   
     const displayName = user ? user.name?.trim()|| user.email.split("@")[0]: "";
     const avatarLetter = displayName ? displayName.charAt(0).toUpperCase(): ""; 
@@ -43,7 +37,7 @@ export default function Header(){
     const isLoginActive = pathname.startsWith("/login");
     const isProfileActive = pathname.startsWith("/profile");
     
-    const isLoggedIn = false;   
+    const isLoggedIn = Boolean(user);   
     return(
         <header className={`${styles.header} ${inter.className}`}>
         <Link href="/" className={styles.logo}>
@@ -121,7 +115,7 @@ export default function Header(){
                     )}
                     {displayName}
                     </div>
-                    <Link href="/logout" className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={24} height={28}/></Link>
+                    <button className={styles.logoutBtn} onClick={()=>setLogoutOpen(true)}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>
                    </div>
                    <Link href="/add-recipe" className={styles.primary}>Add Recipe</Link>
             </>
