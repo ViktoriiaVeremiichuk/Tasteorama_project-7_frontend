@@ -35,9 +35,7 @@ export const useFavoriteRecipe = (recipeId: string) => {
       });
     },
 
-    onError: () => {
-      toast.error("Error");
-    },
+
   });
 
   const toggleFavorite = () => {

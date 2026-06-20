@@ -1,0 +1,93 @@
+.hero {
+  position: relative;
+  padding: 40px 16px;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3)), url("./Hero-img/Banner_mob.jpg");
+  background-size: cover;
+  background-position: left center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1080px;
+  position: relative;
+  z-index: 2;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  color: #ffffff;
+}
+
+.title {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 1.1;
+  margin: 0;
+  text-align: left;
+  color: var(--white);
+}
+
+.subtitle {
+  margin: 0;
+  color: #d1c3b5;
+  text-align: center;
+  max-width: 600px;
+}
+
+.searchWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* subtle overlay to ensure text contrast */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3));
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding: 72px 48px;
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3)), url("./Hero-img/Banner_tab.jpg");
+  }
+
+  .content {
+    align-items: flex-start;
+    text-align: left;
+    gap: 16px;
+    max-width: 720px;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .searchWrap {
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 1440px) {
+  .hero {
+    padding: 88px 80px;
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3)), url("./Hero-img/Banner _pc.jpg");
+  }
+
+  .inner {
+    max-width: 1440px;
+  }
+}

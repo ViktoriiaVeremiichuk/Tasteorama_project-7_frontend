@@ -1,94 +1,52 @@
 'use client';
 
-import { useState, useEffect ,useId } from 'react';
-import { Formik, Form, Field, FormikHelpers } from "formik";
-import * as Yup from "yup";
+import { useState, useEffect } from 'react';
+import { useSearchStore } from "@/app/store/searchStore";
 import css from './Filters.module.css';
 import { getCategories, getIngredients } from '@/lib/api/api';
   
-interface Category {
-  _id: string;
-  name: string;
-}
-
-interface Ingredient {
-  _id: string;
-  name: string;
-}
-
-interface OrderFormValues {
-  category: string;
-  ingredients: string;
-}
-
-const initialValues: OrderFormValues = {
-  category: '',
-  ingredients: '',
-};
-
-const validationSchema = Yup.object().shape({
-  category: Yup.string(),
-  ingredient: Yup.string(),
-});
-
 export default function Filters() {
-  const fieldId = useId();
-
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-
-  // const [recipes, setRecipes] = useState('hello');
-  // const [isOpenCategory, setIsOpenCategory] = useState(false);
-  // const [isOpenIngredients, setIsOpenIngredients] = useState(false);
-  // const [selectedValue, setSelectedValue] = useState('Оберіть опцію');
-
-  // const optionsCategory = ['Опція 1', 'Опція 2', 'Опція 3'];
-  // const optionsIngredients = ['Опція 1', 'Опція 2', 'Опція 3'];
-
-  // const handleSelectCategory = (option: string) => {
-  //   setSelectedValue(option);
-  //   setIsOpenCategory(false); // Закриваємо список після вибору
-  // };
-
-  // const handleSelectIngredients = (option: string) => {
-  //   setSelectedValue(option);
-  //   setIsOpenIngredients(false); // Закриваємо список після вибору
-  // };
-
-  // useEffect(() => {
-  //   console.log(`Make HTTP request with: ${recipes}`);
-  // }, [recipes]);
+   const {   
+    search,
+    category,
+    ingredients,
+    totalRecipes,
+    setCategory,
+    setIngredients,
+    resetFilters 
+  } = useSearchStore();
+  const [categoriesList, setCategoriesList] = useState<string[]>([]);
+  const [ingredientsList, setIngredientsList] = useState<
+    { id: string; name: string }[]
+  >([]);
 
   useEffect(() => {
-    const loadFilters = async () => {
+    const fetchFilterOptions = async () => {
       try {
-        const categoriesResponse = await getCategories();
-        const ingredientsResponse = await getIngredients();
+        const [categories, ingredients] = await Promise.all([
+          getCategories(),
+          getIngredients(),
+        ]);
 
-        setCategories(categoriesResponse.data || []);
-        setIngredients(ingredientsResponse.data || []);
+        setCategoriesList(categories);
+        setIngredientsList(ingredients);
       } catch (error) {
-        console.error('Failed to load filters:', error);
+        console.error("Failed to fetch dynamic filter options from Tasteorama API:", error);
       }
-    };
+    }
 
-    loadFilters();
+     fetchFilterOptions();
   }, []);
 
-  const handleSubmit = (
-    values: OrderFormValues,
-    actions: FormikHelpers<OrderFormValues>
-  ) => {
-    console.log(values);
-    actions.resetForm();
-  };
+   const hasActiveFilters = Boolean(search || category || ingredients);
 
   return (
     <div className={css.mainContainer}>
       <h2 className={css.title}>Recipes</h2>
       <div className={css.filterContainer}>
-        <p className={css.dropdownSearch}>{ } recipes</p>
+        <p className={css.dropdownSearch}>{ totalRecipes } recipes</p>
         <div className={css.dropdownBtn}>
+          
           <button
             className={css.open}
             type="button">
@@ -99,40 +57,34 @@ export default function Filters() {
           </svg>
         </div>
         <div className={css.dropdown}>
+          { hasActiveFilters && (
           <button
             type="button"
             className={css.resetButton}
           >
             Reset filters
           </button>
-          <Formik
-            validationSchema={validationSchema}
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-          >
-            <Form className={css.form}>
-              <Field className={css.field} as="select" name="category" id={`${fieldId}-category`}>
-                <option className={css.option} value="">
-                  Category
-                </option>
-                {categories.map((category) => (
-                  <option className={css.option} key={category._id} value={category.name}>
-                    {category.name}
-                  </option>
-                ))}
-              </Field>
-              <Field className={css.field} as="select" name="ingredient" id={`${fieldId}-ingredient`}>
-                <option className={css.option} value="">
-                  Ingredients
-                </option>
-                {ingredients.map((ingredient) => (
-                  <option className={css.option} key={ingredient._id} value={ingredient.name}>
-                    {ingredient.name}
-                  </option>
-                ))}
-              </Field>
-            </Form>
-          </Formik>
+          )}
+            <select
+             value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className={css.select}
+        >
+                <option value="">Categories</option>
+          {categoriesList.map((cat) => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
+              </select>
+               <select
+          value={ingredients}
+          onChange={(e) => setIngredients(e.target.value)}
+          className={css.select}
+        >
+          <option value="">Ingredients</option>
+          {ingredientsList.map((ing) => (
+            <option key={ing.id} value={ing.id}>{ing.name}</option>
+          ))}
+        </select>
         </div>
       </div>
     </div>
