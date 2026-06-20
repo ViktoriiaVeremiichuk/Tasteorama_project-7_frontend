@@ -1,28 +1,43 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import Image from "next/image";
 //import LogoutModal from "../Logout/LogoutModal/LogoutModal"
 
 import {Inter} from "next/font/google";
+
+import { useAuthStore } from "@/lib/store/authStore";
 const inter = Inter({subsets: ["latin"]});
 
 export default function Header(){
     const [menuOpen, setMenuOpen] = useState(false);
     const [logoutOpen, setLogoutOpen] = useState(false);
-    const user = {name: "Jhon", email: "jhon@gmail.com", avatar: null,};
-    const displayName = user.name?.trim()|| user.email.split("@")[0];
-    const avatarLetter = displayName.charAt(0).toUpperCase(); //тимчасова змінна для відображення аватара клієнта
+
+    const user = useAuthStore((state) => state.user);
+    const setUser = useAuthStore((state) => state.setUser);
+
+    useEffect(()=> {
+        if (user) return; 
+        async function loadUser() {
+            const res = await fetch("/app/users/current");
+            if(!res.ok) return;
+            setUser(await res.json())
+        }
+        loadUser();
+    }, [user, setUser]);
+  
+    const displayName = user ? user.name?.trim()|| user.email.split("@")[0]: "";
+    const avatarLetter = displayName ? displayName.charAt(0).toUpperCase(): ""; 
     
     const pathname = usePathname();
     const isRecipesActive = pathname === "/" || pathname.startsWith("/recipes");
     const isLoginActive = pathname.startsWith("/login");
     const isProfileActive = pathname.startsWith("/profile");
     
-    const isLoggedIn = true;   
+    const isLoggedIn = Boolean(user);   
     return(
         <header className={`${styles.header} ${inter.className}`}>
         <Link href="/" className={styles.logo}>
@@ -49,7 +64,7 @@ export default function Header(){
                    <div className={styles.userSection}>
                     <div className={styles.user}>
                     
-                    {user.avatar ?(
+                    {user?.avatar ?(
                         <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar}/>
                     ):(
                         <div className={styles.avatarFallback}>
@@ -91,7 +106,7 @@ export default function Header(){
                 <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>
                 <div className={styles.userSection}>
                 <div className={styles.user}>
-                    {user.avatar ?(
+                    {user?.avatar ?(
                         <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar}/>
                     ):(
                         <div className={styles.avatarFallback}>
@@ -100,16 +115,17 @@ export default function Header(){
                     )}
                     {displayName}
                     </div>
-                    <Link href="/logout" className={styles.logoutBtn}><Image src="/logOut.svg" alt="Log out" width={24} height={28}/></Link>
+                    <button className={styles.logoutBtn} onClick={()=>setLogoutOpen(true)}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>
                    </div>
                    <Link href="/add-recipe" className={styles.primary}>Add Recipe</Link>
             </>
           )}
         </div>
       )}
-      
+     
         </header>
     );
 }
 
-// {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
+// цей код має знаходитись в кінці головного коду, перед закриттям Headera
+// {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)} 
