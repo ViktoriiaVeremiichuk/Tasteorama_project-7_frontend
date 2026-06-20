@@ -69,7 +69,13 @@ export default function ProfilePageContent({
     setTotal((prev) => Math.max(0, prev - 1));
   };
 
+  const handleRecipeDeleted = (recipeId: string) => {
+    setRecipes((prev) => prev.filter((recipe) => recipe._id !== recipeId));
+    setTotal((prev) => Math.max(0, prev - 1));
+  };
+
   const showFavorite = recipeType === "favorites";
+  const showDelete = recipeType === "own";
 
   return (
     <>
@@ -96,6 +102,8 @@ export default function ProfilePageContent({
           onFavoriteRemoved={
             showFavorite ? handleFavoriteRemoved : undefined
           }
+          showDelete={showDelete}
+          onDeleted={showDelete ? handleRecipeDeleted : undefined}
         />
       )}
 

@@ -6,6 +6,8 @@ export default function RecipeList({
   recipes,
   showFavorite = true,
   onFavoriteRemoved,
+  showDelete = false,
+  onDeleted,
 }: RecipesListProps) {
   if (!recipes || recipes.length === 0) {
     return <p>Рецептів не знайдено</p>;
@@ -23,6 +25,8 @@ export default function RecipeList({
               ? () => onFavoriteRemoved(recipe._id)
               : undefined
           }
+          showDelete={showDelete}
+          onDeleted={onDeleted ? () => onDeleted(recipe._id) : undefined}
         />
       ))}
     </div>

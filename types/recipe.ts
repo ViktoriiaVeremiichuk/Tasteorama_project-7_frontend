@@ -21,4 +21,6 @@ export interface RecipesListProps {
   recipes: Recipe[];
   showFavorite?: boolean;
   onFavoriteRemoved?: (recipeId: string) => void;
+  showDelete?: boolean;
+  onDeleted?: (recipeId: string) => void;
 }
