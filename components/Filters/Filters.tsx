@@ -1,53 +1,79 @@
-import { useState, useEffect } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+'use client';
+
+import { useState, useEffect ,useId } from 'react';
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { useId } from "react";
 import css from './Filters.module.css';
 import { getCategories, getIngredients } from '@/lib/api/api';
   
+interface Category {
+  _id: string;
+  name: string;
+}
+
+interface Ingredient {
+  _id: string;
+  name: string;
+}
+
 interface OrderFormValues {
-  category: string[];
-  ingredients: string[];
+  category: string;
+  ingredients: string;
 }
 
 const initialValues: OrderFormValues = {
-  category: [],
-  ingredients: [],
+  category: '',
+  ingredients: '',
 };
 
 const validationSchema = Yup.object().shape({
-  category: Yup.array().of(Yup.string()),
-  ingredients: Yup.array().of(Yup.string()),
+  category: Yup.string(),
+  ingredient: Yup.string(),
 });
 
 export default function Filters() {
   const fieldId = useId();
 
-  const categories = getCategories();
-  const ingredients = getIngredients();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
   // const [recipes, setRecipes] = useState('hello');
-  const [isOpenCategory, setIsOpenCategory] = useState(false);
-  const [isOpenIngredients, setIsOpenIngredients] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('Оберіть опцію');
+  // const [isOpenCategory, setIsOpenCategory] = useState(false);
+  // const [isOpenIngredients, setIsOpenIngredients] = useState(false);
+  // const [selectedValue, setSelectedValue] = useState('Оберіть опцію');
 
-  const optionsCategory = ['Опція 1', 'Опція 2', 'Опція 3'];
-  const optionsIngredients = ['Опція 1', 'Опція 2', 'Опція 3'];
+  // const optionsCategory = ['Опція 1', 'Опція 2', 'Опція 3'];
+  // const optionsIngredients = ['Опція 1', 'Опція 2', 'Опція 3'];
 
-  const handleSelectCategory = (option: string) => {
-    setSelectedValue(option);
-    setIsOpenCategory(false); // Закриваємо список після вибору
-  };
+  // const handleSelectCategory = (option: string) => {
+  //   setSelectedValue(option);
+  //   setIsOpenCategory(false); // Закриваємо список після вибору
+  // };
 
-  const handleSelectIngredients = (option: string) => {
-    setSelectedValue(option);
-    setIsOpenIngredients(false); // Закриваємо список після вибору
-  };
+  // const handleSelectIngredients = (option: string) => {
+  //   setSelectedValue(option);
+  //   setIsOpenIngredients(false); // Закриваємо список після вибору
+  // };
 
   // useEffect(() => {
   //   console.log(`Make HTTP request with: ${recipes}`);
   // }, [recipes]);
+
+  useEffect(() => {
+    const loadFilters = async () => {
+      try {
+        const categoriesResponse = await getCategories();
+        const ingredientsResponse = await getIngredients();
+
+        setCategories(categoriesResponse.data || []);
+        setIngredients(ingredientsResponse.data || []);
+      } catch (error) {
+        console.error('Failed to load filters:', error);
+      }
+    };
+
+    loadFilters();
+  }, []);
 
   const handleSubmit = (
     values: OrderFormValues,
@@ -85,23 +111,23 @@ export default function Filters() {
             onSubmit={handleSubmit}
           >
             <Form className={css.form}>
-              <Field className={css.field} as="select" name="category" id={fieldId}>
+              <Field className={css.field} as="select" name="category" id={`${fieldId}-category`}>
                 <option className={css.option} value="">
                   Category
                 </option>
                 {categories.map((category) => (
-                  <option className={css.option} key={category} value={category}>
-                    {category}
+                  <option className={css.option} key={category._id} value={category.name}>
+                    {category.name}
                   </option>
                 ))}
               </Field>
-              <Field className={css.field} as="select" name="ingredient" id={fieldId}>
+              <Field className={css.field} as="select" name="ingredient" id={`${fieldId}-ingredient`}>
                 <option className={css.option} value="">
                   Ingredients
                 </option>
                 {ingredients.map((ingredient) => (
-                  <option className={css.option} key={ingredient} value={ingredient}>
-                    {ingredient}
+                  <option className={css.option} key={ingredient._id} value={ingredient.name}>
+                    {ingredient.name}
                   </option>
                 ))}
               </Field>
