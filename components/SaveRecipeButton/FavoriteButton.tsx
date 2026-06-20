@@ -2,7 +2,7 @@
 
 import { useFavoriteRecipe } from "@/hooks/useFavoriteRecipe";
 import { Loader } from "lucide-react";
-import styles from "./SaveRecipeButton.module.css";
+import styles from "./FavoriteButton.module.css";
 
 type Props = {
   recipeId: string;
@@ -16,7 +16,7 @@ const FavoriteButton = ({ recipeId }: Props) => {
       type="button"
       onClick={toggleFavorite}
       disabled={isPending}
-      className={`${styles.saveButton} ${isFavorite ? styles.activeSaveButton : ""}`}
+      className={`${styles.favoriteButton} ${isFavorite ? styles.activefavoriteButton : ""}`}
     >
       {isPending ? (
         <>

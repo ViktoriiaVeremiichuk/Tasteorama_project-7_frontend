@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { Montserrat, DM_Sans } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
 import "./globals.css";
+import Footer from "../components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import AuthModalProvider from "@/components/AuthModalProvider/AuthModalProvider";
 
@@ -29,14 +30,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
-      <body>
-        <TanStackProvider>
-          <Toaster position="top-right" />
-          {children}
-          <AuthModalProvider />
-        </TanStackProvider>
-      </body>
-    </html>
-  );
+  <html
+    lang="uk"
+    className={`${montserrat.variable} ${dmSans.variable}`}
+  >
+    <body>
+      <TanStackProvider>
+        <Toaster position="top-right" />
+
+        <div className="pageWrapper">
+          <main>{children}</main>
+          <Footer />
+        </div>
+
+        <AuthModalProvider />
+      </TanStackProvider>
+    </body>
+  </html>
+);
 }

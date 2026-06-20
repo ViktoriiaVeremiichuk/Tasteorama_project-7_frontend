@@ -27,6 +27,12 @@
 }
 
 .title {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
   font-weight: 700;
   font-size: 24px;
   color: #000;
@@ -59,6 +65,7 @@
 
 .description {
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

@@ -6,6 +6,10 @@
   flex-direction: column;
 }
 
+.container li {
+  list-style-type: none;
+}
+
 .imageContainer {
   overflow: hidden;
   border-radius: 8px;
@@ -70,6 +74,10 @@
   font-weight: 600;
   font-size: 32px;
   margin-bottom: 8px;
+}
+
+.description {
+  line-height: 1.55;
 }
 
 .ingredientsList {
@@ -159,6 +167,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #2b2d300b;
   }
 
   .image {

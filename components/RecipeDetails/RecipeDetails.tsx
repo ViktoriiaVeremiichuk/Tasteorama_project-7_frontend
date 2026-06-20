@@ -1,28 +1,40 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import type { Recipe } from "@/types/recipe";
 import Image from "next/image";
 import styles from "./RecipeDetails.module.css";
-import SaveRecipeButton from "@/components/SaveRecipeButton/SaveRecipeButton";
+import SaveRecipeButton from "@/components/SaveRecipeButton/FavoriteButton";
 
 type Props = {
   recipe: Recipe;
 };
 
 export default function RecipeDetails({ recipe }: Props) {
+  const [imageSrc, setImageSrc] = useState(recipe.thumb);
+
+  useEffect(() => {
+    if (window.innerWidth >= 768 && recipe.thumb.includes("/preview/")) {
+      const largeImage = recipe.thumb.replace("/preview/", "/preview/large/");
+      const handle = window.requestAnimationFrame(() => {
+        setImageSrc(largeImage);
+      });
+      return () => window.cancelAnimationFrame(handle);
+    }
+  }, [recipe.thumb]);
+
   return (
     <main>
       <div className={styles.container}>
         {recipe.thumb ? (
           <div className={styles.imageContainer}>
             <Image
-              src={recipe.thumb}
+              src={imageSrc}
               alt={recipe.title}
               width={704}
-              height={704}
+              height={624}
               className={styles.image}
-              priority
-              unoptimized
+              onError={() => setImageSrc(recipe.thumb)}
             />
           </div>
         ) : null}

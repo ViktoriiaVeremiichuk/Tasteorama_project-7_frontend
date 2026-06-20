@@ -1,6 +1,7 @@
 import styles from "@/components/NotFoundRecipe/NotFoundRecipe.module.css";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "404 - Page Not Found | Tasteorama",
@@ -21,6 +22,13 @@ export default function NotFound() {
       </p>
 
       <Link href="/" className={styles.link}>
+        <Image
+          src="/arrow.svg"
+          className={styles.icon}
+          alt="arrow"
+          width={24}
+          height={24}
+        />
         Back to Home
       </Link>
     </div>

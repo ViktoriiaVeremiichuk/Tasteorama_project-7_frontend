@@ -15,6 +15,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const { isFavorite, toggleFavorite, isPending } = useFavoriteRecipe(
     recipe._id,
   );
+  const displayCalories =
+    recipe.calories === 0 || recipe.calories == null
+      ? "-"
+      : `~${recipe.calories}`;
 
   return (
     <div className={`${styles.card} ${styles.container}`}>
@@ -27,7 +31,9 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
       />
 
       <div className={styles.topRow}>
-        <h3 className={styles.title}>{recipe.title}</h3>
+        <h3 className={styles.title} title={recipe.title}>
+          {recipe.title}
+        </h3>
 
         <div className={styles.timeBlock}>
           <Image
@@ -43,7 +49,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 
       <div className={styles.descBlock}>
         <p className={styles.description}>{recipe.description}</p>
-        <p className={styles.calories}>~{recipe.calories ?? "-"}</p>
+        <p className={styles.calories}>{displayCalories}</p>
       </div>
 
       <div className={styles.buttons}>
