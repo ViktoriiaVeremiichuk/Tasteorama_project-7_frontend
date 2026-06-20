@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { Montserrat, DM_Sans } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
 import "./globals.css";
+import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import AuthModalProvider from "@/components/AuthModalProvider/AuthModalProvider";
@@ -37,7 +38,7 @@ export default function RootLayout({
     <body>
       <TanStackProvider>
         <Toaster position="top-right" />
-
+        <Header />
         <div className="pageWrapper">
           <main>{children}</main>
           <Footer />

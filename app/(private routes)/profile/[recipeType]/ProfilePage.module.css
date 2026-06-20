@@ -1,0 +1,48 @@
+.wrapper {
+  padding: 48px 16px 16px;
+}
+
+.title {
+  margin: 0 0 24px;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.count {
+  margin: 24px 0 32px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.empty,
+.loading,
+.error {
+  margin-top: 32px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.error {
+  color: #d93025;
+}
+
+.filters {
+  margin-bottom: 32px;
+}
+
+.loadMore {
+  margin-top: 32px;
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    padding: 48px 31px 16px 32px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .wrapper {
+    padding: 46px 108px 24px;
+  }
+}

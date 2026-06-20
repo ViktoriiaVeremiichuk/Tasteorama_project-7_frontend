@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 import { addFavorite, removeFavorite } from "@/lib/api/recipes";
 import { useAuthStore } from "@/lib/store/authStore";
 
-export const useFavoriteRecipe = (recipeId: string) => {
+export const useFavoriteRecipe = (
+  recipeId: string,
+  onRemoved?: () => void,
+) => {
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
   const openAuthModal = useAuthStore((s) => s.openAuthModal);
@@ -33,6 +36,10 @@ export const useFavoriteRecipe = (recipeId: string) => {
         ...currentUser,
         favorites: updatedFavorites,
       });
+
+      if (isCurrentlyFavorite && onRemoved) {
+        onRemoved();
+      }
     },
 
     onError: () => {

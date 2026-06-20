@@ -15,6 +15,12 @@ export interface Recipe {
   ingredients: Ingredient[];
 }
 
+export type RecipeType = "own" | "favorites";
+
 export interface RecipesListProps {
   recipes: Recipe[];
+  showFavorite?: boolean;
+  onFavoriteRemoved?: (recipeId: string) => void;
+  showDelete?: boolean;
+  onDeleted?: (recipeId: string) => void;
 }
