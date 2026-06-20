@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import SearchBox from "../components/SearchBox/SearchBox";
-// import Filters from "../components/Filters/Filters";
-import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
+import Hero from "@/components/Hero/Hero"
+import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
 import RecipesList from "@/components/RecipesList/RecipesList";
 import { getRecipes } from "@/lib/api/recipes";
 import type { Recipe } from "@/types/recipe";
@@ -53,15 +52,10 @@ export default function MainPage() {
 
   return (
     <div className={styles.mainContainer}>
-<<<<<<< HEAD
-      {/* <SearchBox /> */}
-      <Filters />
-=======
-      {/* <SearchBox />
-      <Filters /> */}
->>>>>>> main
 
-      // {error ? (
+      <Hero />
+
+      {error ? (
         <p style={{ textAlign: "center", color: "red" }}>{error}</p>
       ) : (
         <RecipesList recipes={recipes} />
@@ -71,15 +65,9 @@ export default function MainPage() {
         <p style={{ textAlign: "center" }}>Завантаження рецептів...</p>
       )}
 
-<<<<<<< HEAD
-    //   {/* {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick} />} */}
-    // </div>
-=======
-
       {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick}  isLoading={loading} />}
 
     </div>
->>>>>>> main
   );
 
 }
