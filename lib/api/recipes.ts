@@ -7,7 +7,9 @@ export const getRecipes = async (
   page: number,
   limit: number,
 ): Promise<BackendResponse> => {
-  const res = await api.get(`/api/recipes/search?page=${page}&limit=${limit}`);
+  const res = await api.get("/api/recipes", {
+    params: { page, limit },
+  });
   return res.data;
 };
 
