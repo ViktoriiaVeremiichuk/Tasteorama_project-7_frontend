@@ -22,9 +22,16 @@ export default function Header(){
     useEffect(()=> {
         if (user) return; 
         async function loadUser() {
-            const res = await fetch("/api/users/current");
-            if(!res.ok) return;
-            setUser(await res.json())
+            const res = await fetch("/api/users/current", {
+                credentials: "include",
+            });
+            if(!res.ok) {return;}
+
+            const data = await res.json();
+
+            if (data) {
+            setUser(data);
+        }
         }
         loadUser();
     }, [user, setUser]);
