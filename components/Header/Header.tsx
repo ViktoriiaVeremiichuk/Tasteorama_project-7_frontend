@@ -34,7 +34,7 @@ export default function Header(){
         <nav className={styles.desktopNav}>
             <div className={styles.navLinks}>
                 <Link href="/recipes" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
-                {isLoggedIn && <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>}
+                {isLoggedIn && <Link href="/profile/own" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>}
             </div>
 
             <div className={styles.actions}>
@@ -88,7 +88,7 @@ export default function Header(){
           ) : (
             <>
                 <Link href="/recipes" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
-                <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>
+                <Link href="/profile/own" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>
                 <div className={styles.userSection}>
                 <div className={styles.user}>
                     {user.avatar ?(
