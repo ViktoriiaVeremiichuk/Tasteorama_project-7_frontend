@@ -8,7 +8,7 @@
   background: #3d2218;
   padding: 0 16px;
   color: white;
-  position: relative;
+  position: sticky;
   z-index: 1000;
 }
 
