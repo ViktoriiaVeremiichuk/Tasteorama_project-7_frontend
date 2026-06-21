@@ -48,13 +48,13 @@ export const searchRecipes = async (
 
   const res = await api.get<BackendResponse>("/api/recipes", { params });
 
-  if (!Array.isArray(res.data?.recipes)) {
-    throw new Error(
-      typeof res.data?.error === "string" && res.data.error
-        ? res.data.error
-        : "Failed to search recipes",
-    );
-  }
+  // if (!Array.isArray(res.data?.recipes)) {
+  //   throw new Error(
+  //     typeof res.data?.error === "string" && res.data.error
+  //       ? res.data.error
+  //       : "Failed to search recipes",
+  //   );
+  // }
 
   return res.data;
 };
