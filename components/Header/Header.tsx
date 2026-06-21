@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import LogoutModal from "../Logout/LogoutModal/LogoutModal"
 import {Inter} from "next/font/google";
 
 import { useAuthStore } from "@/lib/store/authStore";
+import { useSearchStore } from "@/app/store/searchStore";
 const inter = Inter({subsets: ["latin"]});
 
 export default function Header(){
@@ -18,6 +19,7 @@ export default function Header(){
 
     const user = useAuthStore((state) => state.user);
     const setUser = useAuthStore((state) => state.setUser);
+    const resetFilters = useSearchStore((state) => state.resetFilters);
 
     useEffect(() => {
         if (user) return;
@@ -62,31 +64,14 @@ export default function Header(){
     const isRecipesActive = pathname === "/" || pathname.startsWith("/recipes");
     const isLoginActive = pathname.startsWith("/login");
     const isProfileActive = pathname.startsWith("/profile");
+
+    const isLoggedIn = Boolean(user);  
     
-    //очищення токена, перенаправлення на головну сторінку при натисканні на кнопку вихід
-    const router = useRouter();
+    const handleLogout = () => {
+        resetFilters();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
 
-    async function handleLogout() {
-        try {
-          const res = await fetch("/api/auth/logout", {
-            method: "POST",
-            credentials: "include",
-          });
-      
-          if (!res.ok) {
-            console.error("Logout failed");
-            return;
-          }
-      
-          setUser(null);
-          setMenuOpen(false);
-          router.push("/");
-        } catch (error) {
-          console.error("Logout failed", error);
-        }
-      }
-
-    const isLoggedIn = Boolean(user);   
     return(
         <header className={`${styles.header} ${inter.className}`}>
         <Link href="/" className={styles.logo}>
@@ -112,14 +97,9 @@ export default function Header(){
                    <Link href="/add-recipe" className={styles.primary}>Add Recipe</Link>
                    <div className={styles.userSection}>
                     <div className={styles.user}>
-                    
-                    {user?.avatar ?(
-                        <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar}/>
-                    ):(
                         <div className={styles.avatarFallback}>
                             {avatarLetter}
                         </div>
-                    )}
                     <span>{displayName}</span>
                     </div>
                     <button className={styles.logoutBtn} onClick={handleLogout}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>
@@ -170,14 +150,10 @@ export default function Header(){
                 
                     <div className={styles.userSection}>
                         <div className={styles.user}>
-                        {user?.avatar ?(
-                            <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar}/>
-                    ):(
-                        <div className={styles.avatarFallback}>
+                            <div className={styles.avatarFallback}>
                             {avatarLetter}
-                        </div>
-                    )}
-                        <span>{displayName}</span>
+                            </div>
+                            <span>{displayName}</span>
                         </div>
                         <button className={styles.logoutBtn} onClick={handleLogout}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>   
                     </div>
