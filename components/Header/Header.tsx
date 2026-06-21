@@ -1,292 +1,187 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import styles from "./Header.module.css";
 
+import Link from "next/link";
+import Image from "next/image";
+import { Inter } from "next/font/google";
+
+import LogoutModal from "../Logout/LogoutModal/LogoutModal";
+
+import { useAuthStore } from "@/lib/store/authStore";
 import { useSearchStore } from "@/app/store/searchStore";
 
-import Hero from "@/components/Hero/Hero";
-import Loader from "@/components/Loader/Loader";
-import Filters from "@/components/Filters/Filters";
-import RecipesList from "@/components/RecipesList/RecipesList";
-import EmptySearchResults from "@/components/EmptySearchResults/EmptySearchResults";
-import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
+const inter = Inter({ subsets: ["latin"] });
 
-import { useFilterOptions } from "@/hooks/useFilterOptions";
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
-import {
-  fetchRecipesWithPriority,
-  resolveSearchInput,
-} from "@/lib/search/searchFlow";
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
 
-import type { Recipe } from "@/types/recipe";
-
-import styles from "./page.module.css";
-
-const LIMIT = 12;
-
-export default function MainPage() {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-
-  const [loading, setLoading] =
-    useState<boolean>(false);
-
-  const [error, setError] =
-    useState<string | null>(null);
-
-  const {
-    search,
-    category,
-    ingredients,
-    totalRecipes,
-    setAllFilters,
-    setTotalRecipes,
-  } = useSearchStore();
-
-  const {
-    ingredients: ingredientsList,
-  } = useFilterOptions();
-
-  const isSearchActive = Boolean(
-    search ||
-      category ||
-      ingredients
-  );
-
-  const handleSearchSubmit =
-    useCallback(
-      (query: string) => {
-        setAllFilters(
-          resolveSearchInput(
-            query,
-            category,
-            ingredients
-          )
-        );
-      },
-      [
-        category,
-        ingredients,
-        setAllFilters,
-      ]
-    );
+  const resetFilters = useSearchStore((state) => state.resetFilters);
 
   useEffect(() => {
-    setPage(1);
-  }, [
-    search,
-    category,
-    ingredients,
-  ]);
+    if (user) return;
+
+    async function loadUser() {
+      const res = await fetch("/api/users/current", {
+        credentials: "include",
+      });
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+
+      if (data) setUser(data);
+    }
+
+    loadUser();
+  }, [user, setUser]);
 
   useEffect(() => {
-    const loadRecipes =
-      async () => {
-        setLoading(true);
-        setError(null);
+    document.body.style.overflow = menuOpen ? "hidden" : "auto";
+    return () => (document.body.style.overflow = "auto");
+  }, [menuOpen]);
 
-        try {
-          const result =
-            await fetchRecipesWithPriority(
-              search,
-              category,
-              ingredients,
-              page,
-              LIMIT,
-              ingredientsList
-            );
+  const displayName = user
+    ? user.name?.trim() || user.email.split("@")[0]
+    : "";
 
-          setTotalRecipes(
-            result.total
-          );
+  const avatarLetter = displayName
+    ? displayName.charAt(0).toUpperCase()
+    : "";
 
-          setRecipes(
-            (prev) => {
-              const updated =
-                page === 1
-                  ? result.recipes
-                  : [
-                      ...prev,
-                      ...result.recipes,
-                    ];
+  const pathname = usePathname();
 
-              setHasMore(
-                updated.length <
-                  result.total
-              );
+  const isRecipesActive =
+    pathname === "/" || pathname.startsWith("/recipes");
 
-              return updated;
-            }
-          );
-        } catch (err) {
-          console.error(err);
+  const isLoginActive = pathname.startsWith("/login");
+  const isProfileActive = pathname.startsWith("/profile");
 
-          setError(
-            "Failed to load recipes. Please try again later."
-          );
-        } finally {
-          setLoading(false);
-        }
-      };
+  const isLoggedIn = Boolean(user);
 
-    loadRecipes();
-  }, [
-    page,
-    search,
-    category,
-    ingredients,
-    ingredientsList,
-    setTotalRecipes,
-  ]);
-
-  const handleLoadMoreClick =
-    () => {
-      setPage(
-        (prevPage) =>
-          prevPage + 1
-      );
-    };
-
-  const showEmptyState =
-    isSearchActive &&
-    !loading &&
-    !error &&
-    recipes.length === 0;
-
-  const showRecipesList =
-    !error &&
-    recipes.length > 0;
-
-  const showInitialLoader =
-    loading &&
-    recipes.length === 0;
-
-  const isRefetching =
-    loading &&
-    recipes.length > 0 &&
-    page === 1;
+  const handleLogoClick = () => {
+    resetFilters();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <>
-      <Hero
-        onSearch={
-          handleSearchSubmit
-        }
-      />
+    <header id="top" className={`${styles.header} ${inter.className}`}>
+      <Link href="/" className={styles.logo} onClick={handleLogoClick}>
+        <Image src="/logo.svg" alt="Tasteorama logo" width={24} height={24} />
+        <span>Tasteorama</span>
+      </Link>
 
-      <div
-        className={
-          styles.mainContainer
-        }
-      >
-        <div
-          className={`${styles.resultsHeaderSlot} ${
-            search
-              ? styles.resultsHeaderSlotActive
-              : ""
-          }`}
-        >
-          {search && (
-            <h2
-              className={
-                styles.resultsHeader
-              }
-            >
-              Search Results for
-              &ldquo;
-              {search}
-              &rdquo;
-            </h2>
+      <nav className={styles.desktopNav}>
+        <div className={styles.navLinks}>
+          <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>
+            Recipes
+          </Link>
+
+          {isLoggedIn && (
+            <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>
+              My Profile
+            </Link>
           )}
         </div>
 
-        <h2
-          className={
-            styles.recipesTitle
-          }
-        >
-          Recipes
-        </h2>
+        <div className={styles.actions}>
+          {!isLoggedIn ? (
+            <>
+              <Link href="/login" className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : ""}`}>
+                Log in
+              </Link>
 
-        <Filters
-          recipesCount={
-            loading &&
-            recipes.length === 0
-              ? null
-              : totalRecipes
-          }
-        />
+              <Link href="/register" className={styles.primary}>
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/add-recipe" className={styles.primary}>
+                Add Recipe
+              </Link>
 
-        {error && (
-          <p
-            className={
-              styles.error
-            }
-          >
-            {error}
-          </p>
-        )}
+              <div className={styles.userSection}>
+                <div className={styles.user}>
+                  {user?.avatar ? (
+                    <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar} />
+                  ) : (
+                    <div className={styles.avatarFallback}>
+                      {avatarLetter}
+                    </div>
+                  )}
 
-        {showInitialLoader && (
-          <div
-            className={
-              styles.loaderWrapper
-            }
-          >
-            <Loader />
-          </div>
-        )}
+                  <span>{displayName}</span>
+                </div>
 
-        {showEmptyState && (
-          <EmptySearchResults />
-        )}
-
-        {showRecipesList && (
-          <div
-            className={
-              isRefetching
-                ? styles.listRefetching
-                : undefined
-            }
-            aria-busy={
-              isRefetching
-            }
-          >
-            <RecipesList
-              recipes={
-                recipes
-              }
-            />
-          </div>
-        )}
-
-        {loading &&
-          recipes.length > 0 &&
-          page === 1 && (
-            <div
-              className={
-                styles.loaderWrapper
-              }
-            >
-              <Loader />
-            </div>
+                <button className={styles.logoutBtn} onClick={() => setLogoutOpen(true)}>
+                  <Image src="/logOut.svg" alt="Log out" width={24} height={24} />
+                </button>
+              </div>
+            </>
           )}
+        </div>
+      </nav>
 
-        {hasMore &&
-          recipes.length >
-            0 && (
-            <LoadMoreBtn
-              onClick={
-                handleLoadMoreClick
-              }
-              isLoading={
-                loading &&
-                page > 1
-              }
-            />
+      <button className={`${styles.burger} ${menuOpen ? styles.closeButton : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? (
+          <Image src="/close.svg" alt="Close menu" width={32} height={32} />
+        ) : (
+          <Image src="/burger.svg" alt="Open menu" width={32} height={32} />
+        )}
+      </button>
+
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          {!isLoggedIn ? (
+            <>
+              <div className={styles.mobileLink}>
+                <Link href="/">Recipes</Link>
+                <Link href="/login">Log in</Link>
+              </div>
+
+              <Link href="/register" className={styles.primary}>
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/">Recipes</Link>
+              <Link href="/profile">My Profile</Link>
+
+              <div className={styles.userSection}>
+                <div className={styles.user}>
+                  {user?.avatar ? (
+                    <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar} />
+                  ) : (
+                    <div className={styles.avatarFallback}>
+                      {avatarLetter}
+                    </div>
+                  )}
+
+                  {displayName}
+                </div>
+
+                <button className={styles.logoutBtn} onClick={() => setLogoutOpen(true)}>
+                  <Image src="/logOut.svg" alt="Log out" width={24} height={24} />
+                </button>
+              </div>
+
+              <Link href="/add-recipe" className={styles.primary}>
+                Add Recipe
+              </Link>
+            </>
           )}
-      </div>
-    </>
+        </div>
+      )}
+
+      {logoutOpen && <LogoutModal onClose={() => setLogoutOpen(false)} />}
+    </header>
   );
 }

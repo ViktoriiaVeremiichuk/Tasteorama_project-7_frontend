@@ -1,18 +1,25 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+
 import { useSearchStore } from "@/app/store/searchStore";
+
 import Hero from "@/components/Hero/Hero";
+import Loader from "@/components/Loader/Loader";
 import Filters from "@/components/Filters/Filters";
+import RecipesList from "@/components/RecipesList/RecipesList";
 import EmptySearchResults from "@/components/EmptySearchResults/EmptySearchResults";
 import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
-import RecipesList from "@/components/RecipesList/RecipesList";
+
 import { useFilterOptions } from "@/hooks/useFilterOptions";
+
 import {
   fetchRecipesWithPriority,
   resolveSearchInput,
 } from "@/lib/search/searchFlow";
+
 import type { Recipe } from "@/types/recipe";
+
 import styles from "./page.module.css";
 
 const LIMIT = 12;
@@ -21,8 +28,12 @@ export default function MainPage() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const [loading, setLoading] =
+    useState<boolean>(false);
+
+  const [error, setError] =
+    useState<string | null>(null);
 
   const {
     search,
@@ -33,52 +44,91 @@ export default function MainPage() {
     setTotalRecipes,
   } = useSearchStore();
 
-  const { ingredients: ingredientsList } = useFilterOptions();
-  const isSearchActive = Boolean(search || category || ingredients);
+  const {
+    ingredients: ingredientsList,
+  } = useFilterOptions();
 
-  const handleSearchSubmit = useCallback(
-    (query: string) => {
-      setAllFilters(
-        resolveSearchInput(query, category, ingredients),
-      );
-    },
-    [category, ingredients, setAllFilters],
+  const isSearchActive = Boolean(
+    search ||
+      category ||
+      ingredients
   );
+
+  const handleSearchSubmit =
+    useCallback(
+      (query: string) => {
+        setAllFilters(
+          resolveSearchInput(
+            query,
+            category,
+            ingredients
+          )
+        );
+      },
+      [
+        category,
+        ingredients,
+        setAllFilters,
+      ]
+    );
 
   useEffect(() => {
     setPage(1);
-  }, [search, category, ingredients]);
+  }, [
+    search,
+    category,
+    ingredients,
+  ]);
 
   useEffect(() => {
-    const loadRecipes = async () => {
-      setLoading(true);
-      setError(null);
+    const loadRecipes =
+      async () => {
+        setLoading(true);
+        setError(null);
 
-      try {
-        const result = await fetchRecipesWithPriority(
-          search,
-          category,
-          ingredients,
-          page,
-          LIMIT,
-          ingredientsList,
-        );
+        try {
+          const result =
+            await fetchRecipesWithPriority(
+              search,
+              category,
+              ingredients,
+              page,
+              LIMIT,
+              ingredientsList
+            );
 
-        setTotalRecipes(result.total);
+          setTotalRecipes(
+            result.total
+          );
 
-        setRecipes((prev) => {
-          const updated =
-            page === 1 ? result.recipes : [...prev, ...result.recipes];
-          setHasMore(updated.length < result.total);
-          return updated;
-        });
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load recipes. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
+          setRecipes(
+            (prev) => {
+              const updated =
+                page === 1
+                  ? result.recipes
+                  : [
+                      ...prev,
+                      ...result.recipes,
+                    ];
+
+              setHasMore(
+                updated.length <
+                  result.total
+              );
+
+              return updated;
+            }
+          );
+        } catch (err) {
+          console.error(err);
+
+          setError(
+            "Failed to load recipes. Please try again later."
+          );
+        } finally {
+          setLoading(false);
+        }
+      };
 
     loadRecipes();
   }, [
@@ -90,64 +140,152 @@ export default function MainPage() {
     setTotalRecipes,
   ]);
 
-  const handleLoadMoreClick = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  const handleLoadMoreClick =
+    () => {
+      setPage(
+        (prevPage) =>
+          prevPage + 1
+      );
+    };
 
   const showEmptyState =
-    isSearchActive && !loading && !error && recipes.length === 0;
-  const showRecipesList = !error && recipes.length > 0;
-  const showInitialLoader = loading && recipes.length === 0;
-  const isRefetching = loading && recipes.length > 0 && page === 1;
+    isSearchActive &&
+    !loading &&
+    !error &&
+    recipes.length === 0;
+
+  const showRecipesList =
+    !error &&
+    recipes.length > 0;
+
+  const showInitialLoader =
+    loading &&
+    recipes.length === 0;
+
+  const isRefetching =
+    loading &&
+    recipes.length > 0 &&
+    page === 1;
 
   return (
     <>
-      <Hero onSearch={handleSearchSubmit} />
-      <div className={styles.mainContainer}>
+      <Hero
+        onSearch={
+          handleSearchSubmit
+        }
+      />
+
+      <div
+        className={
+          styles.mainContainer
+        }
+      >
         <div
-          className={`${styles.resultsHeaderSlot} ${search ? styles.resultsHeaderSlotActive : ""}`}
+          className={`${styles.resultsHeaderSlot} ${
+            search
+              ? styles.resultsHeaderSlotActive
+              : ""
+          }`}
         >
           {search && (
-            <h2 className={styles.resultsHeader}>
-              Search Results for &ldquo;{search}&rdquo;
+            <h2
+              className={
+                styles.resultsHeader
+              }
+            >
+              Search Results for
+              &ldquo;
+              {search}
+              &rdquo;
             </h2>
           )}
         </div>
 
-        <h2 className={styles.recipesTitle}>Recipes</h2>
+        <h2
+          className={
+            styles.recipesTitle
+          }
+        >
+          Recipes
+        </h2>
 
         <Filters
           recipesCount={
-            loading && recipes.length === 0 ? null : totalRecipes
+            loading &&
+            recipes.length === 0
+              ? null
+              : totalRecipes
           }
         />
 
-        {error && <p className={styles.error}>{error}</p>}
-
-        {showInitialLoader && (
-          <p className={styles.loader} aria-live="polite">
-            Loading...
+        {error && (
+          <p
+            className={
+              styles.error
+            }
+          >
+            {error}
           </p>
         )}
 
-        {showEmptyState && <EmptySearchResults />}
-
-        {showRecipesList && (
+        {showInitialLoader && (
           <div
-            className={isRefetching ? styles.listRefetching : undefined}
-            aria-busy={isRefetching}
+            className={
+              styles.loaderWrapper
+            }
           >
-            
-            <RecipesList recipes={recipes} />
+            <Loader />
           </div>
         )}
 
-        {hasMore && recipes.length > 0 && (
-          <LoadMoreBtn
-            onClick={handleLoadMoreClick}
-            isLoading={loading && page > 1}
-          />
+        {showEmptyState && (
+          <EmptySearchResults />
         )}
+
+        {showRecipesList && (
+          <div
+            className={
+              isRefetching
+                ? styles.listRefetching
+                : undefined
+            }
+            aria-busy={
+              isRefetching
+            }
+          >
+            <RecipesList
+              recipes={
+                recipes
+              }
+            />
+          </div>
+        )}
+
+        {loading &&
+          recipes.length > 0 &&
+          page === 1 && (
+            <div
+              className={
+                styles.loaderWrapper
+              }
+            >
+              <Loader />
+            </div>
+          )}
+
+        {hasMore &&
+          recipes.length >
+            0 && (
+            <LoadMoreBtn
+              onClick={
+                handleLoadMoreClick
+              }
+              isLoading={
+                loading &&
+                page > 1
+              }
+            />
+          )}
       </div>
     </>
   );
