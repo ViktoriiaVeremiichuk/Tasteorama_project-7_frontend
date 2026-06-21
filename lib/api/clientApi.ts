@@ -44,3 +44,8 @@ export const getIngredients = async () => {
 
   return Array.isArray(data) ? sortByName(data) : [];
 };
+
+export const getMe = async () => {
+  const res = await api.get("/api/users/current");
+  return res.data;
+};
