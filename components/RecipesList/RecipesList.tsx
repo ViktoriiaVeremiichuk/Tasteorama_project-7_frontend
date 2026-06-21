@@ -10,7 +10,7 @@ export default function RecipeList({
   onDeleted,
 }: RecipesListProps) {
   if (!recipes || recipes.length === 0) {
-    return <p>Рецептів не знайдено</p>;
+    return <p>No recipes found</p>;
   }
 
   return (

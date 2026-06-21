@@ -25,7 +25,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Tasteorama",
-  description: "Додаток для обміну кулінарними рецептами",
+  description: "Recipe Sharing App",
 };
 
 export default function RootLayout({
