@@ -84,6 +84,7 @@ export default function SignUpForm() {
                   <input
                     {...field}
                     id="name"
+                    autoComplete="name"
                     className={`${css.input} ${meta.error && (meta.touched || submitCount > 0) ? css.inputError : ""}`}
                   />
                 )}
@@ -101,6 +102,7 @@ export default function SignUpForm() {
                     {...field}
                     id="email"
                     type="email"
+                    autoComplete="email"
                     className={`${css.input} ${meta.error && (meta.touched || submitCount > 0) ? css.inputError : ""}`}
                   />
                 )}
@@ -112,7 +114,11 @@ export default function SignUpForm() {
               className={`${css.formGroup} ${(touched.password || submitCount > 0) && errors.password ? css.formGroupError : ""}`}
             >
               <label htmlFor="password" className={css.label}>Create a strong password</label>
-              <PasswordField name="password" id="password" />
+              <PasswordField
+                name="password"
+                id="password"
+                autoComplete="new-password"
+              />
                 <ErrorMessage name="password" component="p" className={css.error} />
             </div>
 
@@ -120,7 +126,11 @@ export default function SignUpForm() {
               className={`${css.formGroup} ${(touched.confirmPassword || submitCount > 0) && errors.confirmPassword ? css.formGroupError : ""}`}
             >
               <label htmlFor="confirmPassword" className={css.label}>Repeat your password</label>
-              <PasswordField name="confirmPassword" id="confirmPassword" />
+              <PasswordField
+                name="confirmPassword"
+                id="confirmPassword"
+                autoComplete="new-password"
+              />
                 <ErrorMessage name="confirmPassword" component="p" className={css.error} />
             </div>
           
