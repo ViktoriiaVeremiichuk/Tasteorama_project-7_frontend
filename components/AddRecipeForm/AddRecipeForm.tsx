@@ -78,9 +78,9 @@ export default function AddRecipeForm() {
     const handleAddIngredient = () => {
         if (!selectedIngredient || !measure) return;
 
-        if (measure.length < 2 || measure.length > 10) {
+        if (measure.trim().length < 1 || measure.trim().length > 10) {
             setMeasureError(
-            "Amount must be between 2 and 10 characters"
+            "Max 10 characters"
             );
 
             return;
