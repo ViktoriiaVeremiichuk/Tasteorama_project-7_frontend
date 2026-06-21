@@ -3,6 +3,7 @@ import { api } from "../api";
 import { cookies } from "next/headers";
 import { isAxiosError } from "axios";
 import { logErrorResponse } from "../_utils/utils";
+import { getCookieHeader, withAuthRetry } from "../_utils/authProxy";
 
 export async function GET(request: NextRequest) {
   try {
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
         limit,
       },
       headers: {
-        Cookie: cookieStore.toString(),
+        Cookie: getCookieHeader(cookieStore),
       },
     });
 
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
       logErrorResponse(error.response?.data);
       return NextResponse.json(
         { error: error.message, response: error.response?.data },
-        { status: error.status }
+        { status: error.response?.status || 500 }
       );
     }
     logErrorResponse({ message: (error as Error).message });
@@ -44,13 +45,25 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const formData = await request.formData();
+    const incomingFormData = await request.formData();
 
-    const res = await api.post("/api/recipes", formData, {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-    });
+    const buildFormData = () => {
+      const formData = new FormData();
+
+      for (const [key, value] of incomingFormData.entries()) {
+        formData.append(key, value);
+      }
+
+      return formData;
+    };
+
+    const res = await withAuthRetry(cookieStore, (cookieHeader) =>
+      api.post("/api/recipes", buildFormData(), {
+        headers: {
+          Cookie: cookieHeader,
+        },
+      }),
+    );
 
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
@@ -58,7 +71,7 @@ export async function POST(request: NextRequest) {
       logErrorResponse(error.response?.data);
       return NextResponse.json(
         { error: error.message, response: error.response?.data },
-        { status: error.status }
+        { status: error.response?.status || 500 }
       );
     }
     logErrorResponse({ message: (error as Error).message });

@@ -1,10 +1,9 @@
 "use client";
-
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { logout } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 import styles from "./LogoutModal.module.css";
-import Image from "next/image";
 
 type Props = {
   onClose: () => void;
@@ -24,9 +23,23 @@ const LogoutModal = ({ onClose }: Props) => {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button type="button" className={styles.closeButton} onClick={onClose}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path

@@ -22,3 +22,20 @@ export const getMe = async () => {
   const res = await api.get("/api/users/current");
   return res.data;
 };
+
+export const createRecipe = async (formData: FormData) => {
+  const res = await api.post("/api/recipes", formData);
+
+  return res.data;
+};
+
+export const getCategories = async () => {
+  const res = await api.get("/api/categories");
+
+  return res.data.data;
+};
+
+export const getIngredients = async () => {
+  const res = await api.get("/api/ingredients");
+  return res.data.data;
+};

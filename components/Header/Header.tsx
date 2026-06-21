@@ -1,27 +1,51 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import LogoutButton from "../Logout/LogoutButton/LogoutButton";
 
 import { Inter } from "next/font/google";
+
+import { useAuthStore } from "@/lib/store/authStore";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const user = { name: "Jhon", email: "jhon@gmail.com", avatar: null };
-  const displayName = user.name?.trim() || user.email.split("@")[0];
-  const avatarLetter = displayName.charAt(0).toUpperCase(); //тимчасова змінна для відображення аватара клієнта
+
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+
+  useEffect(() => {
+    if (user) return;
+    async function loadUser() {
+      const res = await fetch("/api/users/current", {
+        credentials: "include",
+      });
+      if (!res.ok) {
+        return;
+      }
+
+      const data = await res.json();
+
+      if (data) {
+        setUser(data);
+      }
+    }
+    loadUser();
+  }, [user, setUser]);
+
+  const displayName = user ? user.name?.trim() || user.email.split("@")[0] : "";
+  const avatarLetter = displayName ? displayName.charAt(0).toUpperCase() : "";
 
   const pathname = usePathname();
   const isRecipesActive = pathname === "/" || pathname.startsWith("/recipes");
   const isLoginActive = pathname.startsWith("/login");
   const isProfileActive = pathname.startsWith("/profile");
 
-  const isLoggedIn = true;
+  const isLoggedIn = Boolean(user);
   return (
     <header className={`${styles.header} ${inter.className}`}>
       <Link href="/" className={styles.logo}>
@@ -33,7 +57,7 @@ export default function Header() {
       <nav className={styles.desktopNav}>
         <div className={styles.navLinks}>
           <Link
-            href="/recipes"
+            href="/"
             className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
           >
             Recipes
@@ -63,12 +87,12 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link href="/addRecipe" className={styles.primary}>
+              <Link href="/add-recipe" className={styles.primary}>
                 Add Recipe
               </Link>
               <div className={styles.userSection}>
                 <div className={styles.user}>
-                  {user.avatar ? (
+                  {user?.avatar ? (
                     <Image
                       src={user.avatar}
                       alt={displayName}
@@ -81,6 +105,7 @@ export default function Header() {
                   )}
                   <span>{displayName}</span>
                 </div>
+
                 <LogoutButton />
               </div>
             </>
@@ -107,7 +132,7 @@ export default function Header() {
             <>
               <div className={styles.mobileLink}>
                 <Link
-                  href="/recipes"
+                  href="/"
                   className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
                 >
                   Recipes
@@ -126,7 +151,7 @@ export default function Header() {
           ) : (
             <>
               <Link
-                href="/recipes"
+                href="/"
                 className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
               >
                 Recipes
@@ -139,7 +164,7 @@ export default function Header() {
               </Link>
               <div className={styles.userSection}>
                 <div className={styles.user}>
-                  {user.avatar ? (
+                  {user?.avatar ? (
                     <Image
                       src={user.avatar}
                       alt={displayName}
@@ -154,7 +179,7 @@ export default function Header() {
                 </div>
                 <LogoutButton />
               </div>
-              <Link href="/addRecipe" className={styles.primary}>
+              <Link href="/add-recipe" className={styles.primary}>
                 Add Recipe
               </Link>
             </>
@@ -165,4 +190,5 @@ export default function Header() {
   );
 }
 
+// цей код має знаходитись в кінці головного коду, перед закриттям Headera
 // {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}

@@ -16,7 +16,7 @@
   flex-direction: column;
   gap: 20px;
   width: fit-content;
-  position: fixed;
+
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -77,6 +77,19 @@
   background-color: transparent;
   color: #000000;
   border: 1px solid #000000;
+}
+
+.logoutButton,
+.cancelButton {
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover,
+.cancelButton:focus,
+.logoutButton:hover,
+.logoutButton:focus {
+  transform: scale(0.98);
+  opacity: 0.7;
 }
 
 @media (min-width: 768px) {
