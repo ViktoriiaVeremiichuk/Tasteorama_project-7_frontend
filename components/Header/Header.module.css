@@ -110,8 +110,19 @@
   align-items: center;
   justify-content: center;
 }
+
+.overlay {
+  position: fixed;
+  top: 74px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+}
+
 .mobileMenu {
-  position: absolute;
+  position: fixed;
   flex-direction: column;
   display: flex;
   align-items: center;
@@ -123,7 +134,7 @@
   padding: 16px;
   padding-bottom: 40px;
   gap: 32px;
-  z-index: 999;
+  z-index: 1000;
 }
 .mobileLink {
   display: flex;
