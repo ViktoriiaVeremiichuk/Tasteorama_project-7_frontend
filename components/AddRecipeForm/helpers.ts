@@ -27,8 +27,8 @@ export const buildRecipeFormData = (
   }
 
   ingredients.forEach((item, index) => {
-    formData.append("ingredients[${index}][id]", item.id);
-    formData.append("ingredients[${index}][measure]", item.measure);
+    formData.append(`ingredients[${index}][id]`, item.id);
+    formData.append(`ingredients[${index}][measure]`, item.measure);
   });
 
   if (file) {
