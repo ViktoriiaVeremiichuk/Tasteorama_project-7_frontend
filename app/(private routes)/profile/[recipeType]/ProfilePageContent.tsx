@@ -76,8 +76,10 @@ export default function ProfilePageContent({
     if (ingredient) {
       filtered = filtered.filter(recipe =>
         recipe.ingredients.some(item => {
-          const ingredientId = typeof item.id === 'string' ? item.id : item.id._id;
-          return ingredientId === ingredient;
+          if (typeof item.id === 'string') {
+            return item.id === ingredient;
+          }
+          return item.id._id === ingredient;
         })
       );
     }
