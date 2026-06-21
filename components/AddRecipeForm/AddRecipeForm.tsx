@@ -42,10 +42,10 @@ type Ingredient = {
   name: string;
 };
 
-const sortByName = <T extends { name: string }>(items: T[]) =>
-    [...items].sort((a, b) =>
-        a.name.localeCompare(b.name, "en", { sensitivity: "base" })
-    );
+type IngredientOption = {
+  _id: string;
+  name: string;
+};
 
 export default function AddRecipeForm() {
     const [preview, setPreview] = useState<string | null>(null);
@@ -78,9 +78,9 @@ export default function AddRecipeForm() {
     const handleAddIngredient = () => {
         if (!selectedIngredient || !measure) return;
 
-        if (measure.trim().length < 1 || measure.trim().length > 10) {
+        if (measure.length < 2 || measure.length > 16) {
             setMeasureError(
-            "Max 10 characters"
+            "Amount must be between 2 and 16 characters"
             );
 
             return;
@@ -100,9 +100,7 @@ export default function AddRecipeForm() {
             measure,
         };
 
-        setIngredients((prev) =>
-            sortByName([...prev, newIngredient])
-        );
+        setIngredients((prev) => [...prev, newIngredient]);
 
         setSelectedIngredient("");
         setMeasure("");
@@ -130,9 +128,9 @@ export default function AddRecipeForm() {
                 await getIngredients();
             
 
-        setCategories(sortByName(categoriesData));
+        setCategories(categoriesData);
         setAvailableIngredients(
-            sortByName(ingredientsData)
+            ingredientsData
         );
         } catch (error) {
         toast.error(
@@ -148,12 +146,10 @@ export default function AddRecipeForm() {
         <Formik
             initialValues={initialValues}
             validationSchema={addRecipeSchema}
-            validateOnChange={false}
-            validateOnBlur
             onSubmit={async (values, { setSubmitting }) => {
                 try {
-                    if (ingredients.length < 2) {
-                        toast.error("Please add at least two ingredients");
+                    if (ingredients.length === 0) {
+                        toast.error("Please add at least one ingredient");
                         return;
                     }
                     const formData = buildRecipeFormData(
@@ -189,34 +185,34 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
             }} >
             {({ isSubmitting }) => (
                 <Form className={styles.form}>
-                    <div className={styles.rightColumn}>
-                        <h2 className={styles.sectionTitle}>
-                            Upload Photo
-                        </h2>
+                    <div className={styles.topSection}>
+                         {/* Right Column */}
+                        <div className={styles.rightColumn}>
+                            <h2 className={styles.sectionTitle}>
+                                Upload Photo
+                            </h2>
 
-                        <label className={styles.uploadBox}>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                className={styles.hiddenInput}
-                                onChange={handleImageChange}
-                            />
-
-                            {preview ? (
-                                <img
-                                    src={preview}
-                                    alt="Recipe preview"
-                                    className={styles.previewImage}
+                            <label className={styles.uploadBox}>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className={styles.hiddenInput}
+                                    onChange={handleImageChange}
                                 />
-                            ) : (
-                                <div className={styles.cameraIcon}>
-                                    <img src="/photo.svg" alt="Camera Icon" />
-                                </div>
-                            )}
-                        </label>
-                    </div>
 
-                    <div className={styles.contentWrapper}>
+                                {preview ? (
+                                    <img
+                                        src={preview}
+                                        alt="Recipe preview"
+                                        className={styles.previewImage}
+                                    />
+                                ) : (
+                                    <div className={styles.cameraIcon}>
+                            <img src="/photo.svg" alt="Camera Icon" />
+                                    </div>
+                                )}
+                            </label>
+                        </div>
                         <div className={styles.leftColumn}>
                             <h2 className={styles.sectionTitle}>
                                 General Information
@@ -261,26 +257,26 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                 />
                             </div>
 
-                            <div className={styles.fieldGroup}>
-                                <label htmlFor="time">
-                                    Cooking time in minutes
-                                </label>
+                            <div className={styles.row}>
+                                <div className={styles.fieldGroup}>
+                                    <label htmlFor="time">
+                                        Cooking time in minutes
+                                    </label>
 
-                                <Field
-                                    id="time"
-                                    name="time"
-                                    type="number"
-                                    placeholder="10"
-                                />
+                                    <Field
+                                        id="time"
+                                        name="time"
+                                        type="number"
+                                        placeholder="10"
+                                    />
 
-                                <ErrorMessage
-                                    name="time"
-                                    component="span"
-                                    className={styles.error}
-                                />
-                            </div>
+                                    <ErrorMessage
+                                        name="time"
+                                        component="span"
+                                        className={styles.error}
+                                    />
+                                </div>
 
-                            <div className={styles.metaRow}>
                                 <div className={styles.fieldGroup}>
                                     <label htmlFor="calories">
                                         Calories
@@ -332,65 +328,61 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    {/* Ingredients */}
                     <section className={styles.ingredientsSection}>
                         <h2 className={styles.sectionTitle}>
                             Ingredients
                         </h2>
 
                         <div className={styles.ingredientsControls}>
-                            <div className={styles.ingredientsInputs}>
-                                <div className={styles.fieldGroup}>
-                                    <label htmlFor="ingredient">
-                                        Name
-                                    </label>
+                            <div className={styles.fieldGroup}>
+                                <label htmlFor="ingredient">
+                                    Name
+                                </label>
 
-                                    <select
-                                        id="ingredient"
-                                        value={selectedIngredient}
-                                        onChange={(e) =>
-                                            setSelectedIngredient(e.target.value)
-                                        }
-                                    >
-                                        <option value="">
-                                            Select ingredient
-                                        </option>
+                                <select
+                                    id="ingredient"
+                                    value={selectedIngredient}
+                                    onChange={(e) =>
+                                        setSelectedIngredient(e.target.value)
+                                    }
+                                >
+                                    <option value="">
+                                        Select ingredient
+                                    </option>
 
-                                        {availableIngredients.map(
-                                            (ingredient) => (
-                                                <option
-                                                    key={ingredient._id}
-                                                    value={ingredient._id}
-                                                >
-                                                    {ingredient.name}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
-                                </div>
-
-                                <div className={styles.fieldGroup}>
-                                    <label htmlFor="amount">
-                                        Amount
-                                    </label>
-
-                                    <input
-                                        id="amount"
-                                        type="text"
-                                        placeholder="100g"
-                                        value={measure}
-                                        onChange={(e) => setMeasure(e.target.value)}
-                                    />
-                                    {measureError ? (
-                                        <span className={styles.error}>
-                                            {measureError}
-                                        </span>
-                                    ) : (
-                                        <span className={styles.error} aria-hidden="true">
-                                            {" "}
-                                        </span>
+                                    {availableIngredients.map(
+                                        (ingredient) => (
+                                            <option
+                                                key={ingredient._id}
+                                                value={ingredient._id}
+                                            >
+                                                {ingredient.name}
+                                            </option>
+                                        )
                                     )}
-                                </div>
+                                </select>
+                            </div>
+
+                            <div className={styles.fieldGroup}>
+                                <label htmlFor="amount">
+                                    Amount
+                                </label>
+
+                                <input
+                                    id="amount"
+                                    type="text"
+                                    placeholder="100g"
+                                    value={measure}
+                                    onChange={(e) => setMeasure(e.target.value)}
+                                />
+                                {measureError && (
+                                    <span className={styles.error}>
+                                        {measureError}
+                                    </span>
+                                )}
                             </div>
 
                             <button
@@ -398,7 +390,7 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                 onClick={handleAddIngredient}
                                 className={styles.addButton}
                             >
-                                Add new Ingredient
+                                Add new ingredient
                             </button>
                         </div>
 
@@ -436,33 +428,30 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                             Instructions
                         </h2>
 
-                        <div className={styles.fieldGroup}>
-                            <Field
-                                as="textarea"
-                                name="instructions"
-                                rows={6}
-                                placeholder="Enter a text"
-                                className={styles.instructionsTextarea}
-                            />
+                        <Field
+                            as="textarea"
+                            name="instructions"
+                            rows={6}
+                            placeholder="Enter a text"
+                            className={styles.instructionsTextarea}
+                        />
 
-                            <ErrorMessage
-                                name="instructions"
-                                component="span"
-                                className={styles.error}
-                            />
-                        </div>
+                        <ErrorMessage
+                            name="instructions"
+                            component="span"
+                            className={styles.error}
+                        />
                     </section>
 
-                        <button
-                            type="submit"
-                            className={styles.submitButton}
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting
-                                ? "Publishing..."
-                                : "Publish Recipe"}
-                        </button>
-                    </div>
+                    <button
+                        type="submit"
+                        className={styles.submitButton}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? "Publishing..."
+                            : "Publish Recipe"}
+                    </button>
                 </Form>
             )}
         </Formik>

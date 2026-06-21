@@ -10,9 +10,6 @@ export const addRecipeSchema = Yup.object({
     .required("Description is required"),
 
   time: Yup.number()
-    .transform((value, originalValue) =>
-      originalValue === "" ? undefined : value
-    )
     .typeError("Time must be a number")
     .min(1, "Minimum 1 minute")
     .max(360, "Maximum 360 minutes")
