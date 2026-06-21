@@ -50,8 +50,9 @@ export default function MainPage() {
 
   return (
     <div className={styles.mainContainer}>
-      {/* <SearchBox />
-      <Filters /> */}
+      {/* <SearchBox /> */}
+      <h1 className={styles.title}>Recipes</h1>
+      {/* <Filters /> */}
 
       {error ? (
         <p style={{ textAlign: "center", color: "red" }}>{error}</p>
