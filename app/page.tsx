@@ -74,7 +74,7 @@ export default function MainPage() {
       <Hero />
       <div className={styles.mainContainer}>
         {error && <p className={styles.error}>{error}</p>}
-
+          <h1 className={styles.title}>Recipes</h1>
         {showRecipesList && !error && <RecipesList recipes={recipes} />}
 
         {loading && <p className={styles.loader}>Loading...</p>}
