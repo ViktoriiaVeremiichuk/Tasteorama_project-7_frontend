@@ -6,6 +6,26 @@
   padding: 16px 16px 48px 16px;
 }
 
+.error {
+  margin: 0 0 16px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #c80000;
+  text-align: center;
+}
+
+.loader {
+  margin: 16px 0 0;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #595d62;
+  text-align: center;
+}
+
 /* @media screen and (min-width: 393px) {
   .mainContainer {
     padding: 16px 16px 48px 16px;

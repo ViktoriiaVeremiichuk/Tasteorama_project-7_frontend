@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import SearchBox from "../components/SearchBox/SearchBox";
-// import Filters from "../components/Filters/Filters";
+import toast from "react-hot-toast";
+import { useSearchStore } from "@/app/store/searchStore";
+import Hero from "@/components/Hero/Hero";
 import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
 import RecipesList from "@/components/RecipesList/RecipesList";
-import { getRecipes } from "@/lib/api/recipes";
+import { getRecipes, searchRecipes } from "@/lib/api/recipes";
 import type { Recipe } from "@/types/recipe";
 import styles from "./page.module.css";
 
@@ -18,55 +19,70 @@ export default function MainPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { search, category, ingredients, setTotalRecipes } = useSearchStore();
+  const isSearchActive = Boolean(search || category || ingredients);
+
   useEffect(() => {
     const loadRecipes = async () => {
       setLoading(true);
       setError(null);
+
       try {
-        const result = await getRecipes(page, LIMIT);
-        const newRecipes = result.recipes;
-        const total = result.total;
+        const result = isSearchActive
+          ? await searchRecipes(page, LIMIT, {
+              title: search,
+              category,
+              ingredient: ingredients,
+            })
+          : await getRecipes(page, LIMIT);
+
+        setTotalRecipes(result.total);
 
         setRecipes((prev) => {
           const updated =
-            page === 1 ? newRecipes : [...prev, ...newRecipes];
-          setHasMore(updated.length < total);
+            page === 1 ? result.recipes : [...prev, ...result.recipes];
+          setHasMore(updated.length < result.total);
           return updated;
         });
+
+        if (isSearchActive && page === 1 && result.recipes.length === 0) {
+          toast.error(
+            search
+              ? `No recipes found for "${search}"`
+              : "No recipes found",
+          );
+        }
       } catch (err) {
         console.error(err);
-        setError("Не вдалося завантажити рецепти. Спробуйте пізніше.");
+        setError("Failed to load recipes. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
     loadRecipes();
-  }, [page]);
+  }, [page, search, category, ingredients, isSearchActive, setTotalRecipes]);
 
   const handleLoadMoreClick = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
+  const showRecipesList = !isSearchActive || recipes.length > 0;
+
   return (
-    <div className={styles.mainContainer}>
-      {/* <SearchBox /> */}
-      <h1 className={styles.title}>Recipes</h1>
-      {/* <Filters /> */}
+    <>
+      <Hero />
+      <div className={styles.mainContainer}>
+        {error && <p className={styles.error}>{error}</p>}
 
-      {error ? (
-        <p style={{ textAlign: "center", color: "red" }}>{error}</p>
-      ) : (
-        <RecipesList recipes={recipes} />
-      )}
+        {showRecipesList && !error && <RecipesList recipes={recipes} />}
 
-      {loading && (
-        <p style={{ textAlign: "center" }}>Завантаження рецептів...</p>
-      )}
+        {loading && <p className={styles.loader}>Loading...</p>}
 
-
-      {hasMore && !loading && <LoadMoreBtn onClick={handleLoadMoreClick}  isLoading={loading} />}
-
-    </div>
+        {hasMore && !loading && recipes.length > 0 && (
+          <LoadMoreBtn onClick={handleLoadMoreClick} isLoading={loading} />
+        )}
+      </div>
+    </>
   );
 }
