@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Filters from "@/components/Filters/Filters";
 import RecipesList from "@/components/RecipesList/RecipesList";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
@@ -10,6 +10,25 @@ import css from "./ProfilePage.module.css";
 
 const LIMIT = 12;
 
+type TabData = {
+  recipes: Recipe[];
+  total: number;
+  hasMore: boolean;
+  page: number;
+};
+
+const emptyTabData = (): TabData => ({
+  recipes: [],
+  total: 0,
+  hasMore: false,
+  page: 1,
+});
+
+const profileTabCache: Record<RecipeType, TabData> = {
+  own: emptyTabData(),
+  favorites: emptyTabData(),
+};
+
 type ProfilePageContentProps = {
   recipeType: RecipeType;
 };
@@ -17,17 +36,27 @@ type ProfilePageContentProps = {
 export default function ProfilePageContent({
   recipeType,
 }: ProfilePageContentProps) {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [tabData, setTabData] = useState<Record<RecipeType, TabData>>(() => ({
+    own: { ...profileTabCache.own, recipes: [...profileTabCache.own.recipes] },
+    favorites: {
+      ...profileTabCache.favorites,
+      recipes: [...profileTabCache.favorites.recipes],
+    },
+  }));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const requestIdRef = useRef(0);
+
+  const currentTab = tabData[recipeType];
+  const { recipes, total, hasMore, page } = currentTab;
 
   const emptyMessage =
     recipeType === "own" ? "No recipes yet." : "No saved recipes yet.";
 
   useEffect(() => {
+    const requestId = requestIdRef.current + 1;
+    requestIdRef.current = requestId;
+
     const fetchRecipes = async () => {
       try {
         setIsLoading(true);
@@ -38,22 +67,46 @@ export default function ProfilePageContent({
             ? await getFavoriteRecipes(page, LIMIT)
             : await getOwnRecipes(page, LIMIT);
 
+        if (requestIdRef.current !== requestId) {
+          return;
+        }
+
         const newRecipes = result.recipes;
-        const totalCount = result.total ?? result.totalItems ?? newRecipes.length;
+        const totalCount =
+          result.total ?? result.totalItems ?? newRecipes.length;
 
-        setRecipes((prev) => {
+        setTabData((prev) => {
+          const previousTab = prev[recipeType];
           const updatedRecipes =
-            page === 1 ? newRecipes : [...prev, ...newRecipes];
+            page === 1
+              ? newRecipes
+              : [...previousTab.recipes, ...newRecipes];
 
-          setTotal(totalCount);
-          setHasMore(updatedRecipes.length < totalCount);
+          const nextTabData = {
+            recipes: updatedRecipes,
+            total: totalCount,
+            hasMore: updatedRecipes.length < totalCount,
+            page,
+          };
 
-          return updatedRecipes;
+          profileTabCache[recipeType] = {
+            ...nextTabData,
+            recipes: [...updatedRecipes],
+          };
+
+          return {
+            ...prev,
+            [recipeType]: nextTabData,
+          };
         });
       } catch {
-        setError("Failed to load recipes.");
+        if (requestIdRef.current === requestId) {
+          setError("Failed to load recipes.");
+        }
       } finally {
-        setIsLoading(false);
+        if (requestIdRef.current === requestId) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -61,34 +114,93 @@ export default function ProfilePageContent({
   }, [recipeType, page]);
 
   const handleLoadMoreClick = () => {
-    setPage((prevPage) => prevPage + 1);
+    setTabData((prev) => {
+      const nextPage = prev[recipeType].page + 1;
+
+      profileTabCache[recipeType] = {
+        ...profileTabCache[recipeType],
+        page: nextPage,
+      };
+
+      return {
+        ...prev,
+        [recipeType]: {
+          ...prev[recipeType],
+          page: nextPage,
+        },
+      };
+    });
   };
 
   const handleFavoriteRemoved = (recipeId: string) => {
-    setRecipes((prev) => prev.filter((recipe) => recipe._id !== recipeId));
-    setTotal((prev) => Math.max(0, prev - 1));
+    setTabData((prev) => {
+      const current = prev[recipeType];
+      const updatedRecipes = current.recipes.filter(
+        (recipe) => recipe._id !== recipeId,
+      );
+      const updatedTotal = Math.max(0, current.total - 1);
+      const nextTabData = {
+        ...current,
+        recipes: updatedRecipes,
+        total: updatedTotal,
+        hasMore: updatedRecipes.length < updatedTotal,
+      };
+
+      profileTabCache[recipeType] = {
+        ...nextTabData,
+        recipes: [...updatedRecipes],
+      };
+
+      return {
+        ...prev,
+        [recipeType]: nextTabData,
+      };
+    });
   };
 
   const handleRecipeDeleted = (recipeId: string) => {
-    setRecipes((prev) => prev.filter((recipe) => recipe._id !== recipeId));
-    setTotal((prev) => Math.max(0, prev - 1));
+    setTabData((prev) => {
+      const current = prev[recipeType];
+      const updatedRecipes = current.recipes.filter(
+        (recipe) => recipe._id !== recipeId,
+      );
+      const updatedTotal = Math.max(0, current.total - 1);
+      const nextTabData = {
+        ...current,
+        recipes: updatedRecipes,
+        total: updatedTotal,
+        hasMore: updatedRecipes.length < updatedTotal,
+      };
+
+      profileTabCache[recipeType] = {
+        ...nextTabData,
+        recipes: [...updatedRecipes],
+      };
+
+      return {
+        ...prev,
+        [recipeType]: nextTabData,
+      };
+    });
   };
 
   const showFavorite = recipeType === "favorites";
   const showDelete = recipeType === "own";
+  const showInitialLoader = isLoading && recipes.length === 0;
+  const isRefetching = isLoading && recipes.length > 0 && page === 1;
+  const displayCount =
+    recipes.length > 0 || !isLoading ? total : null;
 
   return (
     <>
-      <p className={css.count}>{total} recipes</p>
-
-      <div className={css.filters}>
-        <Filters />
-      </div>
+      <Filters recipesCount={displayCount} />
 
       {error && <p className={css.error}>{error}</p>}
 
-      {!error && isLoading && recipes.length === 0 && (
-        <p className={css.loading}>Loading...</p>
+      {showInitialLoader && (
+        <p className={css.loading} aria-live="polite">
+          Loading...
+        </p>
       )}
 
       {!error && !isLoading && recipes.length === 0 && (
@@ -96,25 +208,29 @@ export default function ProfilePageContent({
       )}
 
       {!error && recipes.length > 0 && (
-        <RecipesList
-          recipes={recipes}
-          showFavorite={showFavorite}
-          onFavoriteRemoved={
-            showFavorite ? handleFavoriteRemoved : undefined
-          }
-          showDelete={showDelete}
-          onDeleted={showDelete ? handleRecipeDeleted : undefined}
-        />
-      )}
-
-      {hasMore && !isLoading && (
-        <div className={css.loadMore}>
-          <LoadMoreBtn onClick={handleLoadMoreClick} isLoading={isLoading} />
+        <div
+          className={isRefetching ? css.listRefetching : undefined}
+          aria-busy={isRefetching}
+        >
+          <RecipesList
+            recipes={recipes}
+            showFavorite={showFavorite}
+            onFavoriteRemoved={
+              showFavorite ? handleFavoriteRemoved : undefined
+            }
+            showDelete={showDelete}
+            onDeleted={showDelete ? handleRecipeDeleted : undefined}
+          />
         </div>
       )}
 
-      {!error && isLoading && recipes.length > 0 && (
-        <p className={css.loading}>Loading...</p>
+      {hasMore && recipes.length > 0 && (
+        <div className={css.loadMore}>
+          <LoadMoreBtn
+            onClick={handleLoadMoreClick}
+            isLoading={isLoading && page > 1}
+          />
+        </div>
       )}
     </>
   );

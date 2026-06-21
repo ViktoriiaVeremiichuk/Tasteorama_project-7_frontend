@@ -1,0 +1,151 @@
+.section {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 33px;
+}
+
+.count {
+  margin: 0;
+  min-width: 9ch;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  line-height: normal;
+  color: #000;
+  white-space: nowrap;
+}
+
+.desktopControls {
+  display: none;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.mobileControls {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filtersButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 0 4px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: normal;
+  color: #000;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 220px;
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow:
+    0 0 1px 0 rgb(0 0 0 / 40%),
+    0 8px 24px -6px rgb(0 0 0 / 16%);
+}
+
+.resetButton {
+  flex-shrink: 0;
+  padding: 0 0 4px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: normal;
+  color: #000;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000;
+  cursor: pointer;
+}
+
+.resetButtonHidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.resetButton:disabled {
+  cursor: default;
+}
+
+.selectWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.select {
+  appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 179px;
+  height: 33px;
+  padding: 4px 28px 4px 8px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #595d62;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.select:focus {
+  box-shadow: 0 0 0 4px rgb(78 70 180 / 20%);
+}
+
+.selectIcon {
+  position: absolute;
+  right: 8px;
+  pointer-events: none;
+}
+
+@media screen and (min-width: 768px) {
+  .count {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .desktopControls {
+    display: flex;
+  }
+
+  .mobileControls {
+    display: none;
+  }
+
+  .selectWrap {
+    width: 179px;
+  }
+}

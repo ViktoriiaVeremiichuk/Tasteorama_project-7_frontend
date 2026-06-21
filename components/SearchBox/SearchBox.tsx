@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SearchBox.module.css";
 
 type SearchBoxProps = {
@@ -16,6 +16,10 @@ export default function SearchBox({
 }: SearchBoxProps) {
   const [inputValue, setInputValue] = useState(initialValue);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setInputValue(initialValue);
+  }, [initialValue]);
 
   const validateSearch = (value: string) => {
     const trimmed = value.trim();

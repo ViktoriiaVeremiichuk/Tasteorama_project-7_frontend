@@ -4,8 +4,12 @@ import { useSearchStore } from "@/app/store/searchStore";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import styles from "./Hero.module.css";
 
-export default function Hero() {
-  const { search, setSearch } = useSearchStore();
+type HeroProps = {
+  onSearch: (value: string) => void;
+};
+
+export default function Hero({ onSearch }: HeroProps) {
+  const { search } = useSearchStore();
 
   return (
     <section className={styles.hero} aria-labelledby="hero-title">
@@ -15,7 +19,7 @@ export default function Hero() {
             Plan, Cook, and Share Your Flavors
           </h1>
           <div className={styles.searchWrap}>
-            <SearchBox initialValue={search} onSearch={setSearch} />
+            <SearchBox initialValue={search} onSearch={onSearch} />
           </div>
         </div>
       </div>
