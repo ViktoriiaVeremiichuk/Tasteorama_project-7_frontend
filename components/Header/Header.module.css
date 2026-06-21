@@ -8,7 +8,7 @@
   background: #3d2218;
   padding: 0 16px;
   color: white;
-  position: relative;
+  position: sticky;
   z-index: 1000;
 }
 
@@ -65,139 +65,28 @@
   text-underline-offset: 4px;
 }
 
-.activeLink::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 2px;
-  background: white;
-  border-radius: 999px;
-}
+.primary { 
+  background: #c08a54; 
+  border: none; 
+  border-radius: 8px; 
+  color: white; 
+  width: 100%; 
+  height: 44px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;}
 
-.primary {
-  background: #c08a54;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  width: 100%;
-  height: 44px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.burger {
-  width: 32px;
-  height: 32px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: none;
-  border: none;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 1000;
-}
-.closeButton {
-  width: 32px;
-  height: 32px;
-
-  display: block;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay {
-  position: fixed;
-  top: 74px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 998;
-}
-
-.mobileMenu {
-  position: fixed;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 74px;
-  right: 0;
-  width: 100%;
-  background: #3d2218;
-  padding: 16px;
-  padding-bottom: 40px;
-  gap: 32px;
-  z-index: 1000;
-}
-.mobileLink {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-}
-
-/*------user button and avatar------*/
-.userSection {
-  display: flex;
-  align-items: center;
-}
-.user {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  padding-right: 16px;
-  margin-right: 16px;
-  border-right: 2px solid rgb(255, 255, 255);
-}
-.avatar,
-.avatarFallback {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.avatar {
-  object-fit: cover;
-}
-.avatarFallback {
-  background: #9b6c43;
-  color: white;
-  font-weight: 600;
-  font-size: 18px;
-}
-.logoutBtn {
-  background: none;
-  border: none;
-  color: white;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-/*--------Tablet (768px)----------*/
-@media screen and (min-width: 768px) {
-  .header {
-    height: 72px;
-    padding: 0 32px;
+  .activeLink::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background: white;
+    border-radius: 999px;
   }
-  .desktopNav {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
+
   .navLinks {
     display: flex;
     gap: 20px;
@@ -211,18 +100,118 @@
     padding: 0;
   }
   .burger {
-    display: none;
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  .closeButton{
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #3d2218;
+    border: none;
+    font-size: 24px; 
+    cursor: pointer; 
+    z-index: 1000;
+  }
+
+  .mobileTop{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   .mobileMenu {
-    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    background: #3d2218;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 16px;
   }
-  .primary {
-    width: 148px;
-    height: 46px;
-    padding: 0;
-    font-size: 16px;
+ 
+  .mobileMenu .userSection {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .mobileMenu .primary {
+    margin-top: auto;
+    margin-bottom: 32px;
+    width: 100%;
+    max-width: 361px;
+  }
+  .mobileLink{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60px;
+    gap: 32px;
+  }
+  .logoutBtn{ 
+    background: none; 
+    border: none; 
+    color: white; 
+    padding: 0; 
+    margin: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+  }
+
+  /*------user button and avatar------*/
+  .userSection{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .user{
+    display: flex;
+    align-items: center;
+    gap:16px;
+
+    padding-right: 16px;
+    margin-right: 16px;
+    border-right: 2px solid rgb(255, 255, 255);
+  }
+  .avatar, .avatarFallback{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .avatar {
+    object-fit: cover;
+  }
+  .avatarFallback{
+    background: #9B6C43;
+    color: white;
     font-weight: 600;
-    border-radius: 8px;
+    border-radius: 20px;
   }
   .userSection {
     display: flex;
@@ -241,7 +230,63 @@
     font-size: 18px;
     gap: 10px;
   }
-}
+/*--------Tablet (768px)----------*/
+  @media screen and (min-width: 768px) {
+    .header{
+        height: 72px;
+        padding: 0 32px;
+    }
+    .desktopNav{
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+    .navLinks{
+        display: flex;
+        gap: 20px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .actions{
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 0;
+    }
+    .burger {
+        display: none;
+      }
+    .mobileMenu{
+        display: none;
+    }
+    .primary{
+        width: 148px;
+        height: 46px;
+        padding: 0;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 8px;
+    }
+    .userSection{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-right: 16px;
+        margin-right: 0;
+
+    }
+    .avatar, .avatarFallback{
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    .logo{
+        font-size: 18px;
+        gap: 10px;
+    }
+  }
+
+
 
 /*--------Desktop (1440px)---------*/
 @media (min-width: 1440px) {
