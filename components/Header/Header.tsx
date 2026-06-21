@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import Image from "next/image";
-//import LogoutModal from "../Logout/LogoutModal/LogoutModal"
+import LogoutButton from "../Logout/LogoutButton/LogoutButton";
 
 import { Inter } from "next/font/google";
 
@@ -14,7 +14,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [logoutOpen, setLogoutOpen] = useState(false);
 
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
@@ -106,17 +105,8 @@ export default function Header() {
                   )}
                   <span>{displayName}</span>
                 </div>
-                <button
-                  className={styles.logoutBtn}
-                  onClick={() => setLogoutOpen(true)}
-                >
-                  <Image
-                    src="/logOut.svg"
-                    alt="Log out"
-                    width={24}
-                    height={24}
-                  />
-                </button>
+
+                <LogoutButton />
               </div>
             </>
           )}
@@ -187,17 +177,7 @@ export default function Header() {
                   )}
                   {displayName}
                 </div>
-                <button
-                  className={styles.logoutBtn}
-                  onClick={() => setLogoutOpen(true)}
-                >
-                  <Image
-                    src="/logOut.svg"
-                    alt="Log out"
-                    width={24}
-                    height={24}
-                  />
-                </button>
+                <LogoutButton />
               </div>
               <Link href="/add-recipe" className={styles.primary}>
                 Add Recipe

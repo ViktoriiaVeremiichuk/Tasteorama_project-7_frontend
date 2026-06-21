@@ -14,13 +14,17 @@ export const login = async (data: { email: string; password: string }) => {
   return res.data;
 };
 
-export const createRecipe = async (
-  formData: FormData
-) => {
-  const res = await api.post(
-    "/api/recipes",
-    formData,
-  );
+export const logout = async (): Promise<void> => {
+  await api.post("/api/auth/logout");
+};
+
+export const getMe = async () => {
+  const res = await api.get("/api/users/current");
+  return res.data;
+};
+
+export const createRecipe = async (formData: FormData) => {
+  const res = await api.post("/api/recipes", formData);
 
   return res.data;
 };
@@ -33,6 +37,5 @@ export const getCategories = async () => {
 
 export const getIngredients = async () => {
   const res = await api.get("/api/ingredients");
-
   return res.data.data;
 };
