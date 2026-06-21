@@ -148,6 +148,8 @@ export default function AddRecipeForm() {
         <Formik
             initialValues={initialValues}
             validationSchema={addRecipeSchema}
+            validateOnChange={false}
+            validateOnBlur
             onSubmit={async (values, { setSubmitting }) => {
                 try {
                     if (ingredients.length < 2) {
@@ -379,9 +381,13 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                         value={measure}
                                         onChange={(e) => setMeasure(e.target.value)}
                                     />
-                                    {measureError && (
+                                    {measureError ? (
                                         <span className={styles.error}>
                                             {measureError}
+                                        </span>
+                                    ) : (
+                                        <span className={styles.error} aria-hidden="true">
+                                            {" "}
                                         </span>
                                     )}
                                 </div>
@@ -430,19 +436,21 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                             Instructions
                         </h2>
 
-                        <Field
-                            as="textarea"
-                            name="instructions"
-                            rows={6}
-                            placeholder="Enter a text"
-                            className={styles.instructionsTextarea}
-                        />
+                        <div className={styles.fieldGroup}>
+                            <Field
+                                as="textarea"
+                                name="instructions"
+                                rows={6}
+                                placeholder="Enter a text"
+                                className={styles.instructionsTextarea}
+                            />
 
-                        <ErrorMessage
-                            name="instructions"
-                            component="span"
-                            className={styles.error}
-                        />
+                            <ErrorMessage
+                                name="instructions"
+                                component="span"
+                                className={styles.error}
+                            />
+                        </div>
                     </section>
 
                         <button
