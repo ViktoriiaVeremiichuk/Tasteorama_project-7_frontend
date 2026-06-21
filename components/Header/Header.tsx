@@ -44,21 +44,18 @@ export default function Header() {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
-    return () => (document.body.style.overflow = "auto");
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [menuOpen]);
 
-  const displayName = user
-    ? user.name?.trim() || user.email.split("@")[0]
-    : "";
+  const displayName = user ? user.name?.trim() || user.email.split("@")[0] : "";
 
-  const avatarLetter = displayName
-    ? displayName.charAt(0).toUpperCase()
-    : "";
+  const avatarLetter = displayName ? displayName.charAt(0).toUpperCase() : "";
 
   const pathname = usePathname();
 
-  const isRecipesActive =
-    pathname === "/" || pathname.startsWith("/recipes");
+  const isRecipesActive = pathname === "/" || pathname.startsWith("/recipes");
 
   const isLoginActive = pathname.startsWith("/login");
   const isProfileActive = pathname.startsWith("/profile");
@@ -79,12 +76,18 @@ export default function Header() {
 
       <nav className={styles.desktopNav}>
         <div className={styles.navLinks}>
-          <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>
+          <Link
+            href="/"
+            className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
+          >
             Recipes
           </Link>
 
           {isLoggedIn && (
-            <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>
+            <Link
+              href="/profile"
+              className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}
+            >
               My Profile
             </Link>
           )}
@@ -93,7 +96,10 @@ export default function Header() {
         <div className={styles.actions}>
           {!isLoggedIn ? (
             <>
-              <Link href="/login" className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : ""}`}>
+              <Link
+                href="/login"
+                className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : ""}`}
+              >
                 Log in
               </Link>
 
@@ -109,19 +115,20 @@ export default function Header() {
 
               <div className={styles.userSection}>
                 <div className={styles.user}>
-                  {user?.avatar ? (
-                    <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar} />
-                  ) : (
-                    <div className={styles.avatarFallback}>
-                      {avatarLetter}
-                    </div>
-                  )}
-
+                  <div className={styles.avatarFallback}>{avatarLetter}</div>
                   <span>{displayName}</span>
                 </div>
 
-                <button className={styles.logoutBtn} onClick={() => setLogoutOpen(true)}>
-                  <Image src="/logOut.svg" alt="Log out" width={24} height={24} />
+                <button
+                  className={styles.logoutBtn}
+                  onClick={() => setLogoutOpen(true)}
+                >
+                  <Image
+                    src="/logOut.svg"
+                    alt="Log out"
+                    width={24}
+                    height={24}
+                  />
                 </button>
               </div>
             </>
@@ -129,7 +136,10 @@ export default function Header() {
         </div>
       </nav>
 
-      <button className={`${styles.burger} ${menuOpen ? styles.closeButton : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
+      <button
+        className={`${styles.burger} ${menuOpen ? styles.closeButton : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
         {menuOpen ? (
           <Image src="/close.svg" alt="Close menu" width={32} height={32} />
         ) : (
@@ -157,19 +167,20 @@ export default function Header() {
 
               <div className={styles.userSection}>
                 <div className={styles.user}>
-                  {user?.avatar ? (
-                    <Image src={user.avatar} alt={displayName} width={32} height={32} className={styles.avatar} />
-                  ) : (
-                    <div className={styles.avatarFallback}>
-                      {avatarLetter}
-                    </div>
-                  )}
-
+                  <div className={styles.avatarFallback}>{avatarLetter}</div>
                   {displayName}
                 </div>
 
-                <button className={styles.logoutBtn} onClick={() => setLogoutOpen(true)}>
-                  <Image src="/logOut.svg" alt="Log out" width={24} height={24} />
+                <button
+                  className={styles.logoutBtn}
+                  onClick={() => setLogoutOpen(true)}
+                >
+                  <Image
+                    src="/logOut.svg"
+                    alt="Log out"
+                    width={24}
+                    height={24}
+                  />
                 </button>
               </div>
 
