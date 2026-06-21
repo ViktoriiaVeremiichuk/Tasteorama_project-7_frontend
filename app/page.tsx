@@ -30,9 +30,6 @@ export default function MainPage() {
       setError(null);
 
 
-  await new Promise((resolve) =>
-    setTimeout(resolve, 3000)
-  );
 
       try {
         const result = isSearchActive
@@ -85,7 +82,9 @@ export default function MainPage() {
         {showRecipesList && !error && <RecipesList recipes={recipes} />}
 
         {loading ? (
-  <Loader />
+  <div className={styles.loaderWrapper}>
+    <Loader />
+  </div>
 ) : (
   hasMore &&
   recipes.length > 0 && (
