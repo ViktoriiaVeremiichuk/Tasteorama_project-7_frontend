@@ -16,6 +16,7 @@
   text-align: center;
 }
 
+/*
 .loader {
   margin: 16px 0 0;
   font-family: var(--font-family);
@@ -24,6 +25,14 @@
   line-height: 1.4;
   color: #595d62;
   text-align: center;
+}*/
+
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+    margin: 24px auto;
 }
 
 /* @media screen and (min-width: 393px) {

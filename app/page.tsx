@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useSearchStore } from "@/app/store/searchStore";
 import Hero from "@/components/Hero/Hero";
+import Loader from "@/components/Loader/Loader";
 import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
 import RecipesList from "@/components/RecipesList/RecipesList";
 import { getRecipes, searchRecipes } from "@/lib/api/recipes";
 import type { Recipe } from "@/types/recipe";
 import styles from "./page.module.css";
+
 
 const LIMIT = 12;
 
@@ -26,6 +28,11 @@ export default function MainPage() {
     const loadRecipes = async () => {
       setLoading(true);
       setError(null);
+
+
+  await new Promise((resolve) =>
+    setTimeout(resolve, 3000)
+  );
 
       try {
         const result = isSearchActive
@@ -77,11 +84,19 @@ export default function MainPage() {
           <h1 className={styles.title}>Recipes</h1>
         {showRecipesList && !error && <RecipesList recipes={recipes} />}
 
-        {loading && <p className={styles.loader}>Loading...</p>}
+        {loading ? (
+  <Loader />
+) : (
+  hasMore &&
+  recipes.length > 0 && (
+    <LoadMoreBtn
+      onClick={handleLoadMoreClick}
+      isLoading={loading}
+    />
+  )
+)}
 
-        {hasMore && !loading && recipes.length > 0 && (
-          <LoadMoreBtn onClick={handleLoadMoreClick} isLoading={loading} />
-        )}
+       
       </div>
     </>
   );

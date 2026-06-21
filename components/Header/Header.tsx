@@ -61,7 +61,7 @@ export default function Header() {
 
   const isLoggedIn = Boolean(user);
   return (
-    <header className={`${styles.header} ${inter.className}`}>
+    <header id="top" className={`${styles.header} ${inter.className}`}>
       <Link href="/" className={styles.logo}>
         <Image src="/logo.svg" alt="Tasteorama logo" width={24} height={24} />
         <span>Tasteorama</span>
