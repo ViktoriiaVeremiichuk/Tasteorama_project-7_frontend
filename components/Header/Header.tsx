@@ -39,6 +39,18 @@ export default function Header() {
     loadUser();
   }, [user, setUser]);
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [menuOpen]);
+
   const displayName = user ? user.name?.trim() || user.email.split("@")[0] : "";
   const avatarLetter = displayName ? displayName.charAt(0).toUpperCase() : "";
 
@@ -129,68 +141,85 @@ export default function Header() {
 
       {/* Mobile drawer */}
       {menuOpen && (
-        <div className={styles.mobileMenu}>
-          {!isLoggedIn ? (
-            <>
-              <div className={styles.mobileLink}>
+        <div className={styles.overlay} onClick={() => setMenuOpen(false)}>
+          <div
+            className={styles.mobileMenu}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {!isLoggedIn ? (
+              <>
+                <div className={styles.mobileLink}>
+                  <Link
+                    href="/"
+                    onClick={() => setMenuOpen(false)}
+                    className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
+                  >
+                    Recipes
+                  </Link>
+                  <Link
+                    href="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : ""}`}
+                  >
+                    Log in
+                  </Link>
+                </div>
+                <Link
+                  href="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className={styles.primary}
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <>
                 <Link
                   href="/"
+                  onClick={() => setMenuOpen(false)}
                   className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
                 >
                   Recipes
                 </Link>
                 <Link
-                  href="/login"
-                  className={`${styles.loginLink} ${isLoginActive ? styles.activeLink : ""}`}
+                  href="/profile"
+                  onClick={() => setMenuOpen(false)}
+                  className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}
                 >
-                  Log in
+                  My Profile
                 </Link>
-              </div>
-              <Link href="/register" className={styles.primary}>
-                Register
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/"
-                className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}
-              >
-                Recipes
-              </Link>
-              <Link
-                href="/profile"
-                className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}
-              >
-                My Profile
-              </Link>
-              <div className={styles.userSection}>
-                <div className={styles.user}>
-                  {user?.avatar ? (
-                    <Image
-                      src={user.avatar}
-                      alt={displayName}
-                      width={32}
-                      height={32}
-                      className={styles.avatar}
-                    />
-                  ) : (
-                    <div className={styles.avatarFallback}>{avatarLetter}</div>
-                  )}
-                  {displayName}
+                <div className={styles.userSection}>
+                  <div className={styles.user}>
+                    {user?.avatar ? (
+                      <Image
+                        src={user.avatar}
+                        alt={displayName}
+                        width={32}
+                        height={32}
+                        className={styles.avatar}
+                      />
+                    ) : (
+                      <div className={styles.avatarFallback}>
+                        {avatarLetter}
+                      </div>
+                    )}
+                    {displayName}
+                  </div>
+                  <LogoutButton />
                 </div>
-                <LogoutButton />
-              </div>
-              <Link href="/add-recipe" className={styles.primary}>
-                Add Recipe
-              </Link>
-            </>
-          )}
+                <Link
+                  href="/add-recipe"
+                  onClick={() => setMenuOpen(false)}
+                  className={styles.primary}
+                >
+                  Add Recipe
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
-      {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
+      {logoutOpen && <LogoutModal onClose={() => setLogoutOpen(false)} />}
     </header>
   );
 }
-
-
