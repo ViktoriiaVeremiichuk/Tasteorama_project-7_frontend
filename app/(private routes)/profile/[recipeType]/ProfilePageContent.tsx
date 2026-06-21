@@ -46,12 +46,44 @@ export default function ProfilePageContent({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const requestIdRef = useRef(0);
+  
+  const [category, setCategory] = useState("");
+  const [ingredient, setIngredient] = useState("");
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
 
   const currentTab = tabData[recipeType];
   const { recipes, total, hasMore, page } = currentTab;
 
   const emptyMessage =
     recipeType === "own" ? "No recipes yet." : "No saved recipes yet.";
+
+  // Reset filters when tab changes
+  useEffect(() => {
+    setCategory("");
+    setIngredient("");
+  }, [recipeType]);
+
+  // Apply client-side filtering
+  useEffect(() => {
+    let filtered = [...recipes];
+
+    if (category) {
+      filtered = filtered.filter(recipe => 
+        recipe.category.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    if (ingredient) {
+      filtered = filtered.filter(recipe =>
+        recipe.ingredients.some(item => {
+          const ingredientId = typeof item.id === 'string' ? item.id : item.id._id;
+          return ingredientId === ingredient;
+        })
+      );
+    }
+
+    setFilteredRecipes(filtered);
+  }, [recipes, category, ingredient]);
 
   useEffect(() => {
     const requestId = requestIdRef.current + 1;
@@ -188,12 +220,24 @@ export default function ProfilePageContent({
   const showDelete = recipeType === "own";
   const showInitialLoader = isLoading && recipes.length === 0;
   const isRefetching = isLoading && recipes.length > 0 && page === 1;
-  const displayCount =
-    recipes.length > 0 || !isLoading ? total : null;
+  
+  const displayCount = (category || ingredient) ? filteredRecipes.length : total;
+  const displayRecipes = (category || ingredient) ? filteredRecipes : recipes;
 
   return (
     <>
-      <Filters recipesCount={displayCount} />
+      <Filters 
+        recipesCount={displayCount}
+        mode="profile"
+        onCategoryChange={setCategory}
+        onIngredientChange={setIngredient}
+        onReset={() => {
+          setCategory("");
+          setIngredient("");
+        }}
+        initialCategory={category}
+        initialIngredient={ingredient}
+      />
 
       {error && <p className={css.error}>{error}</p>}
 
@@ -207,13 +251,17 @@ export default function ProfilePageContent({
         <p className={css.empty}>{emptyMessage}</p>
       )}
 
-      {!error && recipes.length > 0 && (
+      {!error && !isLoading && displayRecipes.length === 0 && recipes.length > 0 && (
+        <p className={css.empty}>No recipes match the selected filters.</p>
+      )}
+
+      {!error && displayRecipes.length > 0 && (
         <div
           className={isRefetching ? css.listRefetching : undefined}
           aria-busy={isRefetching}
         >
           <RecipesList
-            recipes={recipes}
+            recipes={displayRecipes}
             showFavorite={showFavorite}
             onFavoriteRemoved={
               showFavorite ? handleFavoriteRemoved : undefined

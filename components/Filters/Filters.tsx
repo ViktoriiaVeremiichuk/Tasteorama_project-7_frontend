@@ -10,25 +10,48 @@ import chevronIcon from "./iconFilter/Icon_arrow.svg";
 
 type FiltersProps = {
   recipesCount?: number | null;
+  mode?: "search" | "profile";
+  onCategoryChange?: (category: string) => void;
+  onIngredientChange?: (ingredient: string) => void;
+  onReset?: () => void;
+  initialCategory?: string;
+  initialIngredient?: string;
 };
 
-export default function Filters({ recipesCount }: FiltersProps) {
+export default function Filters({ 
+  recipesCount,
+  mode = "search",
+  onCategoryChange,
+  onIngredientChange,
+  onReset,
+  initialCategory = "",
+  initialIngredient = ""
+}: FiltersProps) {
   const {
     search,
-    category,
-    ingredients,
+    category: searchCategory,
+    ingredients: searchIngredients,
     totalRecipes,
     setAllFilters,
     resetFilters,
   } = useSearchStore();
 
+  const [localCategory, setLocalCategory] = useState(initialCategory);
+  const [localIngredient, setLocalIngredient] = useState(initialIngredient);
+
   const { categories, ingredients: ingredientsList } = useFilterOptions();
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  const isProfileMode = mode === "profile";
+  const category = isProfileMode ? localCategory : searchCategory;
+  const ingredients = isProfileMode ? localIngredient : searchIngredients;
+
   const resolvedCount =
     recipesCount === null ? null : (recipesCount ?? totalRecipes);
-  const hasActiveFilters = Boolean(search || category || ingredients);
+  const hasActiveFilters = Boolean(
+    isProfileMode ? (category || ingredients) : (search || category || ingredients)
+  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,23 +73,39 @@ export default function Filters({ recipesCount }: FiltersProps) {
   }, [isPanelOpen]);
 
   const handleCategoryChange = (value: string) => {
-    setAllFilters({
-      search,
-      category: value,
-      ingredients,
-    });
+    if (isProfileMode) {
+      setLocalCategory(value);
+      onCategoryChange?.(value);
+    } else {
+      setAllFilters({
+        search,
+        category: value,
+        ingredients,
+      });
+    }
   };
 
   const handleIngredientChange = (value: string) => {
-    setAllFilters({
-      search,
-      category,
-      ingredients: value,
-    });
+    if (isProfileMode) {
+      setLocalIngredient(value);
+      onIngredientChange?.(value);
+    } else {
+      setAllFilters({
+        search,
+        category,
+        ingredients: value,
+      });
+    }
   };
 
   const handleReset = () => {
-    resetFilters();
+    if (isProfileMode) {
+      setLocalCategory("");
+      setLocalIngredient("");
+      onReset?.();
+    } else {
+      resetFilters();
+    }
     setIsPanelOpen(false);
   };
 
