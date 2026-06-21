@@ -6,6 +6,68 @@
   padding: 16px 16px 48px 16px;
 }
 
+.error {
+  margin: 0 0 16px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #c80000;
+  text-align: center;
+}
+
+.loader {
+  margin: 16px 0 0;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #595d62;
+  text-align: center;
+}
+
+.resultsHeader {
+  margin: 0;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: normal;
+  color: #000;
+}
+
+.resultsHeaderSlot {
+  height: 0;
+  overflow: hidden;
+}
+
+.resultsHeaderSlotActive {
+  height: auto;
+  margin-bottom: 16px;
+  overflow: visible;
+}
+
+.listRefetching {
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.recipesTitle {
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: normal;
+  color: var(--black); /* Або #000 */
+}
+
+@media screen and (min-width: 768px) {
+  .resultsHeader {
+    font-size: 40px;
+  }
+}
+
 /* @media screen and (min-width: 393px) {
   .mainContainer {
     padding: 16px 16px 48px 16px;
@@ -16,6 +78,12 @@
   .mainContainer {
     max-width: 768px;
     padding: 16px 32px 48px 32px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .recipesTitle {
+    font-size: 40px;
   }
 }
 

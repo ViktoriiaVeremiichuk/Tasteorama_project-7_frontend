@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import Image from "next/image";
-//import LogoutModal from "../Logout/LogoutModal/LogoutModal"
+import LogoutModal from "../Logout/LogoutModal/LogoutModal"
 
 import {Inter} from "next/font/google";
 
@@ -19,15 +19,29 @@ export default function Header(){
     const user = useAuthStore((state) => state.user);
     const setUser = useAuthStore((state) => state.setUser);
 
-    useEffect(()=> {
-        if (user) return; 
+    useEffect(() => {
+        if (user) return;
+      
         async function loadUser() {
-            const res = await fetch("/api/users/current");
-            if(!res.ok) return;
-            setUser(await res.json())
+          try {
+            const res = await fetch("/api/users/current", {
+              credentials: "include",
+            });
+      
+            if (!res.ok) return;
+      
+            const data = await res.json();
+      
+            if (data) {
+              setUser(data);
+            }
+          } catch (error) {
+            console.error("Failed to load user", error);
+          }
         }
+      
         loadUser();
-    }, [user, setUser]);
+      }, [user, setUser]);
   
     useEffect(() => {
         if (menuOpen) {
@@ -49,25 +63,30 @@ export default function Header(){
     const isLoginActive = pathname.startsWith("/login");
     const isProfileActive = pathname.startsWith("/profile");
     
-    //очищення токена, перенаправлення на головну сторінку при натасканні на кнопку вихід
+    //очищення токена, перенаправлення на головну сторінку при натисканні на кнопку вихід
     const router = useRouter();
 
     async function handleLogout() {
-        try{
-            await fetch("/api/auth/logout", {
-                method: "POST",
-            });
-        } catch(error){
-            console.error("Logout failed", error);
-        } finally {
-            setUser(null);
-            setMenuOpen(false);
-            router.push("/");
+        try {
+          const res = await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "include",
+          });
+      
+          if (!res.ok) {
+            console.error("Logout failed");
+            return;
+          }
+      
+          setUser(null);
+          setMenuOpen(false);
+          router.push("/");
+        } catch (error) {
+          console.error("Logout failed", error);
         }
-        
-    }
+      }
 
-    const isLoggedIn = true;//Boolean(user);   
+    const isLoggedIn = Boolean(user);   
     return(
         <header className={`${styles.header} ${inter.className}`}>
         <Link href="/" className={styles.logo}>
@@ -167,8 +186,7 @@ export default function Header(){
                 )}
             </div>
             )}
+            {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
         </header>
         )}
 
-// цей код має знаходитись в кінці головного коду, перед закриттям Headera
-/* {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}; */

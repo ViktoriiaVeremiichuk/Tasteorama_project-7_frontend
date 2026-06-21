@@ -1,0 +1,13 @@
+.button {
+  display: flex;
+  background-color: transparent;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+}
+
+.icon {
+  fill: white;
+}
