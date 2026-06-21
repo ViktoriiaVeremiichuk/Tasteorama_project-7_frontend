@@ -6,6 +6,7 @@ import styles from "./Header.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import LogoutButton from "../Logout/LogoutButton/LogoutButton";
+import LogoutModal from "../Logout/LogoutModal/LogoutModal";
 
 import { Inter } from "next/font/google";
 
@@ -14,6 +15,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
@@ -186,9 +188,9 @@ export default function Header() {
           )}
         </div>
       )}
+      {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
     </header>
   );
 }
 
-// цей код має знаходитись в кінці головного коду, перед закриттям Headera
-// {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
+
