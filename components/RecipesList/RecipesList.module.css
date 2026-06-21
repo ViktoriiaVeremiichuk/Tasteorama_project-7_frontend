@@ -1,6 +1,18 @@
 .recipesList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
-  padding: 16px 0 48px 0;
+  padding: 0 0 48px;
+}
+
+@media screen and (min-width: 768px) {
+  .recipesList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .recipesList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }

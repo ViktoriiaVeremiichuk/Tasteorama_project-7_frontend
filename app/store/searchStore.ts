@@ -49,7 +49,6 @@ export const useSearchStore = create<SearchStore>((set) => ({
       ingredients: "",
       tempCategory: "",
       tempIngredients: "",
-      totalRecipes: 0,
     }),
   setAllFilters: (filters) =>
     set({

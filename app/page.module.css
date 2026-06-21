@@ -26,6 +26,38 @@
   text-align: center;
 }
 
+.resultsHeader {
+  margin: 0;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: normal;
+  color: #000;
+}
+
+.resultsHeaderSlot {
+  height: 0;
+  overflow: hidden;
+}
+
+.resultsHeaderSlotActive {
+  height: auto;
+  margin-bottom: 16px;
+  overflow: visible;
+}
+
+.listRefetching {
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+@media screen and (min-width: 768px) {
+  .resultsHeader {
+    font-size: 40px;
+  }
+}
+
 /* @media screen and (min-width: 393px) {
   .mainContainer {
     padding: 16px 16px 48px 16px;
