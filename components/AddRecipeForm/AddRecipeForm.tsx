@@ -42,10 +42,10 @@ type Ingredient = {
   name: string;
 };
 
-type IngredientOption = {
-  _id: string;
-  name: string;
-};
+const sortByName = <T extends { name: string }>(items: T[]) =>
+    [...items].sort((a, b) =>
+        a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+    );
 
 export default function AddRecipeForm() {
     const [preview, setPreview] = useState<string | null>(null);
@@ -78,9 +78,9 @@ export default function AddRecipeForm() {
     const handleAddIngredient = () => {
         if (!selectedIngredient || !measure) return;
 
-        if (measure.length < 2 || measure.length > 16) {
+        if (measure.length < 2 || measure.length > 10) {
             setMeasureError(
-            "Amount must be between 2 and 16 characters"
+            "Amount must be between 2 and 10 characters"
             );
 
             return;
@@ -100,7 +100,9 @@ export default function AddRecipeForm() {
             measure,
         };
 
-        setIngredients((prev) => [...prev, newIngredient]);
+        setIngredients((prev) =>
+            sortByName([...prev, newIngredient])
+        );
 
         setSelectedIngredient("");
         setMeasure("");
@@ -128,9 +130,9 @@ export default function AddRecipeForm() {
                 await getIngredients();
             
 
-        setCategories(categoriesData);
+        setCategories(sortByName(categoriesData));
         setAvailableIngredients(
-            ingredientsData
+            sortByName(ingredientsData)
         );
         } catch (error) {
         toast.error(
@@ -148,8 +150,8 @@ export default function AddRecipeForm() {
             validationSchema={addRecipeSchema}
             onSubmit={async (values, { setSubmitting }) => {
                 try {
-                    if (ingredients.length === 0) {
-                        toast.error("Please add at least one ingredient");
+                    if (ingredients.length < 2) {
+                        toast.error("Please add at least two ingredients");
                         return;
                     }
                     const formData = buildRecipeFormData(

@@ -15,10 +15,11 @@ export default function RecipeList({
 
   return (
     <div className={styles.recipesList}>
-      {recipes.map((recipe: Recipe) => (
+      {recipes.map((recipe: Recipe, index: number) => (
         <RecipeCard
           key={recipe._id}
           recipe={recipe}
+          priority={index === 0}
           showFavorite={showFavorite}
           onFavoriteRemoved={
             onFavoriteRemoved

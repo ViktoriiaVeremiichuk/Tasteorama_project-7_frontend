@@ -68,6 +68,7 @@ export default function SignInForm () {
                   {...field}
                   id="email"
                   type="email"
+                  autoComplete="email"
                   placeholder="email@gmail.com"
                   className={`${css.input} ${meta.error && (meta.touched || submitCount > 0) ? css.inputError : ""}`}
                 />
@@ -80,7 +81,11 @@ export default function SignInForm () {
             className={`${css.formGroup} ${(touched.password || submitCount > 0) && errors.password ? css.formGroupError : ""}`}
           >
             <label htmlFor="password" className={css.label}>Enter your password</label>
-            <PasswordField name="password" id="password" />
+            <PasswordField
+              name="password"
+              id="password"
+              autoComplete="current-password"
+            />
               <ErrorMessage name="password" component="p" className={css.error} />
           </div>
 

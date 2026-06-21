@@ -14,13 +14,21 @@ export default function RecipeDetails({ recipe }: Props) {
   const [imageSrc, setImageSrc] = useState(recipe.thumb);
 
   useEffect(() => {
-    if (window.innerWidth >= 768 && recipe.thumb.includes("/preview/")) {
-      const largeImage = recipe.thumb.replace("/preview/", "/preview/large/");
-      const handle = window.requestAnimationFrame(() => {
-        setImageSrc(largeImage);
-      });
-      return () => window.cancelAnimationFrame(handle);
-    }
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const updateImageSrc = () => {
+      if (mediaQuery.matches && recipe.thumb.includes("/preview/")) {
+        setImageSrc(recipe.thumb.replace("/preview/", "/preview/large/"));
+        return;
+      }
+
+      setImageSrc(recipe.thumb);
+    };
+
+    updateImageSrc();
+    mediaQuery.addEventListener("change", updateImageSrc);
+
+    return () => mediaQuery.removeEventListener("change", updateImageSrc);
   }, [recipe.thumb]);
 
   return (
@@ -31,8 +39,9 @@ export default function RecipeDetails({ recipe }: Props) {
             <Image
               src={imageSrc}
               alt={recipe.title}
-              width={704}
-              height={624}
+              fill
+              priority
+              sizes="(max-width: 767px) 100vw, (max-width: 1439px) 704px, 704px"
               className={styles.image}
               onError={() => setImageSrc(recipe.thumb)}
             />

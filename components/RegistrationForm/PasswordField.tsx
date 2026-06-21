@@ -14,9 +14,15 @@ interface Props {
   name: string;
   id?: string;
   placeholder?: string;
+  autoComplete?: string;
 }
 
-export default function PasswordField({ name, id, placeholder }: Props) {
+export default function PasswordField({
+  name,
+  id,
+  placeholder,
+  autoComplete,
+}: Props) {
   const [show, setShow] = useState(false);
   const { submitCount } = useFormikContext();
 
@@ -29,6 +35,7 @@ export default function PasswordField({ name, id, placeholder }: Props) {
             id={id}
             placeholder={placeholder}
             type={show ? "text" : "password"}
+            autoComplete={autoComplete}
             className={`${css.input} ${meta.error && (meta.touched || submitCount > 0) ? css.inputError : ""}`}
           />
         )}
