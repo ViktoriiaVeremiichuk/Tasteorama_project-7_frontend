@@ -1,277 +1,368 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    margin: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.topSection {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
-    align-items: start;
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .sectionTitle {
-    margin-bottom: 16px;
-
-    font-weight: 600;
-    font-size: 24px;
-    color: #000;
+  margin-bottom: 0;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1;
+  color: #000;
 }
 
 .fieldGroup {
-    display: flex;
-    font-size: 18px;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding-bottom: 18px;
+  margin-bottom: -18px;
 }
 
 .fieldGroup label {
-    font-size: 14px;
-    color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+  color: #000;
 }
 
 .fieldGroup input,
 .fieldGroup textarea,
 .fieldGroup select,
 .instructionsTextarea {
-    border: 1px solid #d3d3d3;
-    border-radius: 8px;
-    padding: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 48px;
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 18px;
+  font-family: inherit;
+  line-height: 1;
+  color: #000;
+}
 
-    font-size: 16px;
-    font-family: inherit;
+.fieldGroup input::placeholder,
+.fieldGroup textarea::placeholder,
+.instructionsTextarea::placeholder {
+  color: #595d62;
+}
 
-    width: 100%;
+.fieldGroup select {
+  appearance: none;
+  cursor: pointer;
 }
 
 .fieldGroup textarea,
 .instructionsTextarea {
-    resize: vertical;
+  max-height: none;
+  min-height: 144px;
+  resize: vertical;
 }
 
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 16px;
+.instructionsTextarea::placeholder {
+  color: #9f9f9f;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metaRow {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.metaRow .fieldGroup {
+  flex: 1;
 }
 
 .error {
-    color: #c80000;
-    font-size: 12px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  font-size: 12px;
+  line-height: 15px;
+  color: #c80000;
 }
 
-/* PHOTO */
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
 .uploadBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-    height: 383px;
-
-    background-color: #9f9f9f;
-    border-radius: 16px;
-
-    overflow: hidden;
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 383px;
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: #9f9f9f;
+  cursor: pointer;
 }
 
 .hiddenInput {
-    display: none;
+  display: none;
 }
 
 .cameraIcon {
-    font-size: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 82px;
+  height: 82px;
+}
+
+.cameraIcon img {
+  width: 100%;
+  height: 100%;
 }
 
 .previewImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* INGREDIENTS */
-
 .ingredientsSection {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 .ingredientsControls {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.ingredientsInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .addButton {
-    border: none;
-    border-radius: 8px;
-
-    height: 40px;
-
-    background: #9b6c43;
-    color: #fff;
-
-    font-weight: 600;
-    cursor: pointer;
+  width: 100%;
+  min-height: 48px;
+  height: auto;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #9b6c43;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .addButton:hover,
 .addButton:focus {
-    background: #6d554b;
+  background: #6d554b;
 }
 
 .addButton:active {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
+  background: #9b6c43;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
 }
 
 .addButton:disabled {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
-    opacity: 0.3;
+  background: #9b6c43;
+  opacity: 0.3;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
 }
 
 .ingredientsList {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .ingredientsHeader,
 .ingredientItem {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 12px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 4px;
+  align-items: center;
 }
 
 .ingredientsHeader {
-    font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #c5c5c5;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  color: #000;
 }
 
 .ingredientItem {
-    padding-bottom: 8px;
-    border-bottom: 1px solid #e5e5e5;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 18px;
+  line-height: 1;
 }
 
 .ingredientItem button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
-/* INSTRUCTIONS */
+.ingredientItem button img {
+  width: 24px;
+  height: 24px;
+}
 
 .instructionsSection {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .submitButton {
-    border: none;
-    border-radius: 8px;
-    margin-bottom: 48px;
-
-    height: 48px;
-
-    background: #9b6c43;
-    color: #fff;
-
-    font-size: 16px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: 0.2s;
+  width: 100%;
+  min-height: 48px;
+  height: auto;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #9b6c43;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.submitButton:hover, .submitButton:focus {
-    background: #6d554b;
+.submitButton:hover,
+.submitButton:focus {
+  background: #6d554b;
 }
 
 .submitButton:active {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
+  background: #9b6c43;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
 }
 
 .submitButton:disabled {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
-    opacity: 0.3;
+  background: #9b6c43;
+  opacity: 0.3;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
 }
 
+@media screen and (min-width: 768px) {
+  .sectionTitle {
+    font-size: 32px;
+  }
 
-@media (min-width: 768px) {
-    .row {
-        flex-direction: row;
-    }
+  .leftColumn {
+    gap: 32px;
+  }
 
-    .row .fieldGroup {
-        flex: 1;
-    }
+  .metaRow {
+    gap: 24px;
+  }
 
-    .ingredientsControls {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 24px;
-    }
+  .ingredientsInputs {
+    flex-direction: row;
+    gap: 24px;
+    align-items: flex-end;
+  }
 
-    .addButton {
-        grid-column: 2;
-    }
+  .ingredientsInputs .fieldGroup:first-child {
+    flex: 1 1 431px;
+    max-width: 431px;
+  }
 
-    .ingredientsHeader,
-    .ingredientItem {
-        display: grid;
-        grid-template-columns: 160px 120px 40px;
-        align-items: center;
-        gap: 16px;
-    }
+  .ingredientsInputs .fieldGroup:last-child {
+    flex: 0 0 249px;
+    width: 249px;
+  }
 
+  .ingredientsControls {
+    align-items: flex-end;
+  }
+
+  .addButton {
+    width: 249px;
+    padding: 8px;
+  }
+
+  .ingredientsHeader,
+  .ingredientItem {
+    grid-template-columns: 175px 150px auto;
+    gap: 4px;
+  }
 }
 
-@media (min-width: 1440px) {
-    .form {
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        column-gap: 32px;
-        row-gap: 40px;
-    }
+@media screen and (min-width: 1440px) {
+  .form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 391px;
+    column-gap: 24px;
+    row-gap: 0;
+    align-items: start;
+  }
 
-    .topSection {
-        display: contents;
-    }
+  .rightColumn {
+    grid-column: 2;
+    grid-row: 1;
+  }
 
-    .leftColumn {
-        grid-column: 1;
-        grid-row: 1;
-    }
+  .contentWrapper {
+    grid-column: 1;
+    grid-row: 1;
+    gap: 72px;
+  }
 
-    .rightColumn {
-        grid-column: 2;
-        grid-row: 1 / 4;
-    }
+  .uploadBox {
+    height: 374px;
+  }
 
-    .ingredientsSection {
-        grid-column: 1;
-        grid-row: 2;
-    }
+  .ingredientsInputs .fieldGroup:first-child {
+    flex: 0 0 497px;
+    max-width: 497px;
+  }
 
-    .instructionsSection {
-        grid-column: 1;
-        grid-row: 3;
-    }
+  .ingredientsInputs .fieldGroup:last-child {
+    flex: 0 0 288px;
+    width: 288px;
+  }
 
-    .submitButton {
-        grid-column: 1 / 2;
-    }
+  .addButton {
+    width: 258px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .ingredientsHeader,
+  .ingredientItem {
+    grid-template-columns: 150px 150px auto;
+  }
 }

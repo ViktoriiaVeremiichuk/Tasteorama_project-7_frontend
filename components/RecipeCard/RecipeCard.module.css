@@ -14,8 +14,9 @@
   margin: 0 auto;
   border-radius: 8px;
   width: 100%;
-  height: 230px;
+  height: auto;
   max-width: 337px;
+  aspect-ratio: 337 / 230;
   object-fit: cover;
 }
 
@@ -245,7 +246,7 @@
 @media (min-width: 1440px) {
   .image {
     max-width: 264px;
-    height: 178px;
+    aspect-ratio: 264 / 178;
   }
 
   .learnMoreBtn {

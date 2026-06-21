@@ -14,6 +14,7 @@ type RecipeCardProps = {
   onFavoriteRemoved?: () => void;
   showDelete?: boolean;
   onDeleted?: (id: string) => void;
+  priority?: boolean;
 };
 
 const RecipeCard = ({
@@ -22,6 +23,7 @@ const RecipeCard = ({
   onFavoriteRemoved,
   showDelete = false,
   onDeleted,
+  priority = false,
 }: RecipeCardProps) => {
   const { isFavorite, toggleFavorite, isPending } = useFavoriteRecipe(
     recipe._id,
@@ -50,6 +52,8 @@ const RecipeCard = ({
         alt={recipe.title}
         width={337}
         height={230}
+        priority={priority}
+        sizes="(max-width: 767px) 100vw, (max-width: 1439px) 315px, 264px"
       />
 
       <div className={styles.topRow}>
