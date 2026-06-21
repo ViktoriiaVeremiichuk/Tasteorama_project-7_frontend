@@ -23,10 +23,6 @@ export default function MainPage() {
   const isSearchActive = Boolean(search || category || ingredients);
 
   useEffect(() => {
-    setPage(1);
-  }, [search, category, ingredients]);
-
-  useEffect(() => {
     const loadRecipes = async () => {
       setLoading(true);
       setError(null);
