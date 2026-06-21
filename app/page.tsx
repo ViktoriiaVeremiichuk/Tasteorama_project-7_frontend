@@ -33,7 +33,7 @@ export default function MainPage() {
     setTotalRecipes,
   } = useSearchStore();
 
-  const { categories, ingredients: ingredientsList } = useFilterOptions();
+  const { ingredients: ingredientsList } = useFilterOptions();
   const isSearchActive = Boolean(search || category || ingredients);
 
   const handleSearchSubmit = useCallback(
@@ -114,6 +114,8 @@ export default function MainPage() {
           )}
         </div>
 
+        <h2 className={styles.recipesTitle}>Recipes</h2>
+
         <Filters
           recipesCount={
             loading && recipes.length === 0 ? null : totalRecipes
@@ -135,6 +137,7 @@ export default function MainPage() {
             className={isRefetching ? styles.listRefetching : undefined}
             aria-busy={isRefetching}
           >
+            
             <RecipesList recipes={recipes} />
           </div>
         )}
