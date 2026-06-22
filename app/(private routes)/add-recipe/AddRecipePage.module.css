@@ -3,7 +3,7 @@
 }
 
 .title {
-  margin: 0 0 16px;
+  margin: 48px 16px 16px;
   font-size: 40px;
   font-weight: 600;
   line-height: 1;
@@ -12,6 +12,7 @@
 
 @media screen and (min-width: 768px) {
   .title {
+    margin: 48px 32px 16px;
     font-size: 48px;
     line-height: 1.1;
   }
@@ -19,6 +20,6 @@
 
 @media screen and (min-width: 1440px) {
   .title {
-    margin-bottom: 40px;
+    margin: 48px 107px 40px;
   }
 }

@@ -279,7 +279,7 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                 />
                             </div>
 
-                            <div className={styles.row}>
+                           
                                 <div className={styles.fieldGroup}>
                                     <label htmlFor="time">
                                         Cooking time in minutes
@@ -300,7 +300,7 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                         className={styles.error}
                                     />
                                 </div>
-
+                    <div className={styles.row}>
                                 <div className={styles.fieldGroup}>
                                     <label htmlFor="calories">
                                         Calories
@@ -421,7 +421,11 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                         </div>
 
                         <div className={styles.ingredientsList}>
-                            <div className={styles.ingredientsHeader}>
+                            <div className={`${styles.ingredientsHeader} ${
+                                    ingredients.length > 0
+                                        ? styles.showHeader
+                                        : ""
+                                }`}>
                                 <span>Name:</span>
                                 <span>Amount:</span>
                             </div>
@@ -468,6 +472,12 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                             className={styles.error}
                         />
                     </section>
+
+                     {ingredients.length < 2 && (
+                        <p className={styles.ingredientsWarning}>
+                            Add at least 2 ingredients to publish the recipe.
+                        </p>
+                    )}
 
                     <button
                         type="submit"

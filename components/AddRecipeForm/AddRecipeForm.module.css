@@ -5,6 +5,7 @@
     margin: 0 16px;
 }
 
+
 .topSection {
     display: grid;
     grid-template-columns: 1fr;
@@ -13,11 +14,21 @@
 }
 
 .sectionTitle {
-    margin-bottom: 16px;
-
     font-weight: 600;
     font-size: 24px;
     color: #000;
+}
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .fieldGroup {
@@ -29,7 +40,7 @@
 }
 
 .fieldGroup label {
-    font-size: 14px;
+    font-size: 18px;
     color: #000;
 }
 
@@ -54,9 +65,11 @@
 
 .row {
     display: flex;
-    flex-direction: column;
     gap: 16px;
-    margin-top: 16px;
+}
+
+.row .fieldGroup {
+    flex: 1;
 }
 
 .error {
@@ -142,11 +155,23 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    max-width: 460px;
 }
 
-.ingredientsHeader,
-.ingredientItem {
+.ingredientsHeader {
     display: none;
+    border-bottom: 1px solid #c5c5c5
+}
+
+.showHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 12px;
+    font-weight: 600;
+}
+
+.ingredientItem {
+    display: grid;
     grid-template-columns: 1fr 1fr auto;
     gap: 12px;
     align-items: center;
@@ -158,7 +183,7 @@
 
 .ingredientItem {
     padding-bottom: 8px;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #c5c5c5;
 }
 
 .ingredientItem button {
@@ -219,8 +244,16 @@
     appearance: textfield;
 }
 
+.ingredientsWarning {
+    color: #c80000;
+    font-size: 14px;
+    font-weight: 500;
+}
 
 @media (min-width: 768px) {
+    .form {
+        margin: 0 32px;
+    }
     .row {
         flex-direction: row;
     }
@@ -255,6 +288,7 @@
         grid-template-columns: 1fr 400px;
         column-gap: 32px;
         row-gap: 40px;
+        margin: 0 107px;
     }
 
     .topSection {
@@ -264,6 +298,7 @@
     .leftColumn {
         grid-column: 1;
         grid-row: 1;
+        gap: 32px;
     }
 
     .rightColumn {
