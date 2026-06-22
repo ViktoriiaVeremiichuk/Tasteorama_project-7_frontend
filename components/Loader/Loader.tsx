@@ -1,16 +1,13 @@
 "use client";
 
-import { hatch } from "ldrs";
-
-hatch.register();
+import { useEffect } from "react";
 
 export default function Loader() {
-  return (
-    <l-hatch
-      size="80"
-      stroke="8"
-      speed="3.5"
-      color="#9b6a43"
-    ></l-hatch>
-  );
+  useEffect(() => {
+    import("ldrs").then(({ hatch }) => {
+      hatch.register();
+    });
+  }, []);
+
+  return <l-hatch size="80" color="#9b6a43"></l-hatch>;
 }

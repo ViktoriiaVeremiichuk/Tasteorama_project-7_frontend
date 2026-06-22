@@ -72,15 +72,25 @@ export default function MainPage() {
       ]
     );
 
-  useEffect(() => {
+  const [
+    prevFiltersKey,
+    setPrevFiltersKey,
+  ] = useState<string>(
+    `${search}|${category}|${ingredients}`
+  );
+
+  const filtersKey = `${search}|${category}|${ingredients}`;
+
+  // Reset to first page when filters change, adjusting state during
+  // render instead of in an effect (avoids cascading renders).
+  if (prevFiltersKey !== filtersKey) {
+    setPrevFiltersKey(filtersKey);
     setPage(1);
-  }, [
-    search,
-    category,
-    ingredients,
-  ]);
+  }
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadRecipes =
       async () => {
         setLoading(true);
@@ -97,19 +107,36 @@ export default function MainPage() {
               ingredientsList
             );
 
+          if (cancelled) {
+            return;
+          }
+
           setTotalRecipes(
             result.total
           );
 
           setRecipes(
             (prev) => {
-              const updated =
+              const merged =
                 page === 1
                   ? result.recipes
                   : [
                       ...prev,
                       ...result.recipes,
                     ];
+
+              // Remove duplicates by _id to avoid duplicate React keys
+              // when pages returned by the backend overlap.
+              const seen = new Set<string>();
+              const updated = merged.filter(
+                (recipe) => {
+                  if (seen.has(recipe._id)) {
+                    return false;
+                  }
+                  seen.add(recipe._id);
+                  return true;
+                }
+              );
 
               setHasMore(
                 updated.length <
@@ -120,17 +147,27 @@ export default function MainPage() {
             }
           );
         } catch (err) {
+          if (cancelled) {
+            return;
+          }
+
           console.error(err);
 
           setError(
             "Failed to load recipes. Please try again later."
           );
         } finally {
-          setLoading(false);
+          if (!cancelled) {
+            setLoading(false);
+          }
         }
       };
 
     loadRecipes();
+
+    return () => {
+      cancelled = true;
+    };
   }, [
     page,
     search,
