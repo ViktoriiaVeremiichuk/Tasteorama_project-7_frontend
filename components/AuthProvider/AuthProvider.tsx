@@ -33,8 +33,8 @@ export default function AuthProvider({ children }: Props) {
 
   if (isLoading) {
     return <div className={css.loaderContainer}>
-        <Loader />
-      </div>;
+      <Loader />
+    </div>;
   }
 
   return <>{children}</>;

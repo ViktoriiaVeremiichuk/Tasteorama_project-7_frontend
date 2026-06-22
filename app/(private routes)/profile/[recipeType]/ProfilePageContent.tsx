@@ -6,8 +6,8 @@ import RecipesList from "@/components/RecipesList/RecipesList";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
 import { getFavoriteRecipes, getOwnRecipes } from "@/lib/api/recipes";
 import type { Recipe, RecipeType } from "@/types/recipe";
-import Loader from "@/components/Loader/Loader";
 import css from "./ProfilePage.module.css";
+import Loader from "@/components/Loader/Loader";
 
 const LIMIT = 12;
 
@@ -47,7 +47,7 @@ export default function ProfilePageContent({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const requestIdRef = useRef(0);
-  
+
   const [category, setCategory] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
@@ -69,19 +69,19 @@ export default function ProfilePageContent({
     let filtered = [...recipes];
 
     if (category) {
-      filtered = filtered.filter(recipe => 
-        recipe.category.toLowerCase() === category.toLowerCase()
+      filtered = filtered.filter(
+        (recipe) => recipe.category.toLowerCase() === category.toLowerCase(),
       );
     }
 
     if (ingredient) {
-      filtered = filtered.filter(recipe =>
-        recipe.ingredients.some(item => {
-          if (typeof item.id === 'string') {
+      filtered = filtered.filter((recipe) =>
+        recipe.ingredients.some((item) => {
+          if (typeof item.id === "string") {
             return item.id === ingredient;
           }
           return item.id._id === ingredient;
-        })
+        }),
       );
     }
 
@@ -113,9 +113,7 @@ export default function ProfilePageContent({
         setTabData((prev) => {
           const previousTab = prev[recipeType];
           const updatedRecipes =
-            page === 1
-              ? newRecipes
-              : [...previousTab.recipes, ...newRecipes];
+            page === 1 ? newRecipes : [...previousTab.recipes, ...newRecipes];
 
           const nextTabData = {
             recipes: updatedRecipes,
@@ -223,13 +221,13 @@ export default function ProfilePageContent({
   const showDelete = recipeType === "own";
   const showInitialLoader = isLoading && recipes.length === 0;
   const isRefetching = isLoading && recipes.length > 0 && page === 1;
-  
-  const displayCount = (category || ingredient) ? filteredRecipes.length : total;
-  const displayRecipes = (category || ingredient) ? filteredRecipes : recipes;
+
+  const displayCount = category || ingredient ? filteredRecipes.length : total;
+  const displayRecipes = category || ingredient ? filteredRecipes : recipes;
 
   return (
     <>
-      <Filters 
+      <Filters
         recipesCount={displayCount}
         mode="profile"
         onCategoryChange={setCategory}
@@ -245,18 +243,21 @@ export default function ProfilePageContent({
       {error && <p className={css.error}>{error}</p>}
 
       {showInitialLoader && (
-       <div className={css.loaderContainer} aria-live="polite">
-    <Loader />
-  </div>
+        <div className={css.loaderContainer} aria-live="polite">
+          <Loader />
+        </div>
       )}
 
       {!error && !isLoading && recipes.length === 0 && (
         <p className={css.empty}>{emptyMessage}</p>
       )}
 
-      {!error && !isLoading && displayRecipes.length === 0 && recipes.length > 0 && (
-        <p className={css.empty}>No recipes match the selected filters.</p>
-      )}
+      {!error &&
+        !isLoading &&
+        displayRecipes.length === 0 &&
+        recipes.length > 0 && (
+          <p className={css.empty}>No recipes match the selected filters.</p>
+        )}
 
       {!error && displayRecipes.length > 0 && (
         <div
@@ -266,9 +267,7 @@ export default function ProfilePageContent({
           <RecipesList
             recipes={displayRecipes}
             showFavorite={showFavorite}
-            onFavoriteRemoved={
-              showFavorite ? handleFavoriteRemoved : undefined
-            }
+            onFavoriteRemoved={showFavorite ? handleFavoriteRemoved : undefined}
             showDelete={showDelete}
             onDeleted={showDelete ? handleRecipeDeleted : undefined}
           />

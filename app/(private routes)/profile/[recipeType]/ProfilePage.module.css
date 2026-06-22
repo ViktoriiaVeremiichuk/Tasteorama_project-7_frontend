@@ -24,7 +24,7 @@
 }
 
 .empty,
-
+.loading,
 .error {
   margin-top: 24px;
   font-family: var(--font-family);
@@ -38,15 +38,6 @@
   color: #d93025;
 }
 
-.loaderContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 400px;
-  margin-top: 24px;
-}
-
 .loadMore {
   margin-top: 24px;
 }
@@ -57,8 +48,13 @@
   transition: opacity 0.2s ease;
 }
 
-
-
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  width: 100%;
+}
 
 @media screen and (min-width: 768px) {
   .wrapper {

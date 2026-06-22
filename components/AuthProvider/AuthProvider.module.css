@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 400px;
   width: 100%;
-  min-height: 400px; /* Забезпечує простір для центрування */
-  margin-top: 24px;
 }
