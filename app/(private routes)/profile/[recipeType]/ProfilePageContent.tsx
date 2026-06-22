@@ -6,6 +6,7 @@ import RecipesList from "@/components/RecipesList/RecipesList";
 import LoadMoreBtn from "@/components/LoadMoreBtn/LoadMoreBtn";
 import { getFavoriteRecipes, getOwnRecipes } from "@/lib/api/recipes";
 import type { Recipe, RecipeType } from "@/types/recipe";
+import Loader from "@/components/Loader/Loader";
 import css from "./ProfilePage.module.css";
 
 const LIMIT = 12;
@@ -244,9 +245,9 @@ export default function ProfilePageContent({
       {error && <p className={css.error}>{error}</p>}
 
       {showInitialLoader && (
-        <p className={css.loading} aria-live="polite">
-          Loading...
-        </p>
+       <div className={css.loaderContainer} aria-live="polite">
+    <Loader />
+  </div>
       )}
 
       {!error && !isLoading && recipes.length === 0 && (
