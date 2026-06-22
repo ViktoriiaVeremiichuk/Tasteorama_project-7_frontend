@@ -3,6 +3,7 @@
 import {
     useState,
     useEffect,
+    useRef,
     ChangeEvent
 } from "react";
 import { useRouter } from "next/navigation";
@@ -65,6 +66,17 @@ export default function AddRecipeForm() {
     const imageUrl = URL.createObjectURL(file);
 
         setPreview(imageUrl);
+    };
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const removePhoto = () => {
+        setImageFile(null);
+        setPreview("");
+
+        if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+     }
     };
 
     const [ingredients, setIngredients] = useState<IngredientItem[]>([]);
@@ -194,6 +206,7 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
 
                             <label className={styles.uploadBox}>
                                 <input
+                                    ref={fileInputRef}
                                     type="file"
                                     accept="image/*"
                                     className={styles.hiddenInput}
@@ -212,6 +225,15 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                     </div>
                                 )}
                             </label>
+                             {preview && (
+                                <button
+                                type="button"
+                                onClick={removePhoto}
+                                className={styles.removePhotoButton}
+                                >
+                                Remove photo
+                                </button>
+                            )}
                         </div>
                         <div className={styles.leftColumn}>
                             <h2 className={styles.sectionTitle}>
@@ -266,6 +288,8 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                     <Field
                                         id="time"
                                         name="time"
+                                        min="1"
+                                        max="360"
                                         type="number"
                                         placeholder="10"
                                     />
@@ -285,6 +309,8 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                     <Field
                                         id="calories"
                                         name="calories"
+                                        min="1"
+                                        max="10000"
                                         type="number"
                                         placeholder="150"
                                     />
