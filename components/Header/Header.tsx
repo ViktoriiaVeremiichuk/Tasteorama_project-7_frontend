@@ -161,4 +161,3 @@ export default function Header(){
             {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
         </header>
         )}
-      </button>
