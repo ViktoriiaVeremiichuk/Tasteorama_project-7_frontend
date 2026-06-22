@@ -9,6 +9,7 @@
   padding: 0 16px;
   color: white;
   position: sticky;
+  top: 0;
   z-index: 1000;
 }
 
