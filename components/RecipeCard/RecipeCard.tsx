@@ -36,7 +36,7 @@ const RecipeCard = ({
   const displayCalories =
     recipe.calories === 0 || recipe.calories == null
       ? "-"
-      : `~${recipe.calories}`;
+      : `~${recipe.calories} cals`;
 
   const hasSecondaryAction = showFavorite || showDelete;
 
