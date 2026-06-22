@@ -64,7 +64,7 @@ export default function Header(){
     const isLoginActive = pathname.startsWith("/login");
     const isProfileActive = pathname.startsWith("/profile");
 
-    const isLoggedIn =true //Boolean(user);  
+    const isLoggedIn =Boolean(user);  
     
 
     return(
