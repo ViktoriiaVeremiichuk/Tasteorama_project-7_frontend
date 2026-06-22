@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { logout } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 import styles from "./LogoutModal.module.css";
+import { useSearchStore } from "@/app/store/searchStore";
 
 type Props = {
   onClose: () => void;
@@ -12,11 +13,13 @@ type Props = {
 const LogoutModal = ({ onClose }: Props) => {
   const router = useRouter();
   const clearUser = useAuthStore((state) => state.clearUser);
+  const resetFilters = useSearchStore((state) => state.resetFilters);
 
   const handleLogout = async () => {
     try {
       await logout();
     } finally {
+      resetFilters();
       clearUser();
       onClose();
       router.push("/");
