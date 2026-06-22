@@ -146,7 +146,7 @@
 
 .ingredientsHeader,
 .ingredientItem {
-    display: grid;
+    display: none;
     grid-template-columns: 1fr 1fr auto;
     gap: 12px;
     align-items: center;
@@ -207,6 +207,16 @@
     box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
     background: #9b6c43;
     opacity: 0.3;
+}
+
+:global(input[type="number"]::-webkit-outer-spin-button),
+:global(input[type="number"]::-webkit-inner-spin-button) {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+:global(input[type="number"]) {
+    appearance: textfield;
 }
 
 
