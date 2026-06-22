@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { getMe } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
+import Loader from "@/components/Loader/Loader";
+import css from "./AuthProvider.module.css";
 
 type Props = {
   children: React.ReactNode;
@@ -30,7 +32,9 @@ export default function AuthProvider({ children }: Props) {
   }, [setUser, clearUser]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className={css.loaderContainer}>
+        <Loader />
+      </div>;
   }
 
   return <>{children}</>;

@@ -3,11 +3,12 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
+
 import Link from "next/link";
 import Image from "next/image";
-import LogoutModal from "../Logout/LogoutModal/LogoutModal"
+import { Inter } from "next/font/google";
 
-import {Inter} from "next/font/google";
+import LogoutModal from "../Logout/LogoutModal/LogoutModal";
 
 import { useAuthStore } from "@/lib/store/authStore";
 
@@ -160,4 +161,4 @@ export default function Header(){
             {logoutOpen && (<LogoutModal onClose={()=> setLogoutOpen(false)}/>)}
         </header>
         )}
-
+      </button>

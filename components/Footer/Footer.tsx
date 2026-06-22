@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import logo from "@/app/icon.png";
 import styles from "./Footer.module.css";
 import { useAuthStore } from "@/lib/store/authStore";
 
 export default function Footer() {
+  const pathname = usePathname();
+
   const user = useAuthStore((state) => state.user);
 
   const openAuthModal = useAuthStore(
@@ -22,10 +25,23 @@ export default function Footer() {
     }
   };
 
+  const hideAccountLink =
+    pathname === "/login" ||
+    pathname === "/register";
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo}>
+        <Link
+          href="/"
+          onClick={() => {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+          className={styles.logo}
+        >
           <Image
             src={logo}
             alt="Tasteorama logo"
@@ -44,13 +60,15 @@ export default function Footer() {
             Recipes
           </Link>
 
-          <Link
-            href="/profile/own"
-            className={styles.link}
-            onClick={handleAccountClick}
-          >
-            Account
-          </Link>
+          {!hideAccountLink && (
+            <Link
+              href="/profile/own"
+              className={styles.link}
+              onClick={handleAccountClick}
+            >
+              Account
+            </Link>
+          )}
         </nav>
       </div>
     </footer>
