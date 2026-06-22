@@ -10,7 +10,7 @@ import LogoutModal from "../Logout/LogoutModal/LogoutModal"
 import {Inter} from "next/font/google";
 
 import { useAuthStore } from "@/lib/store/authStore";
-import { useSearchStore } from "@/app/store/searchStore";
+
 const inter = Inter({subsets: ["latin"]});
 
 export default function Header(){
@@ -19,7 +19,6 @@ export default function Header(){
 
     const user = useAuthStore((state) => state.user);
     const setUser = useAuthStore((state) => state.setUser);
-    const resetFilters = useSearchStore((state) => state.resetFilters);
 
     useEffect(() => {
         if (user) return;
@@ -65,12 +64,8 @@ export default function Header(){
     const isLoginActive = pathname.startsWith("/login");
     const isProfileActive = pathname.startsWith("/profile");
 
-    const isLoggedIn = Boolean(user);  
+    const isLoggedIn =true //Boolean(user);  
     
-    const handleLogout = () => {
-        resetFilters();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      };
 
     return(
         <header className={`${styles.header} ${inter.className}`}>
@@ -102,7 +97,7 @@ export default function Header(){
                         </div>
                     <span>{displayName}</span>
                     </div>
-                    <button className={styles.logoutBtn} onClick={handleLogout}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>
+                    <button className={styles.logoutBtn} onClick={() => setLogoutOpen(true)}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>
                    </div>
                 </>
             )}
@@ -155,7 +150,7 @@ export default function Header(){
                             </div>
                             <span>{displayName}</span>
                         </div>
-                        <button className={styles.logoutBtn} onClick={handleLogout}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>   
+                        <button className={styles.logoutBtn} onClick={()=> {setMenuOpen(false); setLogoutOpen(true);}}><Image src="/logOut.svg" alt="Log out" width={24} height={24}/></button>   
                     </div>
                     <Link href="/add-recipe" className={styles.primary} onClick={()=> setMenuOpen(false)}>Add Recipe</Link>
                 </>
