@@ -81,8 +81,7 @@ export default function MainPage() {
 
   const filtersKey = `${search}|${category}|${ingredients}`;
 
-  // Reset to first page when filters change, adjusting state during
-  // render instead of in an effect (avoids cascading renders).
+
   if (prevFiltersKey !== filtersKey) {
     setPrevFiltersKey(filtersKey);
     setPage(1);
@@ -125,8 +124,6 @@ export default function MainPage() {
                       ...result.recipes,
                     ];
 
-              // Remove duplicates by _id to avoid duplicate React keys
-              // when pages returned by the backend overlap.
               const seen = new Set<string>();
               const updated = merged.filter(
                 (recipe) => {
