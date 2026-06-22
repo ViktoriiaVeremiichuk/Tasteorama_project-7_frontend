@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# [Tasteorama]
 
-## Getting Started
+## Про проєкт
+[Короткий опис проєкту]. Цей веб-додаток призначений для пошуку, створення. зберігання та управління кулінарними рецептами. Користувачі можуть переглядати рецепти, шукати їх за назвою, інгредієнтами або категоріями, додавати власні рецепти, а також зберігати улюблені страви у своєму профілі.
 
-First, run the development server:
+## Основні функції
+- **Адаптивний дизайн:** Підтримка мобільних (від 320px), планшетних та десктопних екранів.
+- **Авторизація:** Реєстрація та вхід користувачів із захистом приватних маршрутів.
+- **Робота з рецептами:** Пошук, фільтрація, перегляд деталей, додавання нових та управління улюбленими рецептами.
+- **Особистий кабінет:** Управління власними рецептами та списком улюблених.
+- **Валідація форм:** Використання Formik та Yup для забезпечення коректності даних.
 
-```bash
+## Технології
+Проєкт розроблено з використанням сучасного стеку технологій:
+- **Framework:** Next.js
+- **Styling:** CSS Modules, `modern-normalize`
+- **State Management:** Zustand
+- **Data Fetching:** React Query (TanStack Query)
+- **Forms & Validation:** Formik, Yup
+- **Images:** `next/image`
+- **UI Interactions:** Toast-повідомлення для сповіщень та помилок
+
+## Запуск проєкту
+
+### Попередні вимоги
+- Node.js
+- npm
+
+### Встановлення
+1. Клонуйте репозиторій:
+   ```bash
+   git clone [https://github.com/ViktoriiaVeremiichuk/Tasteorama_project-7_frontend]
+Перейдіть до папки проєкту:
+
+Bash
+cd [назва-папки-проєкту]
+Встановіть залежності:
+
+Bash
+npm install
+Створіть файл .env на основі .env.template та додайте необхідні змінні середовища.
+
+Запустіть проєкт у режимі розробки:
+
+Bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Відкрийте http://localhost:3000 у вашому браузері.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Архітектура та компоненти
+Layout: Загальна структура сторінок (Header, Footer).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+MainPage: Головна сторінка з пошуком та списком рецептів.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+AuthPages: Сторінки реєстрації та логіну з валідацією.
 
-## Learn More
+ProfilePage: Особистий кабінет з розділами "Мої рецепти" та "Улюблені".
 
-To learn more about Next.js, take a look at the following resources:
+AddRecipePage: Форма додавання нового рецепту з валідацією полів та вибором інгредієнтів.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Проєкт розроблено в рамках навчального курсу.
