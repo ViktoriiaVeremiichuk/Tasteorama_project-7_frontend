@@ -27,5 +27,6 @@ export const addRecipeSchema = Yup.object({
     .required("Category is required"),
 
   instructions: Yup.string()
+    .max(1200, "Maximum 1200 characters")
     .required("Instructions are required"),
 });

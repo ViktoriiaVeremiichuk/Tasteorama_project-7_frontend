@@ -3,10 +3,11 @@ import styles from "./AddRecipePage.module.css";
 
 export default function AddRecipePage() {
   return (
-    <main>
-      <h1 className={styles.title}>Add Recipe</h1>
-
-      <AddRecipeForm />
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Add Recipe</h1>
+        <AddRecipeForm />
+      </div>
     </main>
   );
 }
