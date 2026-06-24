@@ -103,9 +103,9 @@ export default function AddRecipeForm() {
     const handleAddIngredient = () => {
         if (!selectedIngredient || !measure) return;
 
-        if (measure.length < 2 || measure.length > 16) {
+        if (measure.length < 2 || measure.length > 10) {
             setMeasureError(
-            "Amount must be between 2 and 16 characters"
+            "Amount must be between 2 and 10 characters"
             );
 
             return;
@@ -173,8 +173,8 @@ export default function AddRecipeForm() {
             validationSchema={addRecipeSchema}
             onSubmit={async (values, { setSubmitting }) => {
                 try {
-                    if (ingredients.length === 0) {
-                        toast.error("Please add at least one ingredient");
+                    if (ingredients.length < 2) {
+                        toast.error("Add at least 2 ingredients to publish the recipe");
                         return;
                     }
                     const formData = buildRecipeFormData(
@@ -198,12 +198,20 @@ export default function AddRecipeForm() {
                     }, 1500);
 
                 } catch (error) {
-                    
-if (axios.isAxiosError(error) && error.response?.data?.message) {
-            toast.error(error.response.data.message);
-        } else {
-            toast.error("Failed to create recipe");
-        }
+                    if (axios.isAxiosError(error)) {
+                        const payload = error.response?.data as {
+                            message?: string;
+                            response?: { message?: string };
+                        } | undefined;
+                        const message =
+                            payload?.response?.message ??
+                            payload?.message ??
+                            "Failed to create recipe";
+
+                        toast.error(message);
+                    } else {
+                        toast.error("Failed to create recipe");
+                    }
                 } finally {
                     setSubmitting(false);
                 }

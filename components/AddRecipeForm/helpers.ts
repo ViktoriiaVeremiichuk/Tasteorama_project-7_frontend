@@ -26,10 +26,12 @@ export const buildRecipeFormData = (
     formData.append("calories", String(values.calories));
   }
 
-  ingredients.forEach((item, index) => {
-    formData.append(`ingredients[${index}][id]`, item.id);
-    formData.append(`ingredients[${index}][measure]`, item.measure);
-  });
+  const ingredientsPayload = ingredients.map(({ id, measure }) => ({
+    id,
+    measure,
+  }));
+
+  formData.append("ingredients", JSON.stringify(ingredientsPayload));
 
   if (file) {
     formData.append("thumb", file);

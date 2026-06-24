@@ -75,7 +75,7 @@ export const getFavoriteRecipes = async (
   limit: number,
 ): Promise<ProfileRecipesResponse> => {
   const res = await api.get("/api/recipes/favorites", {
-    params: { page, limit },
+    params: { page, perPage: limit },
   });
   return res.data;
 };
