@@ -80,7 +80,7 @@
 .ingredientsList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
 .ingredient {
@@ -104,7 +104,7 @@
 .instructions {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .instructionsParagraph {
@@ -135,6 +135,7 @@
 
   .generalInfoWrapper {
     flex-direction: row;
+    align-items: flex-start;
     gap: 24px;
   }
 
@@ -144,18 +145,14 @@
 
   .generalInfo {
     padding: 24px;
-    flex: 1;
-  }
-
-  .ingredientsList {
-    gap: 8px;
+    flex: 0 0 431px;
   }
 }
 
 @media (min-width: 1440px) {
   .container {
     max-width: 1440px;
-    padding: 0 107px;
+    padding: 0 108px;
   }
 
   .imageContainer {
@@ -189,6 +186,6 @@
   }
 
   .instructions {
-    gap: 14px;
+    gap: 16px;
   }
 }

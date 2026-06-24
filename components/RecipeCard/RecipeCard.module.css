@@ -24,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 58px;
+  min-height: 58px;
 }
 
 .title {
@@ -247,6 +247,10 @@
   .image {
     max-width: 264px;
     aspect-ratio: 264 / 178;
+  }
+
+  .card {
+    min-height: 431px;
   }
 
   .learnMoreBtn {

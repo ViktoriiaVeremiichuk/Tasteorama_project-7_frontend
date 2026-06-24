@@ -151,9 +151,9 @@
 .button {
   font-weight: 600;
   background: #9b6c43;
-  border: solid 1px #d9d9d9;
+  border: none;
   outline: none;
-  border-radius: 16px;
+  border-radius: 8px;
   height: 41px;
   max-width: 356px;
   margin-top: 11px;
@@ -184,7 +184,7 @@
 
   .form {
     max-width: 498px;
-    border-radius: 20px;
+    border-radius: 32px;
     gap: 20px;
   }
 
@@ -201,7 +201,7 @@
 
   .title {
     margin-top: 56px;
-    font-size: 26px;
+    font-size: 32px;
   }
 
   .label {
@@ -235,7 +235,7 @@
     height: 48px;
     max-width: 460px;
     font-size: 16px;
-    border-radius: 14px;
+    border-radius: 8px;
     margin-top: 14px;
   }
 
@@ -252,9 +252,9 @@
 
   .form {
     max-width: 362px;
-    border-radius: 12px;
-    gap: 12px;
-    padding: 24px 20px;
+    border-radius: 32px;
+    gap: 20px;
+    padding: 48px 32px;
   }
 
   .fields {
@@ -268,8 +268,9 @@
   }
 
   .title {
-    margin-top: 24px;
-    font-size: 20px;
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 32px;
   }
 
   .label {
@@ -295,7 +296,7 @@
     height: 40px;
     max-width: 100%;
     font-size: 14px;
-    border-radius: 10px;
+    border-radius: 8px;
     margin-top: 8px;
   }
 
