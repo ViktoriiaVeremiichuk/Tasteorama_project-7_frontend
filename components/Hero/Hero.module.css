@@ -72,7 +72,7 @@
 
 @media screen and (min-width: 1440px) {
   .hero {
-    padding: 128px 92px;
+    padding: 128px 0;
     background-image:
       linear-gradient(90deg, rgb(0 0 0 / 90%), rgb(0 0 0 / 30%)),
       url("./Hero-img/Banner _pc.jpg");
@@ -80,5 +80,9 @@
 
   .inner {
     max-width: 1440px;
+    margin: 0 auto;
+    padding-left: 108px;
+    padding-right: 108px;
+    box-sizing: border-box;
   }
 }

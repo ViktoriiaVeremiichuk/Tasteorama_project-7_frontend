@@ -294,7 +294,10 @@
 @media (min-width: 1440px) {
   .header {
     box-sizing: border-box;
-    padding: 14px 108px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: max(108px, calc((100% - 1440px) / 2 + 108px));
+    padding-right: max(108px, calc((100% - 1440px) / 2 + 108px));
   }
   .desktopNav {
     gap: 32px;
