@@ -49,27 +49,6 @@ export default function RecipeDetails({ recipe }: Props) {
         ) : null}
         <h1 className={styles.title}>{recipe.title}</h1>
         <div className={styles.recipeTextBlock}>
-          <div className={styles.generalInfoWrapper}>
-            <div className={styles.generalInfo}>
-              <h2 className={styles.generalInfoTitle}>General information</h2>
-              <p className={styles.generalInfoParagraph}>
-                <span className={styles.generalInfoSpan}> Category:</span>{" "}
-                {recipe.category}
-              </p>
-              <p className={styles.generalInfoParagraph}>
-                <span className={styles.generalInfoSpan}> Cooking time:</span>{" "}
-                {recipe.time} minutes
-              </p>
-              <p className={styles.generalInfoParagraph}>
-                <span className={styles.generalInfoSpan}>
-                  {" "}
-                  Caloric content:
-                </span>{" "}
-                {recipe.calories || "-"}
-              </p>
-            </div>
-            <SaveRecipeButton recipeId={recipe._id} />
-          </div>
           <div className={styles.recipeWrapper}>
             <div className={styles.aboutRecipeBlock}>
               <h2 className={styles.aboutRecipeTitle}>About recipe</h2>
@@ -110,6 +89,27 @@ export default function RecipeDetails({ recipe }: Props) {
               </div>
             </div>
           </div>
+          <aside className={styles.generalInfoWrapper}>
+            <div className={styles.generalInfo}>
+              <h2 className={styles.generalInfoTitle}>General information</h2>
+              <p className={styles.generalInfoParagraph}>
+                <span className={styles.generalInfoSpan}> Category:</span>{" "}
+                {recipe.category}
+              </p>
+              <p className={styles.generalInfoParagraph}>
+                <span className={styles.generalInfoSpan}> Cooking time:</span>{" "}
+                {recipe.time} minutes
+              </p>
+              <p className={styles.generalInfoParagraph}>
+                <span className={styles.generalInfoSpan}>
+                  {" "}
+                  Caloric content:
+                </span>{" "}
+                {recipe.calories || "-"}
+              </p>
+            </div>
+            <SaveRecipeButton recipeId={recipe._id} />
+          </aside>
         </div>
       </div>
     </main>
