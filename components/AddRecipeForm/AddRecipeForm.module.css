@@ -91,6 +91,13 @@
   line-height: 15px;
 }
 
+.charCount {
+  align-self: flex-end;
+  font-size: 12px;
+  line-height: 1;
+  color: #666;
+}
+
 .fieldGroup input[type="number"]::-webkit-outer-spin-button,
 .fieldGroup input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;

@@ -57,7 +57,7 @@ export default function RecipeDetails({ recipe }: Props) {
             <div className={styles.ingredientsBlock}>
               <h2 className={styles.ingredientsTitle}>Ingredients</h2>
               <ul className={styles.ingredientsList}>
-                {recipe.ingredients.map((item) => {
+                {recipe.ingredients.map((item, index) => {
                   const ingredientId = item.id as
                     | string
                     | { name: string; _id: string };
@@ -65,13 +65,16 @@ export default function RecipeDetails({ recipe }: Props) {
                     typeof ingredientId === "string"
                       ? ingredientId
                       : ingredientId.name;
-                  const key =
+                  const ingredientKey =
                     typeof ingredientId === "string"
                       ? ingredientId
                       : ingredientId._id;
 
                   return (
-                    <li key={key} className={styles.ingredient}>
+                    <li
+                      key={`${ingredientKey}-${index}`}
+                      className={styles.ingredient}
+                    >
                       {ingredientName} — {item.measure}
                     </li>
                   );

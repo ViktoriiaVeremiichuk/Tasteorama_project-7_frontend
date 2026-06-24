@@ -7,11 +7,12 @@ import {
     ChangeEvent
 } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import styles from "./AddRecipeForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FieldProps } from "formik";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { addRecipeSchema } from "./validation";
+import { addRecipeSchema, FIELD_LIMITS } from "./validation";
 import  { buildRecipeFormData } from "./helpers";
 import {
     createRecipe,
@@ -28,6 +29,7 @@ const initialValues = {
 };
 
 type IngredientItem = {
+  key: string;
   id: string;
   name: string;
   measure: string;
@@ -39,11 +41,6 @@ type Category = {
 };
 
 type Ingredient = {
-  _id: string;
-  name: string;
-};
-
-type IngredientOption = {
   _id: string;
   name: string;
 };
@@ -60,6 +57,18 @@ const sanitizePositiveIntegerInput = (value: string) =>
   value.replace(/\D/g, "");
 
 const sanitizeAmountInput = (value: string) => value.replace(/-/g, "");
+
+const CharCount = ({
+  current,
+  max,
+}: {
+  current: number;
+  max: number;
+}) => (
+  <span className={styles.charCount} aria-live="polite">
+    {current}/{max}
+  </span>
+);
 
 export default function AddRecipeForm() {
     const [preview, setPreview] = useState<string | null>(null);
@@ -99,13 +108,30 @@ export default function AddRecipeForm() {
     const [measure, setMeasure] = useState("");
 
     const [measureError, setMeasureError] = useState("");
+    const [ingredientsError, setIngredientsError] = useState("");
 
     const handleAddIngredient = () => {
-        if (!selectedIngredient || !measure) return;
+        if (!selectedIngredient) {
+            toast.error("Please select an ingredient");
+            return;
+        }
+
+        if (!measure.trim()) {
+            setMeasureError("Please enter the amount");
+            return;
+        }
 
         if (measure.length < 2 || measure.length > 10) {
             setMeasureError(
             "Amount must be between 2 and 10 characters"
+            );
+
+            return;
+        }
+
+        if (!/^\d/.test(measure)) {
+            setMeasureError(
+            "Amount must start with at least one digit"
             );
 
             return;
@@ -119,21 +145,39 @@ export default function AddRecipeForm() {
 
         if (!ingredient) return;
 
+        const isDuplicate = ingredients.some(
+            (item) => item.id === ingredient._id
+        );
+
+        if (isDuplicate) {
+            toast.error("This ingredient has already been added");
+            return;
+        }
+
         const newIngredient = {
+            key: crypto.randomUUID(),
             id: ingredient._id,
             name: ingredient.name,
             measure,
         };
 
-        setIngredients((prev) => [...prev, newIngredient]);
+        setIngredients((prev) => {
+            const next = [...prev, newIngredient];
+
+            if (next.length >= 2) {
+                setIngredientsError("");
+            }
+
+            return next;
+        });
 
         setSelectedIngredient("");
         setMeasure("");
     };
     
-    const handleRemoveIngredient = (id: string) => {
+    const handleRemoveIngredient = (key: string) => {
         setIngredients((prev) =>
-            prev.filter((item) => item.id !== id)
+            prev.filter((item) => item.key !== key)
         );
     };
     
@@ -157,7 +201,7 @@ export default function AddRecipeForm() {
         setAvailableIngredients(
             ingredientsData
         );
-        } catch (error) {
+        } catch {
         toast.error(
         "Failed to load categories and ingredients"
     );
@@ -171,12 +215,42 @@ export default function AddRecipeForm() {
         <Formik
             initialValues={initialValues}
             validationSchema={addRecipeSchema}
-            onSubmit={async (values, { setSubmitting }) => {
-                try {
-                    if (ingredients.length < 2) {
-                        toast.error("Add at least 2 ingredients to publish the recipe");
-                        return;
+            onSubmit={async (values, { setSubmitting, validateForm, setTouched }) => {
+                const formErrors = await validateForm();
+
+                if (Object.keys(formErrors).length > 0) {
+                    void setTouched(
+                        Object.keys(formErrors).reduce<Record<string, boolean>>(
+                            (acc, field) => {
+                                acc[field] = true;
+                                return acc;
+                            },
+                            {},
+                        ),
+                    );
+
+                    const firstError = Object.values(formErrors)[0];
+
+                    if (typeof firstError === "string") {
+                        toast.error(firstError);
                     }
+
+                    setSubmitting(false);
+                    return;
+                }
+
+                if (ingredients.length < 2) {
+                    const message =
+                        "Add at least 2 ingredients to publish the recipe";
+                    setIngredientsError(message);
+                    toast.error(message);
+                    setSubmitting(false);
+                    return;
+                }
+
+                setIngredientsError("");
+
+                try {
                     const formData = buildRecipeFormData(
                         values,
                         ingredients,
@@ -235,14 +309,23 @@ export default function AddRecipeForm() {
                                 />
 
                                 {preview ? (
-                                    <img
+                                    <Image
                                         src={preview}
                                         alt="Recipe preview"
+                                        width={337}
+                                        height={230}
+                                        unoptimized
                                         className={styles.previewImage}
                                     />
                                 ) : (
                                     <div className={styles.cameraIcon}>
-                            <img src="/photo.svg" alt="Camera Icon" />
+                            <Image
+                                src="/photo.svg"
+                                alt=""
+                                width={24}
+                                height={24}
+                                aria-hidden
+                            />
                                     </div>
                                 )}
                             </label>
@@ -266,12 +349,23 @@ export default function AddRecipeForm() {
                                     Recipe Title
                                 </label>
 
-                                <Field
-                                    id="title"
-                                    name="title"
-                                    type="text"
-                                    placeholder="Enter the name of your recipe"
-                                />
+                                <Field name="title">
+                                    {({ field }: FieldProps) => (
+                                        <>
+                                            <input
+                                                {...field}
+                                                id="title"
+                                                type="text"
+                                                maxLength={FIELD_LIMITS.title}
+                                                placeholder="Enter the name of your recipe"
+                                            />
+                                            <CharCount
+                                                current={field.value.length}
+                                                max={FIELD_LIMITS.title}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
 
                                 <ErrorMessage
                                     name="title"
@@ -285,13 +379,23 @@ export default function AddRecipeForm() {
                                     Recipe Description
                                 </label>
 
-                                <Field
-                                    as="textarea"
-                                    id="description"
-                                    name="description"
-                                    rows={4}
-                                    placeholder="Enter a brief description of your recipe"
-                                />
+                                <Field name="description">
+                                    {({ field }: FieldProps) => (
+                                        <>
+                                            <textarea
+                                                {...field}
+                                                id="description"
+                                                rows={4}
+                                                maxLength={FIELD_LIMITS.description}
+                                                placeholder="Enter a brief description of your recipe"
+                                            />
+                                            <CharCount
+                                                current={field.value.length}
+                                                max={FIELD_LIMITS.description}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
 
                                 <ErrorMessage
                                     name="description"
@@ -488,7 +592,7 @@ export default function AddRecipeForm() {
 
                             {ingredients.map((ingredient) => (
                                 <div
-                                    key={ingredient.id}
+                                    key={ingredient.key}
                                     className={styles.ingredientItem}
                                 >
                                     <span>{ingredient.name}</span>
@@ -498,10 +602,17 @@ export default function AddRecipeForm() {
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            handleRemoveIngredient(ingredient.id)
+                                            handleRemoveIngredient(ingredient.key)
                                         }
+                                        aria-label={`Remove ${ingredient.name}`}
                                     >
-                                       <img src="/delete.svg" alt="✕" />
+                                       <Image
+                                           src="/delete.svg"
+                                           alt=""
+                                           width={24}
+                                           height={24}
+                                           aria-hidden
+                                       />
                                     </button>
                                 </div>
                             ))}
@@ -515,13 +626,23 @@ export default function AddRecipeForm() {
                         </h2>
 
                         <div className={styles.fieldGroup}>
-                        <Field
-                            as="textarea"
-                            name="instructions"
-                            rows={6}
-                            placeholder="Enter a text"
-                            className={styles.instructionsTextarea}
-                        />
+                        <Field name="instructions">
+                            {({ field }: FieldProps) => (
+                                <>
+                                    <textarea
+                                        {...field}
+                                        rows={6}
+                                        maxLength={FIELD_LIMITS.instructions}
+                                        placeholder="Enter a text"
+                                        className={styles.instructionsTextarea}
+                                    />
+                                    <CharCount
+                                        current={field.value.length}
+                                        max={FIELD_LIMITS.instructions}
+                                    />
+                                </>
+                            )}
+                        </Field>
 
                         <ErrorMessage
                             name="instructions"
@@ -531,9 +652,10 @@ export default function AddRecipeForm() {
                         </div>
                     </section>
 
-                     {ingredients.length < 2 && (
+                     {(ingredients.length < 2 || ingredientsError) && (
                         <p className={styles.ingredientsWarning}>
-                            Add at least 2 ingredients to publish the recipe.
+                            {ingredientsError ||
+                                "Add at least 2 ingredients to publish the recipe."}
                         </p>
                     )}
 
