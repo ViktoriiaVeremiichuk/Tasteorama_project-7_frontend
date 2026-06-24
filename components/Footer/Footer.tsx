@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import logo from "@/app/icon.png";
 import styles from "./Footer.module.css";
 import { useAuthStore } from "@/lib/store/authStore";
+import { useSearchStore } from "@/app/store/searchStore";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -15,6 +16,8 @@ export default function Footer() {
   const openAuthModal = useAuthStore(
     (state) => state.openAuthModal
   );
+
+  const resetFilters = useSearchStore((state) => state.resetFilters);
 
   const handleAccountClick = (
     e: React.MouseEvent<HTMLAnchorElement>
@@ -35,6 +38,7 @@ export default function Footer() {
         <Link
           href="/"
           onClick={() => {
+            resetFilters();
             window.scrollTo({
               top: 0,
               behavior: "smooth",
