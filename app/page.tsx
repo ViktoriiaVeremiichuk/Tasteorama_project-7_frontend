@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useSearchStore } from "@/app/store/searchStore";
 
@@ -17,6 +17,7 @@ import {
   fetchRecipesWithPriority,
   resolveSearchInput,
 } from "@/lib/search/searchFlow";
+import { scrollToRecipeCard } from "@/lib/utils/scrollToRecipeCard";
 
 import type { Recipe } from "@/types/recipe";
 
@@ -34,6 +35,8 @@ export default function MainPage() {
 
   const [error, setError] =
     useState<string | null>(null);
+
+  const pendingScrollIndexRef = useRef<number | null>(null);
 
   const {
     search,
@@ -84,6 +87,7 @@ export default function MainPage() {
 
   if (prevFiltersKey !== filtersKey) {
     setPrevFiltersKey(filtersKey);
+    pendingScrollIndexRef.current = null;
     setPage(1);
   }
 
@@ -148,6 +152,7 @@ export default function MainPage() {
             return;
           }
 
+          pendingScrollIndexRef.current = null;
           console.error(err);
 
           setError(
@@ -176,11 +181,30 @@ export default function MainPage() {
 
   const handleLoadMoreClick =
     () => {
+      pendingScrollIndexRef.current = recipes.length;
       setPage(
         (prevPage) =>
           prevPage + 1
       );
     };
+
+  useEffect(() => {
+    if (loading || pendingScrollIndexRef.current === null) {
+      return;
+    }
+
+    const scrollIndex = pendingScrollIndexRef.current;
+    const recipeId = recipes[scrollIndex]?._id;
+
+    if (!recipeId || recipes.length <= scrollIndex) {
+      return;
+    }
+
+    pendingScrollIndexRef.current = null;
+    requestAnimationFrame(() => {
+      scrollToRecipeCard(recipeId);
+    });
+  }, [loading, recipes]);
 
   const showEmptyState =
     isSearchActive &&

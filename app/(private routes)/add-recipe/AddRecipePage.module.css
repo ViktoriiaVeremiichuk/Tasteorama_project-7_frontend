@@ -1,9 +1,17 @@
-.wrapper {
+.page {
   padding-top: 48px;
 }
 
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
 .title {
-  margin: 48px 16px 16px;
+  margin: 0 0 16px;
   font-size: 40px;
   font-weight: 600;
   line-height: 1;
@@ -11,15 +19,22 @@
 }
 
 @media screen and (min-width: 768px) {
+  .container {
+    padding: 0 32px;
+  }
+
   .title {
-    margin: 48px 32px 16px;
     font-size: 48px;
     line-height: 1.1;
   }
 }
 
 @media screen and (min-width: 1440px) {
+  .container {
+    padding: 0 108px;
+  }
+
   .title {
-    margin: 48px 107px 40px;
+    margin-bottom: 40px;
   }
 }

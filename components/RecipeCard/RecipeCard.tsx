@@ -11,6 +11,7 @@ import { useDeleteOwnRecipe } from "@/hooks/useDeleteOwnRecipe";
 type RecipeCardProps = {
   recipe: Recipe;
   showFavorite?: boolean;
+  assumedFavorite?: boolean;
   onFavoriteRemoved?: () => void;
   showDelete?: boolean;
   onDeleted?: (id: string) => void;
@@ -20,6 +21,7 @@ type RecipeCardProps = {
 const RecipeCard = ({
   recipe,
   showFavorite = true,
+  assumedFavorite = false,
   onFavoriteRemoved,
   showDelete = false,
   onDeleted,
@@ -28,6 +30,7 @@ const RecipeCard = ({
   const { isFavorite, toggleFavorite, isPending } = useFavoriteRecipe(
     recipe._id,
     onFavoriteRemoved,
+    { assumedFavorite },
   );
   const { deleteRecipe, isPending: isDeletePending } = useDeleteOwnRecipe(
     recipe._id,
@@ -41,11 +44,18 @@ const RecipeCard = ({
   const hasSecondaryAction = showFavorite || showDelete;
 
   return (
-    <div
+    <article
+      id={`recipe-card-${recipe._id}`}
       className={`${styles.card} ${styles.container} ${
         showFavorite ? "" : styles.cardOwn
       }`}
     >
+      <Link
+        href={`/recipes/${recipe._id}`}
+        className={styles.cardLink}
+        aria-label={`Learn more about ${recipe.title}`}
+      />
+
       <Image
         className={styles.image}
         src={recipe.thumb}
@@ -91,7 +101,10 @@ const RecipeCard = ({
         {showFavorite ? (
           <button
             type="button"
-            onClick={toggleFavorite}
+            onClick={(event) => {
+              event.stopPropagation();
+              toggleFavorite();
+            }}
             disabled={isPending}
             className={`${styles.favBtn} ${
               isFavorite ? styles.activeFavBtn : ""
@@ -114,7 +127,10 @@ const RecipeCard = ({
         {showDelete ? (
           <button
             type="button"
-            onClick={deleteRecipe}
+            onClick={(event) => {
+              event.stopPropagation();
+              deleteRecipe();
+            }}
             disabled={isDeletePending}
             aria-label="Delete recipe"
             className={styles.deleteBtn}
@@ -127,7 +143,7 @@ const RecipeCard = ({
           </button>
         ) : null}
       </div>
-    </div>
+    </article>
   );
 };
 

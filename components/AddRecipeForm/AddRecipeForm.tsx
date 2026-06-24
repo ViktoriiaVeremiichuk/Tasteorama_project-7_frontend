@@ -7,11 +7,12 @@ import {
     ChangeEvent
 } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import styles from "./AddRecipeForm.module.css";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, type FieldProps } from "formik";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { addRecipeSchema } from "./validation";
+import { addRecipeSchema, FIELD_LIMITS } from "./validation";
 import  { buildRecipeFormData } from "./helpers";
 import {
     createRecipe,
@@ -28,6 +29,7 @@ const initialValues = {
 };
 
 type IngredientItem = {
+  key: string;
   id: string;
   name: string;
   measure: string;
@@ -43,10 +45,30 @@ type Ingredient = {
   name: string;
 };
 
-type IngredientOption = {
-  _id: string;
-  name: string;
+const blockNegativeNumberKey = (
+  event: React.KeyboardEvent<HTMLInputElement>
+) => {
+  if (event.key === "-" || event.key === "+" || event.key === "e" || event.key === "E") {
+    event.preventDefault();
+  }
 };
+
+const sanitizePositiveIntegerInput = (value: string) =>
+  value.replace(/\D/g, "");
+
+const sanitizeAmountInput = (value: string) => value.replace(/-/g, "");
+
+const CharCount = ({
+  current,
+  max,
+}: {
+  current: number;
+  max: number;
+}) => (
+  <span className={styles.charCount} aria-live="polite">
+    {current}/{max}
+  </span>
+);
 
 export default function AddRecipeForm() {
     const [preview, setPreview] = useState<string | null>(null);
@@ -86,13 +108,30 @@ export default function AddRecipeForm() {
     const [measure, setMeasure] = useState("");
 
     const [measureError, setMeasureError] = useState("");
+    const [ingredientsError, setIngredientsError] = useState("");
 
     const handleAddIngredient = () => {
-        if (!selectedIngredient || !measure) return;
+        if (!selectedIngredient) {
+            toast.error("Please select an ingredient");
+            return;
+        }
 
-        if (measure.length < 2 || measure.length > 16) {
+        if (!measure.trim()) {
+            setMeasureError("Please enter the amount");
+            return;
+        }
+
+        if (measure.length < 2 || measure.length > 10) {
             setMeasureError(
-            "Amount must be between 2 and 16 characters"
+            "Amount must be between 2 and 10 characters"
+            );
+
+            return;
+        }
+
+        if (!/^\d/.test(measure)) {
+            setMeasureError(
+            "Amount must start with at least one digit"
             );
 
             return;
@@ -106,21 +145,39 @@ export default function AddRecipeForm() {
 
         if (!ingredient) return;
 
+        const isDuplicate = ingredients.some(
+            (item) => item.id === ingredient._id
+        );
+
+        if (isDuplicate) {
+            toast.error("This ingredient has already been added");
+            return;
+        }
+
         const newIngredient = {
+            key: crypto.randomUUID(),
             id: ingredient._id,
             name: ingredient.name,
             measure,
         };
 
-        setIngredients((prev) => [...prev, newIngredient]);
+        setIngredients((prev) => {
+            const next = [...prev, newIngredient];
+
+            if (next.length >= 2) {
+                setIngredientsError("");
+            }
+
+            return next;
+        });
 
         setSelectedIngredient("");
         setMeasure("");
     };
     
-    const handleRemoveIngredient = (id: string) => {
+    const handleRemoveIngredient = (key: string) => {
         setIngredients((prev) =>
-            prev.filter((item) => item.id !== id)
+            prev.filter((item) => item.key !== key)
         );
     };
     
@@ -144,7 +201,7 @@ export default function AddRecipeForm() {
         setAvailableIngredients(
             ingredientsData
         );
-        } catch (error) {
+        } catch {
         toast.error(
         "Failed to load categories and ingredients"
     );
@@ -158,12 +215,42 @@ export default function AddRecipeForm() {
         <Formik
             initialValues={initialValues}
             validationSchema={addRecipeSchema}
-            onSubmit={async (values, { setSubmitting }) => {
-                try {
-                    if (ingredients.length === 0) {
-                        toast.error("Please add at least one ingredient");
-                        return;
+            onSubmit={async (values, { setSubmitting, validateForm, setTouched }) => {
+                const formErrors = await validateForm();
+
+                if (Object.keys(formErrors).length > 0) {
+                    void setTouched(
+                        Object.keys(formErrors).reduce<Record<string, boolean>>(
+                            (acc, field) => {
+                                acc[field] = true;
+                                return acc;
+                            },
+                            {},
+                        ),
+                    );
+
+                    const firstError = Object.values(formErrors)[0];
+
+                    if (typeof firstError === "string") {
+                        toast.error(firstError);
                     }
+
+                    setSubmitting(false);
+                    return;
+                }
+
+                if (ingredients.length < 2) {
+                    const message =
+                        "Add at least 2 ingredients to publish the recipe";
+                    setIngredientsError(message);
+                    toast.error(message);
+                    setSubmitting(false);
+                    return;
+                }
+
+                setIngredientsError("");
+
+                try {
                     const formData = buildRecipeFormData(
                         values,
                         ingredients,
@@ -185,12 +272,20 @@ export default function AddRecipeForm() {
                     }, 1500);
 
                 } catch (error) {
-                    
-if (axios.isAxiosError(error) && error.response?.data?.message) {
-            toast.error(error.response.data.message);
-        } else {
-            toast.error("Failed to create recipe");
-        }
+                    if (axios.isAxiosError(error)) {
+                        const payload = error.response?.data as {
+                            message?: string;
+                            response?: { message?: string };
+                        } | undefined;
+                        const message =
+                            payload?.response?.message ??
+                            payload?.message ??
+                            "Failed to create recipe";
+
+                        toast.error(message);
+                    } else {
+                        toast.error("Failed to create recipe");
+                    }
                 } finally {
                     setSubmitting(false);
                 }
@@ -214,14 +309,23 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                 />
 
                                 {preview ? (
-                                    <img
+                                    <Image
                                         src={preview}
                                         alt="Recipe preview"
+                                        width={337}
+                                        height={230}
+                                        unoptimized
                                         className={styles.previewImage}
                                     />
                                 ) : (
                                     <div className={styles.cameraIcon}>
-                            <img src="/photo.svg" alt="Camera Icon" />
+                            <Image
+                                src="/photo.svg"
+                                alt=""
+                                width={24}
+                                height={24}
+                                aria-hidden
+                            />
                                     </div>
                                 )}
                             </label>
@@ -245,12 +349,23 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                     Recipe Title
                                 </label>
 
-                                <Field
-                                    id="title"
-                                    name="title"
-                                    type="text"
-                                    placeholder="Enter the name of your recipe"
-                                />
+                                <Field name="title">
+                                    {({ field }: FieldProps) => (
+                                        <>
+                                            <input
+                                                {...field}
+                                                id="title"
+                                                type="text"
+                                                maxLength={FIELD_LIMITS.title}
+                                                placeholder="Enter the name of your recipe"
+                                            />
+                                            <CharCount
+                                                current={field.value.length}
+                                                max={FIELD_LIMITS.title}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
 
                                 <ErrorMessage
                                     name="title"
@@ -264,13 +379,23 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                     Recipe Description
                                 </label>
 
-                                <Field
-                                    as="textarea"
-                                    id="description"
-                                    name="description"
-                                    rows={4}
-                                    placeholder="Enter a brief description of your recipe"
-                                />
+                                <Field name="description">
+                                    {({ field }: FieldProps) => (
+                                        <>
+                                            <textarea
+                                                {...field}
+                                                id="description"
+                                                rows={4}
+                                                maxLength={FIELD_LIMITS.description}
+                                                placeholder="Enter a brief description of your recipe"
+                                            />
+                                            <CharCount
+                                                current={field.value.length}
+                                                max={FIELD_LIMITS.description}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
 
                                 <ErrorMessage
                                     name="description"
@@ -285,14 +410,27 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                         Cooking time in minutes
                                     </label>
 
-                                    <Field
-                                        id="time"
-                                        name="time"
-                                        min="1"
-                                        max="360"
-                                        type="number"
-                                        placeholder="10"
-                                    />
+                                    <Field name="time">
+                                        {({ field, form }: FieldProps) => (
+                                            <input
+                                                {...field}
+                                                id="time"
+                                                type="text"
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
+                                                placeholder="10"
+                                                onKeyDown={blockNegativeNumberKey}
+                                                onChange={(event) => {
+                                                    form.setFieldValue(
+                                                        "time",
+                                                        sanitizePositiveIntegerInput(
+                                                            event.target.value
+                                                        )
+                                                    );
+                                                }}
+                                            />
+                                        )}
+                                    </Field>
 
                                     <ErrorMessage
                                         name="time"
@@ -306,14 +444,27 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                         Calories
                                     </label>
 
-                                    <Field
-                                        id="calories"
-                                        name="calories"
-                                        min="1"
-                                        max="10000"
-                                        type="number"
-                                        placeholder="150"
-                                    />
+                                    <Field name="calories">
+                                        {({ field, form }: FieldProps) => (
+                                            <input
+                                                {...field}
+                                                id="calories"
+                                                type="text"
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
+                                                placeholder="150"
+                                                onKeyDown={blockNegativeNumberKey}
+                                                onChange={(event) => {
+                                                    form.setFieldValue(
+                                                        "calories",
+                                                        sanitizePositiveIntegerInput(
+                                                            event.target.value
+                                                        )
+                                                    );
+                                                }}
+                                            />
+                                        )}
+                                    </Field>
 
                                     <ErrorMessage
                                         name="calories"
@@ -402,7 +553,16 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                     type="text"
                                     placeholder="100g"
                                     value={measure}
-                                    onChange={(e) => setMeasure(e.target.value)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "-") {
+                                            event.preventDefault();
+                                        }
+                                    }}
+                                    onChange={(event) => {
+                                        setMeasure(
+                                            sanitizeAmountInput(event.target.value)
+                                        );
+                                    }}
                                 />
                                 {measureError && (
                                     <span className={styles.error}>
@@ -432,7 +592,7 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
 
                             {ingredients.map((ingredient) => (
                                 <div
-                                    key={ingredient.id}
+                                    key={ingredient.key}
                                     className={styles.ingredientItem}
                                 >
                                     <span>{ingredient.name}</span>
@@ -442,10 +602,17 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            handleRemoveIngredient(ingredient.id)
+                                            handleRemoveIngredient(ingredient.key)
                                         }
+                                        aria-label={`Remove ${ingredient.name}`}
                                     >
-                                       <img src="/delete.svg" alt="✕" />
+                                       <Image
+                                           src="/delete.svg"
+                                           alt=""
+                                           width={24}
+                                           height={24}
+                                           aria-hidden
+                                       />
                                     </button>
                                 </div>
                             ))}
@@ -458,24 +625,37 @@ if (axios.isAxiosError(error) && error.response?.data?.message) {
                             Instructions
                         </h2>
 
-                        <Field
-                            as="textarea"
-                            name="instructions"
-                            rows={6}
-                            placeholder="Enter a text"
-                            className={styles.instructionsTextarea}
-                        />
+                        <div className={styles.fieldGroup}>
+                        <Field name="instructions">
+                            {({ field }: FieldProps) => (
+                                <>
+                                    <textarea
+                                        {...field}
+                                        rows={6}
+                                        maxLength={FIELD_LIMITS.instructions}
+                                        placeholder="Enter a text"
+                                        className={styles.instructionsTextarea}
+                                    />
+                                    <CharCount
+                                        current={field.value.length}
+                                        max={FIELD_LIMITS.instructions}
+                                    />
+                                </>
+                            )}
+                        </Field>
 
                         <ErrorMessage
                             name="instructions"
                             component="span"
                             className={styles.error}
                         />
+                        </div>
                     </section>
 
-                     {ingredients.length < 2 && (
+                     {(ingredients.length < 2 || ingredientsError) && (
                         <p className={styles.ingredientsWarning}>
-                            Add at least 2 ingredients to publish the recipe.
+                            {ingredientsError ||
+                                "Add at least 2 ingredients to publish the recipe."}
                         </p>
                     )}
 

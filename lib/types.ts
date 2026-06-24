@@ -15,6 +15,7 @@ export interface AddRecipeFormValues {
 }
 
 export type IngredientItem = {
+  key: string;
   id: string;
   name: string;
   measure: string;

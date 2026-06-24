@@ -29,7 +29,7 @@
 }
 
 .active {
- color: var(--black); 
+  color: var(--black);
   border-color: var(--black);
   font-weight: 600;
 }

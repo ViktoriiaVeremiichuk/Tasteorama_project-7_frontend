@@ -11,6 +11,7 @@ import { Inter } from "next/font/google";
 import LogoutModal from "../Logout/LogoutModal/LogoutModal";
 
 import { useAuthStore } from "@/lib/store/authStore";
+import { useSearchStore } from "@/app/store/searchStore";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -20,6 +21,7 @@ export default function Header(){
 
     const user = useAuthStore((state) => state.user);
     const setUser = useAuthStore((state) => state.setUser);
+    const resetFilters = useSearchStore((state) => state.resetFilters);
 
     useEffect(() => {
         if (user) return;
@@ -66,11 +68,21 @@ export default function Header(){
     const isProfileActive = pathname.startsWith("/profile");
 
     const isLoggedIn =Boolean(user);  
+
+    const handleLogoClick = () => {
+        resetFilters();
+        setMenuOpen(false);
+    };
+
+    const handleProfileClick = () => {
+        resetFilters();
+        setMenuOpen(false);
+    };
     
 
     return(
         <header className={`${styles.header} ${inter.className}`}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/" className={styles.logo} onClick={handleLogoClick}>
             <Image src="/logo.svg" alt="Tasteorama logo" width={24} height={24}/>
             <span>Tasteorama</span>
         </Link>
@@ -79,7 +91,7 @@ export default function Header(){
         <nav className={styles.desktopNav}>
             <div className={styles.navLinks}>
                 <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
-                {isLoggedIn && <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>}
+                {isLoggedIn && <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`} onClick={handleProfileClick}>My Profile</Link>}
             </div>
 
             <div className={styles.actions}>
@@ -118,7 +130,7 @@ export default function Header(){
         {menuOpen && (
             <div className={styles.mobileMenu}>
                 <div className={styles.mobileTop}>
-                    <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
+                    <Link href="/" className={styles.logo} onClick={handleLogoClick}>
                         <Image src="/logo.svg" alt="Tasteorama logo" width={24} height={24} />
                         <span>Tasteorama</span>
                     </Link>
@@ -141,7 +153,7 @@ export default function Header(){
                 <>
                     <div className={styles.mobileLink}>
                         <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`} onClick={()=> setMenuOpen(false)}>Recipes</Link>
-                        <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`} onClick={()=> setMenuOpen(false)}>My Profile</Link>
+                        <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`} onClick={handleProfileClick}>My Profile</Link>
                     </div>
                 
                     <div className={styles.userSection}>

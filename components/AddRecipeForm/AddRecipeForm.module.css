@@ -1,322 +1,355 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    margin: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-
 .topSection {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
-    align-items: start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
 }
 
 .sectionTitle {
-    font-weight: 600;
-    font-size: 24px;
-    color: #000;
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
 }
 
 .rightColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .leftColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
 
 .fieldGroup {
-    display: flex;
-    font-size: 18px;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
+  position: relative;
+  display: flex;
+  font-size: 18px;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 18px;
+  margin-bottom: -18px;
 }
 
 .fieldGroup label {
-    font-size: 18px;
-    color: #000;
+  font-size: 18px;
+  color: #000;
 }
 
 .fieldGroup input,
 .fieldGroup textarea,
 .fieldGroup select,
 .instructionsTextarea {
-    border: 1px solid #d3d3d3;
-    border-radius: 8px;
-    padding: 12px;
-
-    font-size: 16px;
-    font-family: inherit;
-
-    width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .fieldGroup textarea,
 .instructionsTextarea {
-    resize: vertical;
+  resize: vertical;
 }
 
 .row {
-    display: flex;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .row .fieldGroup {
-    flex: 1;
+  flex: 1;
 }
 
 .error {
-    color: #c80000;
-    font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  color: #c80000;
+  font-size: 12px;
+  line-height: 15px;
 }
 
-/* PHOTO */
+.charCount {
+  align-self: flex-end;
+  font-size: 12px;
+  line-height: 1;
+  color: #666;
+}
+
+.fieldGroup input[type="number"]::-webkit-outer-spin-button,
+.fieldGroup input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.fieldGroup input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
 
 .uploadBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-    height: 383px;
-
-    background-color: #9f9f9f;
-    border-radius: 16px;
-
-    overflow: hidden;
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  height: 383px;
+  background-color: #9f9f9f;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
 .hiddenInput {
-    display: none;
+  display: none;
 }
 
 .cameraIcon {
-    font-size: 52px;
+  font-size: 52px;
 }
 
 .previewImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* INGREDIENTS */
+.removePhotoButton {
+  width: 100%;
+  max-width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  background: transparent;
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: opacity 0.2s ease;
+}
+
+.removePhotoButton:hover,
+.removePhotoButton:focus {
+  opacity: 0.7;
+}
 
 .ingredientsSection {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
 
 .ingredientsControls {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .addButton {
-    border: none;
-    border-radius: 8px;
-
-    height: 40px;
-
-    background: #9b6c43;
-    color: #fff;
-
-    font-weight: 600;
-    cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  height: 48px;
+  background: #9b6c43;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .addButton:hover,
 .addButton:focus {
-    background: #6d554b;
+  background: #6d554b;
 }
 
 .addButton:active {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
+  background: #9b6c43;
 }
 
 .addButton:disabled {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
-    opacity: 0.3;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
+  background: #9b6c43;
+  opacity: 0.3;
 }
 
 .ingredientsList {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .ingredientsHeader {
-    display: none;
-    border-bottom: 1px solid #c5c5c5
+  display: none;
+  border-bottom: 1px solid #c5c5c5;
 }
 
 .showHeader {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 12px;
-    font-weight: 600;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  font-weight: 600;
 }
 
 .ingredientItem {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 12px;
-    align-items: center;
-}
-
-.ingredientsHeader {
-    font-weight: 600;
-}
-
-.ingredientItem {
-    padding-bottom: 8px;
-    border-bottom: 1px solid #c5c5c5;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #c5c5c5;
 }
 
 .ingredientItem button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 24px;
 }
 
-/* INSTRUCTIONS */
-
 .instructionsSection {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
 
 .submitButton {
-    border: none;
-    border-radius: 8px;
-    margin-bottom: 48px;
-
-    height: 48px;
-
-    background: #9b6c43;
-    color: #fff;
-
-    font-size: 16px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: 0.2s;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 48px;
+  height: 48px;
+  background: #9b6c43;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.submitButton:hover, .submitButton:focus {
-    background: #6d554b;
+.submitButton:hover,
+.submitButton:focus {
+  background: #6d554b;
 }
 
 .submitButton:active {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
+  background: #9b6c43;
 }
 
 .submitButton:disabled {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
-    opacity: 0.3;
-}
-
-:global(input[type="number"]::-webkit-outer-spin-button),
-:global(input[type="number"]::-webkit-inner-spin-button) {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-:global(input[type="number"]) {
-    appearance: textfield;
+  box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
+  background: #9b6c43;
+  opacity: 0.3;
 }
 
 .ingredientsWarning {
-    color: #c80000;
-    font-size: 14px;
-    font-weight: 500;
+  color: #c80000;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 @media (min-width: 768px) {
-    .form {
-        margin: 0 32px;
-    }
-    .row {
-        flex-direction: row;
-    }
+  .row {
+    flex-direction: row;
+  }
 
-    .row .fieldGroup {
-        flex: 1;
-    }
+  .ingredientsControls {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
 
-    .ingredientsControls {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 24px;
-    }
+  .addButton {
+    grid-column: 2;
+  }
 
-    .addButton {
-        grid-column: 2;
-    }
-
-    .ingredientsHeader,
-    .ingredientItem {
-        display: grid;
-        grid-template-columns: 160px 120px 40px;
-        align-items: center;
-        gap: 16px;
-    }
-
+  .ingredientsHeader,
+  .ingredientItem {
+    grid-template-columns: 160px 120px 40px;
+    align-items: center;
+    gap: 16px;
+  }
 }
 
 @media (min-width: 1440px) {
-    .form {
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        column-gap: 32px;
-        row-gap: 40px;
-        margin: 0 107px;
-    }
+  .form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 391px;
+    column-gap: 24px;
+    row-gap: 40px;
+  }
 
-    .topSection {
-        display: contents;
-    }
+  .sectionTitle {
+    font-size: 32px;
+  }
 
-    .leftColumn {
-        grid-column: 1;
-        grid-row: 1;
-        gap: 32px;
-    }
+  .topSection {
+    display: contents;
+  }
 
-    .rightColumn {
-        grid-column: 2;
-        grid-row: 1 / 4;
-    }
+  .leftColumn {
+    grid-column: 1;
+    grid-row: 1;
+    gap: 32px;
+  }
 
-    .ingredientsSection {
-        grid-column: 1;
-        grid-row: 2;
-    }
+  .rightColumn {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    gap: 4px;
+    max-width: 391px;
+  }
 
-    .instructionsSection {
-        grid-column: 1;
-        grid-row: 3;
-    }
+  .uploadBox {
+    height: 374px;
+    border-radius: 16px;
+  }
 
-    .submitButton {
-        grid-column: 1 / 2;
-    }
+  .ingredientsSection {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 32px;
+  }
+
+  .instructionsSection {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .ingredientsWarning {
+    grid-column: 1;
+  }
+
+  .submitButton {
+    grid-column: 1;
+  }
 }

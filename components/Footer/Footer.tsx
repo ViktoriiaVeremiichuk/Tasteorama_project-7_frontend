@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import logo from "@/app/icon.png";
 import styles from "./Footer.module.css";
 import { useAuthStore } from "@/lib/store/authStore";
+import { useSearchStore } from "@/app/store/searchStore";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -16,13 +17,30 @@ export default function Footer() {
     (state) => state.openAuthModal
   );
 
+  const resetFilters = useSearchStore((state) => state.resetFilters);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const handleAccountClick = (
     e: React.MouseEvent<HTMLAnchorElement>
   ) => {
     if (!user) {
       e.preventDefault();
       openAuthModal();
+      return;
     }
+
+    scrollToTop();
+  };
+
+  const handleRecipesClick = () => {
+    resetFilters();
+    scrollToTop();
   };
 
   const hideAccountLink =
@@ -35,10 +53,8 @@ export default function Footer() {
         <Link
           href="/"
           onClick={() => {
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+            resetFilters();
+            scrollToTop();
           }}
           className={styles.logo}
         >
@@ -56,7 +72,11 @@ export default function Footer() {
         </p>
 
         <nav className={styles.nav}>
-          <Link href="/" className={styles.link}>
+          <Link
+            href="/"
+            className={styles.link}
+            onClick={handleRecipesClick}
+          >
             Recipes
           </Link>
 
