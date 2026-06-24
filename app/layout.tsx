@@ -42,7 +42,11 @@ export default function RootLayout({
       <body>
         <TanStackProvider>
           <AuthProvider>
-            <Toaster position="top-right" />
+            <Toaster
+              position="top-right"
+              containerStyle={{ zIndex: 10001 }}
+              toastOptions={{ style: { zIndex: 10001 } }}
+            />
             <Header />
             <div className="pageWrapper">
               <main>{children}</main>
