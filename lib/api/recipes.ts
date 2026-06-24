@@ -91,6 +91,6 @@ export const removeFavorite = async (id: string) => {
 };
 
 export const deleteOwnRecipe = async (id: string) => {
-  const res = await api.delete(`/api/recipes/${id}`);
+  const res = await api.delete(`/api/recipes/${id}`, { timeout: 5_000 });
   return res.data;
 };

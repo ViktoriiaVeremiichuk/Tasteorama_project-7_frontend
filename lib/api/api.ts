@@ -1,7 +1,10 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
+const REQUEST_TIMEOUT_MS = 10_000;
+
 export const api = axios.create({
   withCredentials: true,
+  timeout: REQUEST_TIMEOUT_MS,
 });
 
 type RetryableRequestConfig = InternalAxiosRequestConfig & {
@@ -41,6 +44,10 @@ api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const config = error.config as RetryableRequestConfig | undefined;
+
+    if (!error.response) {
+      return Promise.reject(error);
+    }
 
     if (!shouldAttemptRefresh(error, config) || !config) {
       return Promise.reject(error);
