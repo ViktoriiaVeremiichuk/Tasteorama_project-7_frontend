@@ -36,12 +36,15 @@
 }
 
 .fieldGroup {
+  position: relative;
   display: flex;
   font-size: 18px;
   flex-direction: column;
   gap: 8px;
   width: 100%;
   min-width: 0;
+  padding-bottom: 18px;
+  margin-bottom: -18px;
 }
 
 .fieldGroup label {
@@ -78,8 +81,25 @@
 }
 
 .error {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
   color: #c80000;
   font-size: 12px;
+  line-height: 15px;
+}
+
+.fieldGroup input[type="number"]::-webkit-outer-spin-button,
+.fieldGroup input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.fieldGroup input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 .uploadBox {
@@ -242,16 +262,6 @@
   box-shadow: 0 0 0 6px rgb(78 70 180 / 12%), 0 0 0 2px #fff;
   background: #9b6c43;
   opacity: 0.3;
-}
-
-:global(input[type="number"]::-webkit-outer-spin-button),
-:global(input[type="number"]::-webkit-inner-spin-button) {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-:global(input[type="number"]) {
-  appearance: textfield;
 }
 
 .ingredientsWarning {
