@@ -70,6 +70,9 @@ const CharCount = ({
   </span>
 );
 
+const fieldClassName = (meta: FieldProps["meta"]) =>
+  meta.touched && meta.error ? styles.inputError : undefined;
+
 export default function AddRecipeForm() {
     const [preview, setPreview] = useState<string | null>(null);
     const [imageFile, setImageFile] =  useState<File | null>(null);
@@ -117,23 +120,22 @@ export default function AddRecipeForm() {
         }
 
         if (!measure.trim()) {
-            setMeasureError("Please enter the amount");
+            setMeasureError("Enter the amount");
             return;
         }
 
         if (measure.length < 2 || measure.length > 10) {
-            setMeasureError(
-            "Amount must be between 2 and 10 characters"
-            );
-
+            setMeasureError("Use 2–10 characters");
             return;
         }
 
         if (!/^\d/.test(measure)) {
-            setMeasureError(
-            "Amount must start with at least one digit"
-            );
+            setMeasureError("Start with a digit");
+            return;
+        }
 
+        if (!/^\d+(?:[.,/]\d+)?\s*[a-zA-Z]+$/.test(measure.trim())) {
+            setMeasureError("Add a unit, e.g. 100 g");
             return;
         }
 
@@ -312,21 +314,21 @@ export default function AddRecipeForm() {
                                     <Image
                                         src={preview}
                                         alt="Recipe preview"
-                                        width={337}
-                                        height={230}
+                                        width={391}
+                                        height={374}
                                         unoptimized
                                         className={styles.previewImage}
                                     />
                                 ) : (
-                                    <div className={styles.cameraIcon}>
-                            <Image
-                                src="/photo.svg"
-                                alt=""
-                                width={24}
-                                height={24}
-                                aria-hidden
-                            />
-                                    </div>
+                                    <span className={styles.cameraIcon}>
+                                        <Image
+                                            src="/photo.svg"
+                                            alt=""
+                                            width={160}
+                                            height={160}
+                                            aria-hidden
+                                        />
+                                    </span>
                                 )}
                             </label>
                              {preview && (
@@ -350,7 +352,7 @@ export default function AddRecipeForm() {
                                 </label>
 
                                 <Field name="title">
-                                    {({ field }: FieldProps) => (
+                                    {({ field, meta }: FieldProps) => (
                                         <>
                                             <input
                                                 {...field}
@@ -358,6 +360,7 @@ export default function AddRecipeForm() {
                                                 type="text"
                                                 maxLength={FIELD_LIMITS.title}
                                                 placeholder="Enter the name of your recipe"
+                                                className={fieldClassName(meta)}
                                             />
                                             <CharCount
                                                 current={field.value.length}
@@ -380,7 +383,7 @@ export default function AddRecipeForm() {
                                 </label>
 
                                 <Field name="description">
-                                    {({ field }: FieldProps) => (
+                                    {({ field, meta }: FieldProps) => (
                                         <>
                                             <textarea
                                                 {...field}
@@ -388,6 +391,7 @@ export default function AddRecipeForm() {
                                                 rows={4}
                                                 maxLength={FIELD_LIMITS.description}
                                                 placeholder="Enter a brief description of your recipe"
+                                                className={fieldClassName(meta)}
                                             />
                                             <CharCount
                                                 current={field.value.length}
@@ -411,7 +415,7 @@ export default function AddRecipeForm() {
                                     </label>
 
                                     <Field name="time">
-                                        {({ field, form }: FieldProps) => (
+                                        {({ field, form, meta }: FieldProps) => (
                                             <input
                                                 {...field}
                                                 id="time"
@@ -419,6 +423,7 @@ export default function AddRecipeForm() {
                                                 inputMode="numeric"
                                                 pattern="[0-9]*"
                                                 placeholder="10"
+                                                className={fieldClassName(meta)}
                                                 onKeyDown={blockNegativeNumberKey}
                                                 onChange={(event) => {
                                                     form.setFieldValue(
@@ -445,7 +450,7 @@ export default function AddRecipeForm() {
                                     </label>
 
                                     <Field name="calories">
-                                        {({ field, form }: FieldProps) => (
+                                        {({ field, form, meta }: FieldProps) => (
                                             <input
                                                 {...field}
                                                 id="calories"
@@ -453,6 +458,7 @@ export default function AddRecipeForm() {
                                                 inputMode="numeric"
                                                 pattern="[0-9]*"
                                                 placeholder="150"
+                                                className={fieldClassName(meta)}
                                                 onKeyDown={blockNegativeNumberKey}
                                                 onChange={(event) => {
                                                     form.setFieldValue(
@@ -478,23 +484,27 @@ export default function AddRecipeForm() {
                                         Category
                                     </label>
 
-                                    <Field
-                                        as="select"
-                                        id="category"
-                                        name="category"
-                                    >
-                                        <option value="">
-                                            Select category
-                                        </option>
-
-                                        {categories.map((category) => (
-                                            <option
-                                                key={category._id}
-                                                value={category.name}
+                                    <Field name="category">
+                                        {({ field, meta }: FieldProps) => (
+                                            <select
+                                                {...field}
+                                                id="category"
+                                                className={fieldClassName(meta)}
                                             >
-                                                {category.name}
-                                            </option>
-                                        ))}
+                                                <option value="">
+                                                    Select category
+                                                </option>
+
+                                                {categories.map((category) => (
+                                                    <option
+                                                        key={category._id}
+                                                        value={category.name}
+                                                    >
+                                                        {category.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
                                     </Field>
 
                                     <ErrorMessage
@@ -553,6 +563,9 @@ export default function AddRecipeForm() {
                                     type="text"
                                     placeholder="100g"
                                     value={measure}
+                                    className={
+                                        measureError ? styles.inputError : undefined
+                                    }
                                     onKeyDown={(event) => {
                                         if (event.key === "-") {
                                             event.preventDefault();
@@ -562,13 +575,18 @@ export default function AddRecipeForm() {
                                         setMeasure(
                                             sanitizeAmountInput(event.target.value)
                                         );
+
+                                        if (measureError) {
+                                            setMeasureError("");
+                                        }
                                     }}
                                 />
-                                {measureError && (
-                                    <span className={styles.error}>
-                                        {measureError}
-                                    </span>
-                                )}
+                                <span
+                                    className={styles.measureError}
+                                    aria-live="polite"
+                                >
+                                    {measureError}
+                                </span>
                             </div>
 
                             <button
@@ -627,14 +645,18 @@ export default function AddRecipeForm() {
 
                         <div className={styles.fieldGroup}>
                         <Field name="instructions">
-                            {({ field }: FieldProps) => (
+                            {({ field, meta }: FieldProps) => (
                                 <>
                                     <textarea
                                         {...field}
                                         rows={6}
                                         maxLength={FIELD_LIMITS.instructions}
                                         placeholder="Enter a text"
-                                        className={styles.instructionsTextarea}
+                                        className={`${styles.instructionsTextarea} ${
+                                            meta.touched && meta.error
+                                                ? styles.inputError
+                                                : ""
+                                        }`}
                                     />
                                     <CharCount
                                         current={field.value.length}
