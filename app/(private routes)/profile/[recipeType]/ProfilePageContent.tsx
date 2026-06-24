@@ -112,10 +112,19 @@ export default function ProfilePageContent({
 
         setTabData((prev) => {
           const previousTab = prev[recipeType];
-          const updatedRecipes =
+          const merged =
             page === 1
               ? newRecipes
               : [...previousTab.recipes, ...newRecipes];
+
+          const seen = new Set<string>();
+          const updatedRecipes = merged.filter((recipe) => {
+            if (seen.has(recipe._id)) {
+              return false;
+            }
+            seen.add(recipe._id);
+            return true;
+          });
 
           const nextTabData = {
             recipes: updatedRecipes,
