@@ -1,5 +1,7 @@
 import { api } from "@/lib/api/api";
 
+const FILTER_REQUEST_TIMEOUT_MS = 30_000;
+
 function sortByName<T extends { name: string }>(items: T[]): T[] {
   return [...items].sort((first, second) =>
     first.name.localeCompare(second.name, undefined, { sensitivity: "base" }),
@@ -32,14 +34,18 @@ export const createRecipe = async (
 };
 
 export const getCategories = async () => {
-  const res = await api.get("/api/categories");
+  const res = await api.get("/api/categories", {
+    timeout: FILTER_REQUEST_TIMEOUT_MS,
+  });
   const data = res.data.data;
 
   return Array.isArray(data) ? sortByName(data) : [];
 };
 
 export const getIngredients = async () => {
-  const res = await api.get("/api/ingredients");
+  const res = await api.get("/api/ingredients", {
+    timeout: FILTER_REQUEST_TIMEOUT_MS,
+  });
   const data = res.data.data;
 
   return Array.isArray(data) ? sortByName(data) : [];

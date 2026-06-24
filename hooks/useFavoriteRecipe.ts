@@ -5,39 +5,51 @@ import toast from "react-hot-toast";
 import { addFavorite, removeFavorite } from "@/lib/api/recipes";
 import { useAuthStore } from "@/lib/store/authStore";
 
+type FavoriteAction = "add" | "remove";
+
+type UseFavoriteRecipeOptions = {
+  assumedFavorite?: boolean;
+};
+
 export const useFavoriteRecipe = (
   recipeId: string,
   onRemoved?: () => void,
+  options: UseFavoriteRecipeOptions = {},
 ) => {
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
   const openAuthModal = useAuthStore((s) => s.openAuthModal);
 
   const favorites = user?.favorites ?? [];
-  const isFavorite = favorites.includes(recipeId);
+  const isFavorite =
+    options.assumedFavorite === true || favorites.includes(recipeId);
 
   const mutation = useMutation({
-    mutationFn: () =>
-      isFavorite ? removeFavorite(recipeId) : addFavorite(recipeId),
+    mutationFn: (action: FavoriteAction) =>
+      action === "remove"
+        ? removeFavorite(recipeId)
+        : addFavorite(recipeId),
 
-    onSuccess: () => {
+    onSuccess: (_data, action) => {
       const currentUser = useAuthStore.getState().user;
-      if (!currentUser) return;
+      if (!currentUser) {
+        return;
+      }
 
       const currentFavorites = currentUser.favorites ?? [];
-
-      const isCurrentlyFavorite = currentFavorites.includes(recipeId);
-
-      const updatedFavorites = isCurrentlyFavorite
-        ? currentFavorites.filter((id) => id !== recipeId)
-        : [...currentFavorites, recipeId];
+      const updatedFavorites =
+        action === "remove"
+          ? currentFavorites.filter((id) => id !== recipeId)
+          : currentFavorites.includes(recipeId)
+            ? currentFavorites
+            : [...currentFavorites, recipeId];
 
       setUser({
         ...currentUser,
         favorites: updatedFavorites,
       });
 
-      if (isCurrentlyFavorite && onRemoved) {
+      if (action === "remove" && onRemoved) {
         onRemoved();
       }
     },
@@ -53,7 +65,7 @@ export const useFavoriteRecipe = (
       return;
     }
 
-    mutation.mutate();
+    mutation.mutate(isFavorite ? "remove" : "add");
   };
 
   return {

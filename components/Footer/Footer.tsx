@@ -19,13 +19,28 @@ export default function Footer() {
 
   const resetFilters = useSearchStore((state) => state.resetFilters);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const handleAccountClick = (
     e: React.MouseEvent<HTMLAnchorElement>
   ) => {
     if (!user) {
       e.preventDefault();
       openAuthModal();
+      return;
     }
+
+    scrollToTop();
+  };
+
+  const handleRecipesClick = () => {
+    resetFilters();
+    scrollToTop();
   };
 
   const hideAccountLink =
@@ -39,10 +54,7 @@ export default function Footer() {
           href="/"
           onClick={() => {
             resetFilters();
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+            scrollToTop();
           }}
           className={styles.logo}
         >
@@ -60,7 +72,11 @@ export default function Footer() {
         </p>
 
         <nav className={styles.nav}>
-          <Link href="/" className={styles.link}>
+          <Link
+            href="/"
+            className={styles.link}
+            onClick={handleRecipesClick}
+          >
             Recipes
           </Link>
 

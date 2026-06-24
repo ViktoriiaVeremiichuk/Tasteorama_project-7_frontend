@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { isAxiosError } from "axios";
 import { logErrorResponse } from "../_utils/utils";
 
+export const revalidate = 300;
+
 export async function GET() {
   try {
     const cookieStore = await cookies();

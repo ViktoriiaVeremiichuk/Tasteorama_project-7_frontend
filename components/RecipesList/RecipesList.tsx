@@ -5,6 +5,7 @@ import type { Recipe, RecipesListProps } from "@/types/recipe";
 export default function RecipeList({
   recipes,
   showFavorite = true,
+  assumedFavorite = false,
   onFavoriteRemoved,
   showDelete = false,
   onDeleted,
@@ -21,6 +22,7 @@ export default function RecipeList({
           recipe={recipe}
           priority={index === 0}
           showFavorite={showFavorite}
+          assumedFavorite={assumedFavorite}
           onFavoriteRemoved={
             onFavoriteRemoved
               ? () => onFavoriteRemoved(recipe._id)

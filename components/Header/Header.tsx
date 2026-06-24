@@ -73,6 +73,11 @@ export default function Header(){
         resetFilters();
         setMenuOpen(false);
     };
+
+    const handleProfileClick = () => {
+        resetFilters();
+        setMenuOpen(false);
+    };
     
 
     return(
@@ -86,7 +91,7 @@ export default function Header(){
         <nav className={styles.desktopNav}>
             <div className={styles.navLinks}>
                 <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`}>Recipes</Link>
-                {isLoggedIn && <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`}>My Profile</Link>}
+                {isLoggedIn && <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`} onClick={handleProfileClick}>My Profile</Link>}
             </div>
 
             <div className={styles.actions}>
@@ -148,7 +153,7 @@ export default function Header(){
                 <>
                     <div className={styles.mobileLink}>
                         <Link href="/" className={`${styles.navLink} ${isRecipesActive ? styles.activeLink : ""}`} onClick={()=> setMenuOpen(false)}>Recipes</Link>
-                        <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`} onClick={()=> setMenuOpen(false)}>My Profile</Link>
+                        <Link href="/profile" className={`${styles.navLink} ${isProfileActive ? styles.activeLink : ""}`} onClick={handleProfileClick}>My Profile</Link>
                     </div>
                 
                     <div className={styles.userSection}>

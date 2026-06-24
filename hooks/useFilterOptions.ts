@@ -4,32 +4,92 @@ import { useEffect, useState } from "react";
 import { getCategories, getIngredients } from "@/lib/api/clientApi";
 import type { FilterOption } from "@/types/filter";
 
-export function useFilterOptions() {
-  const [categories, setCategories] = useState<FilterOption[]>([]);
-  const [ingredients, setIngredients] = useState<FilterOption[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+type FilterOptionsState = {
+  categories: FilterOption[];
+  ingredients: FilterOption[];
+  isLoading: boolean;
+  isLoaded: boolean;
+};
 
-  useEffect(() => {
-    const loadOptions = async () => {
-      try {
-        const [categoriesData, ingredientsData] = await Promise.all([
-          getCategories(),
-          getIngredients(),
-        ]);
+let sharedState: FilterOptionsState = {
+  categories: [],
+  ingredients: [],
+  isLoading: false,
+  isLoaded: false,
+};
 
-        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
-        setIngredients(Array.isArray(ingredientsData) ? ingredientsData : []);
-      } catch (error) {
-        console.error(error);
-        setCategories([]);
-        setIngredients([]);
-      } finally {
-        setIsLoading(false);
-      }
+let loadPromise: Promise<void> | null = null;
+const listeners = new Set<(state: FilterOptionsState) => void>();
+
+const notifyListeners = () => {
+  listeners.forEach((listener) => listener(sharedState));
+};
+
+const loadFilterOptions = async () => {
+  if (sharedState.isLoaded) {
+    return;
+  }
+
+  if (loadPromise) {
+    await loadPromise;
+    return;
+  }
+
+  sharedState = {
+    ...sharedState,
+    isLoading: true,
+  };
+  notifyListeners();
+
+  loadPromise = (async () => {
+    const [categoriesResult, ingredientsResult] = await Promise.allSettled([
+      getCategories(),
+      getIngredients(),
+    ]);
+
+    sharedState = {
+      categories:
+        categoriesResult.status === "fulfilled" ? categoriesResult.value : [],
+      ingredients:
+        ingredientsResult.status === "fulfilled" ? ingredientsResult.value : [],
+      isLoading: false,
+      isLoaded: true,
     };
 
-    loadOptions();
+    if (categoriesResult.status === "rejected") {
+      console.error(categoriesResult.reason);
+    }
+
+    if (ingredientsResult.status === "rejected") {
+      console.error(ingredientsResult.reason);
+    }
+
+    notifyListeners();
+    loadPromise = null;
+  })();
+
+  await loadPromise;
+};
+
+export function useFilterOptions() {
+  const [state, setState] = useState(sharedState);
+
+  useEffect(() => {
+    const listener = (nextState: FilterOptionsState) => {
+      setState(nextState);
+    };
+
+    listeners.add(listener);
+    void loadFilterOptions();
+
+    return () => {
+      listeners.delete(listener);
+    };
   }, []);
 
-  return { categories, ingredients, isLoading };
+  return {
+    categories: state.categories,
+    ingredients: state.ingredients,
+    isLoading: state.isLoading,
+  };
 }
