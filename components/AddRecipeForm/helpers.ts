@@ -12,7 +12,7 @@ type RecipeFormFields = {
 export const buildRecipeFormData = (
   values: RecipeFormFields,
   ingredients: IngredientItem[],
-  file: File | null
+  file: File | null,
 ) => {
   const formData = new FormData();
 
@@ -31,7 +31,10 @@ export const buildRecipeFormData = (
     measure,
   }));
 
-  formData.append("ingredients", JSON.stringify(ingredientsPayload));
+  ingredients.forEach((item, index) => {
+    formData.append(`ingredients[${index}][id]`, item.id);
+    formData.append(`ingredients[${index}][measure]`, item.measure);
+  });
 
   if (file) {
     formData.append("thumb", file);
