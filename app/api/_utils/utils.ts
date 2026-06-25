@@ -1,4 +1,3 @@
-import { Readable } from "node:stream";
 import FormDataNode from "form-data";
 
 export function logErrorResponse(errorObj: unknown): void {
@@ -80,6 +79,7 @@ export async function postMultipartToBackend(
   }
 
   const outgoingFormData = await rebuildProxyFormData(incomingFormData);
+  const body = outgoingFormData.getBuffer();
 
   const response = await fetch(`${apiUrl}${path}`, {
     method: "POST",
@@ -87,9 +87,8 @@ export async function postMultipartToBackend(
       ...outgoingFormData.getHeaders(),
       Cookie: cookieHeader,
     },
-    body: Readable.toWeb(outgoingFormData) as BodyInit,
-    duplex: "half",
-  } as RequestInit);
+    body: new Uint8Array(body),
+  });
 
   const data = await response.json().catch(() => null);
 
