@@ -6,13 +6,23 @@ export const FIELD_LIMITS = {
   instructions: 1200,
 } as const;
 
+const HAS_LETTER = /\p{L}/u;
+
 export const addRecipeSchema = Yup.object({
   title: Yup.string()
     .max(FIELD_LIMITS.title, "Recipe title must be 64 characters or less")
+    .matches(HAS_LETTER, {
+      message: "Recipe title must contain text, not only numbers",
+      excludeEmptyString: true,
+    })
     .required("Please enter a recipe title"),
 
   description: Yup.string()
     .max(FIELD_LIMITS.description, "Description must be 200 characters or less")
+    .matches(HAS_LETTER, {
+      message: "Description must contain text, not only numbers",
+      excludeEmptyString: true,
+    })
     .required("Please enter a short description"),
 
   time: Yup.number()
@@ -37,5 +47,9 @@ export const addRecipeSchema = Yup.object({
       FIELD_LIMITS.instructions,
       "Instructions must be 1,200 characters or less",
     )
+    .matches(HAS_LETTER, {
+      message: "Instructions must contain text, not only numbers",
+      excludeEmptyString: true,
+    })
     .required("Please enter cooking instructions"),
 });

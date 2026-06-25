@@ -10,7 +10,7 @@
 .topSection {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 32px;
+  gap: 24px;
   align-items: start;
 }
 
@@ -59,10 +59,41 @@
   border: 1px solid #d9d9d9;
   border-radius: 8px;
   padding: 12px;
-  font-size: 16px;
+  font-size: 18px;
   font-family: inherit;
   width: 100%;
   box-sizing: border-box;
+}
+
+.fieldGroup input::placeholder,
+.fieldGroup textarea::placeholder,
+.instructionsTextarea::placeholder {
+  color: #9f9f9f;
+}
+
+.fieldGroup input:focus,
+.fieldGroup textarea:focus,
+.fieldGroup select:focus,
+.instructionsTextarea:focus {
+  border-width: 1.5px;
+  border-color: #d9d9d9;
+  outline: none;
+  box-shadow: 0 0 0 4px rgb(78 70 180 / 20%);
+}
+
+.fieldGroup input.inputError,
+.fieldGroup textarea.inputError,
+.fieldGroup select.inputError,
+.instructionsTextarea.inputError {
+  border-width: 1.5px;
+  border-color: #c80000;
+}
+
+.fieldGroup input.inputError:focus,
+.fieldGroup textarea.inputError:focus,
+.fieldGroup select.inputError:focus,
+.instructionsTextarea.inputError:focus {
+  border-color: #c80000;
 }
 
 .fieldGroup textarea,
@@ -72,12 +103,13 @@
 
 .row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 16px;
 }
 
 .row .fieldGroup {
   flex: 1;
+  min-width: 0;
 }
 
 .error {
@@ -86,6 +118,8 @@
   left: 0;
   width: 100%;
   margin: 0;
+  padding: 0 12px;
+  box-sizing: border-box;
   color: #c80000;
   font-size: 12px;
   line-height: 15px;
@@ -96,6 +130,17 @@
   font-size: 12px;
   line-height: 1;
   color: #666;
+}
+
+.measureError {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 2px 0 0;
+  padding: 0 12px;
+  color: #c80000;
+  font-size: 12px;
+  line-height: 1.25;
 }
 
 .fieldGroup input[type="number"]::-webkit-outer-spin-button,
@@ -128,7 +173,14 @@
 }
 
 .cameraIcon {
-  font-size: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cameraIcon img {
+  width: 82px;
+  height: auto;
 }
 
 .previewImage {
@@ -162,7 +214,7 @@
 .ingredientsSection {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
   min-width: 0;
 }
 
@@ -172,14 +224,21 @@
   gap: 16px;
 }
 
+.ingredientsControls .fieldGroup {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
 .addButton {
+  width: 100%;
   border: none;
   border-radius: 8px;
-  height: 48px;
+  padding: 12px 16px;
   background: #9b6c43;
   color: #fff;
   font-weight: 600;
   font-size: 16px;
+  line-height: 1.25;
   cursor: pointer;
 }
 
@@ -279,17 +338,21 @@
 
 @media (min-width: 768px) {
   .row {
-    flex-direction: row;
+    gap: 24px;
   }
 
   .ingredientsControls {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
+    grid-template-columns: 497fr 288fr;
+    gap: 16px 24px;
+    align-items: start;
   }
 
   .addButton {
     grid-column: 2;
+    align-self: start;
+    padding: 8px 16px;
+    font-size: 14px;
   }
 
   .ingredientsHeader,
@@ -325,13 +388,21 @@
   .rightColumn {
     grid-column: 2;
     grid-row: 1 / span 4;
-    gap: 4px;
+    gap: 8px;
     max-width: 391px;
   }
 
   .uploadBox {
     height: 374px;
-    border-radius: 16px;
+  }
+
+  .cameraIcon img {
+    width: 160px;
+  }
+
+  .addButton {
+    padding: 4px 16px;
+    font-size: 12px;
   }
 
   .ingredientsSection {
