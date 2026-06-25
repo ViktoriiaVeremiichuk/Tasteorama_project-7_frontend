@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { api } from "../api";
 import { cookies } from "next/headers";
 import { isAxiosError } from "axios";
-import { logErrorResponse } from "../_utils/utils";
+import { logErrorResponse, rebuildProxyFormData } from "../_utils/utils";
 import { getCookieHeader, withAuthRetry } from "../_utils/authProxy";
 
 export async function GET(request: NextRequest) {
@@ -47,23 +47,15 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
     const incomingFormData = await request.formData();
 
-    const buildFormData = () => {
-      const formData = new FormData();
+    const res = await withAuthRetry(cookieStore, async (cookieHeader) => {
+      const outgoingFormData = await rebuildProxyFormData(incomingFormData);
 
-      for (const [key, value] of incomingFormData.entries()) {
-        formData.append(key, value);
-      }
-
-      return formData;
-    };
-
-    const res = await withAuthRetry(cookieStore, (cookieHeader) =>
-      api.post("/api/recipes", buildFormData(), {
+      return api.post("/api/recipes", outgoingFormData, {
         headers: {
           Cookie: cookieHeader,
         },
-      }),
-    );
+      });
+    });
 
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
