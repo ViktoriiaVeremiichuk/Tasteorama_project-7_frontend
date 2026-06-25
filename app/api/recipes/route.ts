@@ -2,8 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { api } from "../api";
 import { cookies } from "next/headers";
 import { isAxiosError } from "axios";
-import { logErrorResponse, rebuildProxyFormData } from "../_utils/utils";
-import { getCookieHeader, withAuthRetry } from "../_utils/authProxy";
+import {
+  logErrorResponse,
+  postMultipartToBackend,
+} from "../_utils/utils";
+import {
+  getCookieHeader,
+  refreshSession,
+} from "../_utils/authProxy";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
@@ -47,18 +55,38 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
     const incomingFormData = await request.formData();
 
-    const res = await withAuthRetry(cookieStore, async (cookieHeader) => {
-      const outgoingFormData = await rebuildProxyFormData(incomingFormData);
+    let cookieHeader = getCookieHeader(cookieStore);
+    let result = await postMultipartToBackend(
+      "/api/recipes",
+      incomingFormData,
+      cookieHeader,
+    );
 
-      return api.post("/api/recipes", outgoingFormData, {
-        headers: {
-          ...outgoingFormData.getHeaders(),
-          Cookie: cookieHeader,
+    if (result.status === 401) {
+      const refreshed = await refreshSession(cookieStore);
+
+      if (refreshed) {
+        cookieHeader = getCookieHeader(cookieStore);
+        result = await postMultipartToBackend(
+          "/api/recipes",
+          incomingFormData,
+          cookieHeader,
+        );
+      }
+    }
+
+    if (result.status >= 400) {
+      logErrorResponse(result.data);
+      return NextResponse.json(
+        {
+          error: `Request failed with status code ${result.status}`,
+          response: result.data,
         },
-      });
-    });
+        { status: result.status },
+      );
+    }
 
-    return NextResponse.json(res.data, { status: res.status });
+    return NextResponse.json(result.data, { status: result.status });
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
