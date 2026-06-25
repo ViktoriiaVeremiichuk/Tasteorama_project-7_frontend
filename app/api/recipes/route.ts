@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
 
       return api.post("/api/recipes", outgoingFormData, {
         headers: {
+          ...outgoingFormData.getHeaders(),
           Cookie: cookieHeader,
         },
       });

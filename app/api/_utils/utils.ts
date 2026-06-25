@@ -1,7 +1,9 @@
+import FormDataNode from "form-data";
+
 export function logErrorResponse(errorObj: unknown): void {
-  const green = '\x1b[32m';
-  const yellow = '\x1b[33m';
-  const reset = '\x1b[0m';
+  const green = "\x1b[32m";
+  const yellow = "\x1b[33m";
+  const reset = "\x1b[0m";
 
   console.log(`${green}> ${yellow}Error Response Data:${reset}`);
   console.dir(errorObj, { depth: null, colors: true });
@@ -24,12 +26,16 @@ const toTextFieldValue = async (value: FormDataEntryValue): Promise<string> => {
 
 export async function rebuildProxyFormData(
   incomingFormData: FormData,
-): Promise<FormData> {
-  const formData = new FormData();
+): Promise<FormDataNode> {
+  const formData = new FormDataNode();
 
   for (const [key, value] of incomingFormData.entries()) {
     if (isFileField(value)) {
-      formData.append(key, value, value.name);
+      const buffer = Buffer.from(await value.arrayBuffer());
+      formData.append(key, buffer, {
+        filename: value.name,
+        contentType: value.type || "application/octet-stream",
+      });
       continue;
     }
 
